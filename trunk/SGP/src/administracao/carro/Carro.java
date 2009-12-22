@@ -1,5 +1,5 @@
 package administracao.carro;
 
-public class NovoCarro {
+public class Carro {
 
 }

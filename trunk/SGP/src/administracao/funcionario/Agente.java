@@ -1,6 +1,6 @@
 package administracao.funcionario;
 
 
-public class NovoMotorista {
+public class Agente {
 
 }

@@ -204,7 +204,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         }
     }
 
-//    FUNCOES VALIDACAO DE ACESSE
+//    FUNCOES VALIDACAO DE ACESSO
     public boolean validaEntradaAgente(String nome, String senha) throws RemoteException {
 
         Statement stmt;

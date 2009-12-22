@@ -130,12 +130,12 @@ public class MenuPrincipal extends JFrame
 
     public void chamarTipoDeViagem()
     {
-        System.out.println("tdv chamada");
-    GerenciaTipoDeViagem gtdv = new GerenciaTipoDeViagem(dbm);
-    gtdv.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    gtdv.setLocationRelativeTo(this);
-    gtdv.setSize(500, 400);
-    gtdv.setVisible(true);
+        //System.out.println("tdv chamada");
+        GerenciaTipoDeViagem gtdv = new GerenciaTipoDeViagem(dbm);
+        gtdv.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(this);
+        gtdv.setBounds(390,220,500,400);
+        gtdv.setVisible(true);
     }
 
 

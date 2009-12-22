@@ -23,13 +23,13 @@ import java.awt.event.ActionEvent;
 public class MenuPrincipal extends JFrame
 {
 
-    JMenu cadastros, movimentos, caixa, configuracoes, ajuda;
+    JMenu arquivo;
     JToolBar barra1, barra2, barra3, barra4, barra5, barra6, barra7;
     JSeparator espaco;
-    JButton tipoDeViagemButton, viagemButton, passagemButton, locar, devolver, emAtraso, buscar;
+    JButton tipoDeViagemButton, funcionarioButton, onibusButton;
     JMenuBar menuBar;
-    JMenuItem configuracaoDeCaixa, tiposDeViagem, cadastrarviagem;
-    Icon usuario, viagemIcon, passagensIcon, casa, ok, relogio, busca;
+    JMenuItem sair;
+    Icon fucionarioIcon, viagemIcon, onibusIcon;
     FlowLayout layout;
     BorderLayout border;
     JLabel label, chumbo;
@@ -38,7 +38,7 @@ public class MenuPrincipal extends JFrame
     public final DataBaseManagerImpl dbm;
 
     public MenuPrincipal(DataBaseManagerImpl dbm) {
-        super("Sistema: Venda De Passagens");
+        super("Sistema de Gerenciamento de Passagens Intermunicipais/Interestaduais (Beta) - Módulo Administrador");
 
         this.dbm = dbm;
 
@@ -48,61 +48,33 @@ public class MenuPrincipal extends JFrame
         setLayout(border);
 
         //icones
-        usuario = new ImageIcon(getClass().getResource("groups_f2.png"));
-        viagemIcon = new ImageIcon(getClass().getResource("icone_filme.jpg"));
-        casa = new ImageIcon(getClass().getResource("next_f2.png"));
-        ok = new ImageIcon(getClass().getResource("back_f2.png"));
-        passagensIcon = new ImageIcon(getClass().getResource("edit_f2.png"));
-        relogio = new ImageIcon(getClass().getResource("day_f2.png"));
-        busca = new ImageIcon(getClass().getResource("search_f2.png"));
+        fucionarioIcon = new ImageIcon(getClass().getResource("funcionario.png"));
+        viagemIcon = new ImageIcon(getClass().getResource("viagem.png"));
+        onibusIcon = new ImageIcon(getClass().getResource("onibus.png"));
 
         //jmenus
-        cadastros = new JMenu("cadastros");
-        movimentos = new JMenu("movimentos");
-        caixa = new JMenu("caixa");
-        configuracoes = new JMenu("Configuracoes");
+        arquivo = new JMenu("Arquivo");
 
         //jmenu itens
-        configuracaoDeCaixa = new JMenuItem("Configuracoes de caixa");
-        tiposDeViagem = new JMenuItem("Tipos De Viagem");
-        cadastrarviagem = new JMenuItem("Cadastrar viagem");
-        
+        sair = new JMenuItem("Sair");
 
-        cadastros.add(tiposDeViagem);
-        cadastros.addSeparator();
-        cadastros.add(cadastrarviagem);
-
-        configuracoes.addSeparator();
-        configuracoes.add(configuracaoDeCaixa);
-
-
-        ajuda = new JMenu("ajud");
+        arquivo.add(sair);
+        //arquivo.addSeparator();
 
         menuBar = new JMenuBar();
 
 
         //botoes
-        tipoDeViagemButton = new JButton("Tipo De Viagem");
-        tipoDeViagemButton.setIcon(usuario);
+        tipoDeViagemButton = new JButton("Administrar Viagem ");
+        tipoDeViagemButton.setIcon(viagemIcon);
 
 
-        viagemButton = new JButton("viagem");
-        viagemButton.setIcon(viagemIcon);
+        funcionarioButton = new JButton("Administrar Funcionário ");
+        funcionarioButton.setIcon(fucionarioIcon);
 
-        locar = new JButton("Locar");
-        locar.setIcon(casa);
-
-        devolver = new JButton("Devo");
-        devolver.setIcon(ok);
-
-        passagemButton = new JButton("passagem");
-        passagemButton.setIcon(passagensIcon);
-
-        emAtraso = new JButton("Atrasado");
-        emAtraso.setIcon(relogio);
-
-        buscar = new JButton("Busca");
-        buscar.setIcon(busca);
+        onibusButton = new JButton("Administrar Ônibus ");
+        onibusButton.setIcon(onibusIcon);
+        //Fim dos Botoes
 
         barra1 = new JToolBar();
         barra2 = new JToolBar();
@@ -110,31 +82,17 @@ public class MenuPrincipal extends JFrame
 
         //imagem de fundo
         label = new JLabel();
-        label.setIcon(new javax.swing.ImageIcon(getClass().getResource("spider.jpg")));
-
-        menuBar.add(cadastros);
-        menuBar.add(movimentos);
-        menuBar.add(caixa);
-        menuBar.add(configuracoes);
-        menuBar.add(ajuda);
+        label.setIcon(new javax.swing.ImageIcon(getClass().getResource("background.png")));
 
 
-
-        barra1.add(passagemButton);
-        barra1.addSeparator();
-        barra1.add(viagemButton);
+        menuBar.add(arquivo);
 
 
+        barra1.add(funcionarioButton);
 
         barra2.add(tipoDeViagemButton);
-        barra2.addSeparator();
-        barra2.add(devolver);
 
-        barra3.add(locar);
-        barra3.addSeparator();
-        barra3.add(emAtraso);
-        barra3.addSeparator();
-        barra3.add(buscar);
+        barra3.add(onibusButton);
 
         painel = new JPanel();
         layout.setAlignment(FlowLayout.LEFT);
@@ -163,13 +121,9 @@ public class MenuPrincipal extends JFrame
 
         ButtonListener but = new ButtonListener();
 
-        viagemButton.addActionListener(but);
-
         tipoDeViagemButton.addActionListener(but);
 
-        passagemButton.addActionListener(but);
-
-        configuracaoDeCaixa.addActionListener(list);
+        sair.addActionListener(list);
 
 
     }
@@ -189,12 +143,8 @@ public class MenuPrincipal extends JFrame
 
         public void actionPerformed(ActionEvent event) {
 
-            if (event.getSource() == configuracaoDeCaixa) {
-                // criarJanelaConfiguracaoDoCaixa();
-            } else if (event.getSource() == tiposDeViagem) {
-                //chamarTipoDeViagem();
-            } else if (event.getSource() == cadastrarviagem) {
-                //criarviagemIcon();
+            if (event.getSource() == sair) {
+                System.exit(0);
             }
 
         }
@@ -204,14 +154,9 @@ public class MenuPrincipal extends JFrame
 
         public void actionPerformed(ActionEvent event) {
 
-            if (event.getSource() == viagemButton) {
-                //criarviagemIcon();
-            } else if (event.getSource() == tipoDeViagemButton) {
+            if (event.getSource() == tipoDeViagemButton) {
                 chamarTipoDeViagem();
-            } else if (event.getSource() == passagemButton) {
-                //criarJanelaDoCaixa();
             }
-
         }
     }
 }

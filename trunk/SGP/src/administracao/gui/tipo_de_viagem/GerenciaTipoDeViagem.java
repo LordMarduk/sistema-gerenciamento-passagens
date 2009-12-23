@@ -5,8 +5,6 @@ import administracao.tipo_de_viagem.TipoDeViagem;
 import java.awt.BorderLayout;
 import java.sql.*;
 import java.awt.event.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
@@ -26,6 +24,10 @@ public class GerenciaTipoDeViagem extends JFrame {
 
     public GerenciaTipoDeViagem(final DataBaseManagerImpl dbm) {
         super("Tipos De Viagem");
+
+        setLocationRelativeTo(this);
+        setBounds(390,220,500,400);
+        setVisible(true);
 
         //-----
 

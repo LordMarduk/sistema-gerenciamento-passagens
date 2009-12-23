@@ -23,6 +23,7 @@ public class Auxiliares {
     "2009","2010","2011","2012","2013","2014","2015","2016","2017",
             "2018","2019","2020"};
 
+    public static final String[] TIPO_FUNCIONARIO = {"","motorista","agente"};
 
     public static int gerarId(int ant){
         ant++;

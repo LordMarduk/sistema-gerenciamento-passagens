@@ -1,6 +1,7 @@
 package administracao.gui;
 
 import administracao.database.DataBaseManagerImpl;
+import administracao.gui.funcionario.JanelaAdministraFuncionario;
 import administracao.gui.tipo_de_viagem.GerenciaTipoDeViagem;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -39,6 +40,12 @@ public class MenuPrincipal extends JFrame
 
     public MenuPrincipal(DataBaseManagerImpl dbm) {
         super("Sistema de Gerenciamento de Passagens Intermunicipais/Interestaduais (Beta) - Módulo Administrador");
+
+        setSize(800, 600);
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setVisible(true);
+
 
         this.dbm = dbm;
 
@@ -122,6 +129,7 @@ public class MenuPrincipal extends JFrame
         ButtonListener but = new ButtonListener();
 
         tipoDeViagemButton.addActionListener(but);
+        funcionarioButton.addActionListener(but);
 
         sair.addActionListener(list);
 
@@ -132,10 +140,18 @@ public class MenuPrincipal extends JFrame
     {
         //System.out.println("tdv chamada");
         GerenciaTipoDeViagem gtdv = new GerenciaTipoDeViagem(dbm);
-        gtdv.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(this);
-        gtdv.setBounds(390,220,500,400);
-        gtdv.setVisible(true);
+        gtdv.setDefaultCloseOperation(
+                JFrame.DISPOSE_ON_CLOSE);
+        
+    }
+
+    public void chamarAdministraFuncionario()
+    {
+        //System.out.println("tdv chamada");
+        JanelaAdministraFuncionario jaf = new JanelaAdministraFuncionario(dbm);
+        jaf.setDefaultCloseOperation(
+                JFrame.DISPOSE_ON_CLOSE);
+
     }
 
 
@@ -156,6 +172,9 @@ public class MenuPrincipal extends JFrame
 
             if (event.getSource() == tipoDeViagemButton) {
                 chamarTipoDeViagem();
+            }
+            else if (event.getSource() == funcionarioButton) {
+                chamarAdministraFuncionario();
             }
         }
     }

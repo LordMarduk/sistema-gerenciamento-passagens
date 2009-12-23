@@ -6,6 +6,7 @@ import java.rmi.RemoteException;
 import administracao.database.DataBaseManagerImpl;
 import administracao.gui.MenuPrincipal;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 public class Main {
 
@@ -33,18 +34,22 @@ public class Main {
 
             System.out.println("... Servidor Ligado!");
 
-            MenuPrincipal mp = new MenuPrincipal(dbm);
-            mp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            mp.setSize(800, 600);
-            mp.setResizable(false);
-            mp.setLocationRelativeTo(null);
-            mp.setVisible(true);
 
         } catch (RemoteException ex) {
             ex.printStackTrace();
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
         }
+
+        UIManager.LookAndFeelInfo[] lafs =  UIManager.getInstalledLookAndFeels();
+        try {
+           UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        MenuPrincipal mp = new MenuPrincipal(dbm);
+        mp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
 }

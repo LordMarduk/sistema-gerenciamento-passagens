@@ -12,8 +12,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 
-import DatabaseManager.ConexaoBanco;
-import MainGui.TestaMenuPrincipal;
+//import DatabaseManager.ConexaoBanco;
+//import MainGui.TestaMenuPrincipal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -93,7 +93,7 @@ public class Login extends JDialog {
                     senhaDigitada = new String(suaSenha.getPassword());
                     if (autentica(seuNome.getText(), senhaDigitada) == true) {
                         dispose();
-                        TestaMenuPrincipal.main(array);
+                        //TestaMenuPrincipal.main(array);
                     } // se algum campo estiver errado
                     else {
                         JOptionPane.showMessageDialog(Login.this, "nome ou senha invalidos", "ERRO", JOptionPane.ERROR_MESSAGE);
@@ -101,7 +101,7 @@ public class Login extends JDialog {
 
                 } //se apertar em sair
                 else if (event.getSource() == sair) {
-                    ConexaoBanco.closeConnection(ConexaoBanco.getConnection());
+                   // ConexaoBanco.closeConnection(ConexaoBanco.getConnection());
                     System.exit(0);
                 } //se for mudar senha chamar o outro JFrame
                
@@ -114,11 +114,11 @@ public class Login extends JDialog {
     public boolean autentica(String nomeDigitado, String senhaDigitada) throws Exception {
         Statement stmt = null;
         ResultSet rs = null;
-        Connection connection = ConexaoBanco.getConnection();
+        //Connection connection = ConexaoBanco.getConnection();
 
         try {
 
-            stmt = connection.createStatement();
+           // stmt = connection.createStatement();
 
             ResultSet resultSet = stmt.executeQuery("select senha from agente WHERE usuario = '" + nomeDigitado + "' ORDER BY usuario");
 

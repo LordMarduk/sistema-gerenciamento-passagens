@@ -1,6 +1,6 @@
 package administracao.database;
 
-import administracao.tipo_de_viagem.TipoDeViagem;
+
 import cliente.Cliente;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -10,10 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import util.DataBaseManager;
+import administracao.viagens.InstanciaDeViagem;
+import administracao.viagens.TipoDeViagem;
 
 /**
  *
@@ -204,6 +205,121 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         }
     }
 
+    /////////////////////////////FUNCOES DE INSTANCIA DE VIAGEM///////////////////////////////
+    public InstanciaDeViagem selectInstanciaDeViagem(int id_seq_tdv,Date data) {
+
+        Statement st = null;
+        ResultSet rs = null;
+        String sql = "select * from instancia_de_viagem where id_seq_tdv = "
+        	+ id_seq_tdv + " AND data = " + data;
+        InstanciaDeViagem idv = new InstanciaDeViagem();
+
+        try {
+            st = connection.createStatement();
+            rs = st.executeQuery(sql);
+
+            rs.next();
+            idv.setIdSeqTdv(rs.getInt("id_seq_tdv"));
+            idv.setNumVagasDisponiveis(rs.getInt("num_vagas_disponiveis"));
+            idv.setHoraRealSaida(rs.getString("hora_real_saida"));
+            idv.setHoraRealChegada(rs.getString("hora_real_chegada"));
+            idv.setData(rs.getDate("data"));//ou timstamp testar depois
+            idv.setIdSeqCarro(rs.getInt("id_seq_carro"));
+            idv.setIdSeqMotorista(rs.getInt("id_seq_motorista"));
+            idv.setObservacoes(rs.getString("observacoes"));
+
+            rs.close();
+            st.close();
+            return idv;
+        } catch (SQLException e) {
+            // se houve algum erro, uma exceção é gerada para informar o erro
+            e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
+        }
+        return null;
+    }
+
+    public void deleteInstanciaDeViagem(int id_seq_idv, Date data) {
+        Statement st = null;
+        String sql = "delete from instancia_de_viagem where id_seq_idv = "
+        	+ id_seq_idv + " AND data = " + data;
+
+        try {
+
+            st = connection.createStatement();
+            System.out.println("executando: "+ sql);
+            st.executeUpdate(sql);
+            st.close();
+        } catch (SQLException e) {
+            // se houve algum erro, uma exceção é gerada para informar o erro
+            e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
+        }
+
+
+    }
+
+    public void updateInstanciaDeViagem(int id_seq_idv,Date data,
+    		InstanciaDeViagem novoIdv) {
+
+        PreparedStatement pst = null;
+
+        String sql = "update instancia_de_viagem set id_seq_tdv = ?," +
+        		"num_vagas_disponiveis = ?,hora_real_saida = ?," +
+        				"hora_real_chegada = ?,data = ?," +
+        				"id_seq_carro = ?,id_seq_motorista = ?," +
+        				"obeservacoes = ?, " +
+        				"where id_seq_idv = " + id_seq_idv
+        				+ " AND data = " + data;
+        try {
+            pst = connection.prepareStatement(sql);
+
+            pst.setInt(1,novoIdv.getIdSeqTdv());
+            pst.setInt(2,novoIdv.getNumVagasDisponiveis());
+            pst.setString(3,novoIdv.getHoraRealSaida());
+            pst.setString(4,novoIdv.getHoraRealChegada());
+            pst.setDate(5,(java.sql.Date)novoIdv.getData());
+            pst.setInt(6,novoIdv.getIdSeqCarro());
+            pst.setInt(7,novoIdv.getIdSeqMotorista());
+            pst.setString(8,novoIdv.getObservacoes());
+
+            pst.executeUpdate();
+            pst.close();
+        } catch (SQLException e) {
+            // se houve algum erro, uma exceção é gerada para informar o erro
+            e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
+        }
+    }
+
+    public void insertInstanciaDeViagem(InstanciaDeViagem idv) {
+        try {
+            PreparedStatement pst = null;
+            //ResultSet rs = null;
+
+            String sql = "insert into instancia_de_viagem(id_seq_tdv," +
+            		"num_vagas_disponiveis,hora_real_saida," +
+                    "hora_real_chegada,data,id_seq_carro," +
+                    "id_seq_motorista,observacoes) values(?,?,?,?,?,?,?,?) ";
+
+            pst = connection.prepareStatement(sql);
+
+            pst.setInt(1, idv.getIdSeqTdv());
+            pst.setInt(2, idv.getNumVagasDisponiveis());
+            pst.setString(3, idv.getHoraRealSaida());
+            pst.setString(4, idv.getHoraRealChegada());
+            pst.setTimestamp(5, new java.sql.Timestamp(idv.getData().getTime()));
+            pst.setInt(6, idv.getIdSeqCarro());
+            pst.setInt(7, idv.getIdSeqMotorista());
+            pst.setString(8, idv.getObservacoes());
+
+            pst.executeUpdate();
+            pst.close();
+
+        } catch (SQLException e) {
+            // se houve algum erro, uma exceção é gerada para informar o erro
+            e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////
+
 //    FUNCOES VALIDACAO DE ACESSO
     public boolean validaEntradaAgente(String nome, String senha) throws RemoteException {
 
@@ -248,4 +364,5 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         }
 
     }
+
 }

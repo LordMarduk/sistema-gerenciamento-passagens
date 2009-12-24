@@ -1,7 +1,8 @@
 
-package administracao.gui.tipo_de_viagem;
+package util;
 
 //Um TableModel que fornece dados ResultSet a uma JTable.
+import administracao.gui.viagens.*;
 import administracao.database.DataBaseManagerImpl;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -10,7 +11,7 @@ import java.sql.SQLException;
 import javax.swing.table.AbstractTableModel;
 
 //jtable indice começa do 0/ resultset começa do 1
-public class TipoDeViagemTableModel extends AbstractTableModel {
+public class TableModel extends AbstractTableModel {
 
     // monitora o status da conex�o de banco de dados
     private boolean connectedToDatabase = false;
@@ -21,7 +22,7 @@ public class TipoDeViagemTableModel extends AbstractTableModel {
 
     public final DataBaseManagerImpl dbm;
 
-    public TipoDeViagemTableModel(DataBaseManagerImpl dbm)
+    public TableModel(DataBaseManagerImpl dbm, String consulta)
             throws SQLException, ClassNotFoundException
     {
 
@@ -36,7 +37,8 @@ public class TipoDeViagemTableModel extends AbstractTableModel {
         connectedToDatabase = true;
 
         // configura consulta e a executa
-        setQuery("SELECT * FROM tipo_de_viagem");
+        //setQuery("SELECT * FROM tipo_de_viagem");
+        setQuery(consulta);
     } // fim do construtor TabelaFilme
 
     //tipo das colunas(integer,...etc)

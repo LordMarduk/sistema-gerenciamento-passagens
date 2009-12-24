@@ -1,4 +1,4 @@
-package administracao.tipo_de_viagem;
+package administracao.viagens;
 
 import java.io.Serializable;
 

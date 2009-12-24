@@ -1,6 +1,7 @@
 package util;
 
-import administracao.tipo_de_viagem.TipoDeViagem;
+import administracao.viagens.TipoDeViagem;
+import administracao.viagens.InstanciaDeViagem;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 

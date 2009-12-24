@@ -1,84 +1,128 @@
-package administracao.gui.tipo_de_viagem;
+package administracao.gui.viagens;
 
 import administracao.database.DataBaseManagerImpl;
-import administracao.tipo_de_viagem.TipoDeViagem;
-import java.awt.BorderLayout;
+import administracao.viagens.TipoDeViagem;
 import java.sql.*;
 import java.awt.event.*;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
+//import javax.swing.ScrollPaneConstants;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.Box;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import util.Auxiliares;
+import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
-public class GerenciaTipoDeViagem extends JFrame {
+public class GerenciaViagens extends JFrame {
 
-    private TipoDeViagemTableModel tableModel;
-    private JTextArea queryArea;
-    private JButton voltaButton;
+    private TableModel tableModel;
+    private JTextField filtroTF;
+    private JTextField consultaTF;
+    private JButton retornarBuscaButton;
+    private JButton pesquisarButton;
     private JTable resultTable;
     public final DataBaseManagerImpl dbm;
+    private JComboBox flagViagens;
+    FlowLayout layout;
+    BorderLayout border;
+    JPanel painel;
+    JPanel painel2;
+    JPanel painel3;
 
-    public GerenciaTipoDeViagem(final DataBaseManagerImpl dbm) {
-        super("Tipos De Viagem");
+    public GerenciaViagens(final DataBaseManagerImpl dbm) {
+        super("Viagens");
 
         setLocationRelativeTo(this);
-        setBounds(390,220,500,400);
+        //setLayout(null);
+        setBounds(390, 220, 500, 400);
         setVisible(true);
 
-        //-----
+        layout = new FlowLayout();
+        border = new BorderLayout();
+        painel = new JPanel();
+        painel2 = new JPanel();
+        painel3 = new JPanel();
+        setLayout(border);
+
+        layout.setAlignment(FlowLayout.LEFT);
+        painel.setLayout(layout);
 
         this.dbm = dbm;
-        
-        //-----
 
-        try {            
+
+        try {
             // cria o TableModel
-            tableModel = new TipoDeViagemTableModel(dbm);
+            tableModel = new TableModel(dbm);
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         }
 
-        // configura JTextArea em que o usu�rio digita consultas
-        queryArea = new JTextArea(3, 100);
-        queryArea.setWrapStyleWord(true);
-        queryArea.setLineWrap(true);
+        flagViagens = new JComboBox(Auxiliares.FLAG_VIAGENS);
+        flagViagens.setBounds(5, 5, 120, 50);
 
-        //barra de rolagem
-        JScrollPane scrollPane = new JScrollPane(queryArea,
-                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        filtroTF = new JTextField("", 15);
+        filtroTF.setBorder(
+                BorderFactory.createTitledBorder(
+                null, "Filtro", 0, 0, new Font("Tahoma", 0, 10)));
+
+        consultaTF = new JTextField("", 30);
+        consultaTF.setBorder(
+                BorderFactory.createTitledBorder(
+                null, "Consulta", 0, 0, new Font("Tahoma", 0, 10)));
+
 
         // configura o JButton para enviar consulta
-        JButton submitButton = new JButton("Busca Tipos De Viagem");
-        voltaButton = new JButton("Retornar");
-        //voltaButton.setEditable( false );
+        pesquisarButton = new JButton("Busca Tipos De Viagem");
+        pesquisarButton.setSize(30,30);
+        retornarBuscaButton = new JButton("Retornar busca");
+        retornarBuscaButton.setSize(30,30);
+       
 
-        // cria o Box para gerenciar o posicionamento da queryArea e do
-        // submitButton na GUI
-        Box box = Box.createHorizontalBox();
-        box.add(scrollPane);
-        box.add(submitButton);
-        box.add(voltaButton);
 
+
+        painel.add(flagViagens);
+        painel.add(filtroTF);
+        painel.add(consultaTF);
+        //painel.add(pesquisarButton);
+        //painel.add(retornarBuscaButton);
+
+        painel2.add(pesquisarButton);
+        painel2.add(retornarBuscaButton);
+
+        add(painel, BorderLayout.NORTH);
+        add(painel2, BorderLayout.CENTER);
+       
 
         // cria o delegado JTable para tableModel
         resultTable = new JTable(tableModel);
+        //add(resultTable);
 
         //botao de cadastro:
         JButton cadastroButton = new JButton("Cadastrar Novo");
-        Box box2 = Box.createHorizontalBox();
-        box2.add(cadastroButton);
+        cadastroButton.setSize(300, 50);
+        //jPanel3.add(cadastroButton);
+        //add(cadastroButton);
+        //Box box2 = Box.createHorizontalBox();
+        //box2.add(Box.createHorizontalGlue());
+        //box2.add(cadastroButton);
 
         // posiciona os componentes GUI no painel de conte�do
-        add(box, BorderLayout.NORTH);
-        add(new JScrollPane(resultTable), BorderLayout.CENTER);
-        add(box2, BorderLayout.SOUTH);
+        //add(box, BorderLayout.NORTH);
+        //add(jPanel1,BorderLayout.NORTH);
+        add(new JScrollPane(resultTable), BorderLayout.SOUTH);
+        //add(jPanel3, BorderLayout.SOUTH);
+        //add(box2, BorderLayout.SOUTH);
 
         // cria evento ouvinte para cadastroButton
         cadastroButton.addActionListener(
@@ -103,17 +147,17 @@ public class GerenciaTipoDeViagem extends JFrame {
                 ); // fim da chamada para addActionListener
 
 
-        // cria evento ouvinte para submitButton
-        submitButton.addActionListener(
+        // cria evento ouvinte para pesquisarButton
+        pesquisarButton.addActionListener(
                 new ActionListener() {
                     // passa consulta para modelo de tabela
 
                     public void actionPerformed(ActionEvent event) {
                         // realiza uma nova consulta
                         try {
-                            tableModel.setQuery("SELECT * FROM tipo_de_viagem WHERE dias_da_semana LIKE '%" + queryArea.getText() + "%'");
-                            //voltaButton.setEditable( true );
-                            } // fim do try
+                            tableModel.setQuery("SELECT * FROM tipo_de_viagem WHERE dias_da_semana LIKE '%" + /*queryArea.getText() +*/ "%'");
+
+                        } // fim do try
                         catch (SQLException sqlException) {
                             JOptionPane.showMessageDialog(null,
                                     sqlException.getMessage(), "Database error",
@@ -122,7 +166,7 @@ public class GerenciaTipoDeViagem extends JFrame {
                     }
                 });
 
-        voltaButton.addActionListener(
+        retornarBuscaButton.addActionListener(
                 new ActionListener() {
 
                     public void actionPerformed(ActionEvent event) {
@@ -173,7 +217,7 @@ public class GerenciaTipoDeViagem extends JFrame {
                     //quando buscar esse sera preenchido
                     TipoDeViagem tdv = new TipoDeViagem();
                     //efetua a busca e preenche
-                    dbm.selectTipoDeViagem(clicado);
+                    tdv = dbm.selectTipoDeViagem(clicado);
                     //janela que exibira os dados    mapeamento: objeto -> GUI
                     CadastraTipoDeViagem ctdv = inserirObjetoEmGui(tdv);
                     ctdv.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -194,7 +238,7 @@ public class GerenciaTipoDeViagem extends JFrame {
         ctdv.identificadorSequencialTF.setText(String.valueOf(tdv.getIdSeqTdv()));
         ctdv.valorViagemTF.setText(String.valueOf(tdv.getValorViagem()));
         ctdv.horaDeSaidaTF.setText(tdv.getHoraPrevSaida());
-        ctdv.horaDeChegadaTF.setText(tdv.getHoraPrevChegada());
+        //ctdv.filtroTF.setText(tdv.getHoraPrevChegada());
 
         //tratar dos check boxes(dias da semana):
         if (tdv.getDiasDaSemana().indexOf("segunda") != -1) {

@@ -1,8 +1,10 @@
 package administracao.gui;
 
+//puta que pariu...funciona misera!!!
+
 import administracao.database.DataBaseManagerImpl;
 import administracao.gui.funcionario.JanelaAdministraFuncionario;
-import administracao.gui.tipo_de_viagem.GerenciaTipoDeViagem;
+import administracao.gui.viagens.GerenciaViagens;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -139,7 +141,8 @@ public class MenuPrincipal extends JFrame
     public void chamarTipoDeViagem()
     {
         //System.out.println("tdv chamada");
-        GerenciaTipoDeViagem gtdv = new GerenciaTipoDeViagem(dbm);
+        GerenciaViagens gtdv = new GerenciaViagens(dbm);
+        gtdv.setSize(600, 400);
         gtdv.setDefaultCloseOperation(
                 JFrame.DISPOSE_ON_CLOSE);
         

@@ -1,4 +1,4 @@
-package administracao.gui.tipo_de_viagem;
+package administracao.gui.viagens;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -10,14 +10,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import javax.swing.BorderFactory;
 import administracao.database.DataBaseManagerImpl;
-import administracao.tipo_de_viagem.TipoDeViagem;
+import administracao.viagens.TipoDeViagem;
+import util.JNumericField;
 
 public class CadastraTipoDeViagem extends JFrame {
 
     protected Font padrao = new Font("Arial", Font.PLAIN, 12);
     protected Font padraoParaRotulos = new Font("Arial", Font.BOLD, 11);
-    protected JLabel[] rotulos = new JLabel[20];
+    //protected JLabel[] rotulos = new JLabel[20];
     public JTextField identificadorSequencialTF;
     public JTextField horaDeSaidaTF;
     public JTextField valorViagemTF;
@@ -57,52 +59,72 @@ public class CadastraTipoDeViagem extends JFrame {
 
         this.tipoOperacao = tipoOperacao;
 
-        //--Identificador Sequencial--
-        rotulos[0] = new JLabel("Identificador Sequencial");
-        rotulos[0].setFont(padraoParaRotulos);
-        rotulos[0].setBounds(10, 10, 150, 20);
-        add(rotulos[0]);
 
-        identificadorSequencialTF = new JTextField("");
-        identificadorSequencialTF.setFont(padrao);
-        identificadorSequencialTF.setBounds(10, 30, 150, 20);
-        identificadorSequencialTF.setEditable(false);
+        identificadorSequencialTF = new JNumericField(2);
+        //identificadorSequencialTF.setFont(padrao);
+        identificadorSequencialTF.setBounds(10, 20, 140, 40);
+        //identificadorSequencialTF.setEditable(false);
+
+         identificadorSequencialTF.setBorder(
+                BorderFactory.createTitledBorder(
+                    null, "Identificador sequencial", 0, 0, new Font("Tahoma", 0, 10)
+                )
+        );
+
         add(identificadorSequencialTF);
         //--------------------
 
         //--Valor Viagem--
-        rotulos[1] = new JLabel("Valor Viagem");
-        rotulos[1].setFont(padraoParaRotulos);
-        rotulos[1].setBounds(10, 60, 75, 20);
-        add(rotulos[1]);
+        //rotulos[1] = new JLabel("Valor Viagem");
+        //rotulos[1].setFont(padraoParaRotulos);
+        //rotulos[1].setBounds(10, 60, 75, 20);
+        //add(rotulos[1]);
 
         valorViagemTF = new JTextField("");
-        valorViagemTF.setFont(padrao);
-        valorViagemTF.setBounds(10, 80, 50, 20);
+        //valorViagemTF.setFont(padrao);
+        valorViagemTF.setBounds(10, 80, 80, 40);
+        valorViagemTF.setBorder(
+                BorderFactory.createTitledBorder(
+                    null, "Valor Viagem", 0, 0, new Font("Tahoma", 0, 10)
+                )
+        );
+
         add(valorViagemTF);
         //---------------------
 
         //--Campo Hora De Saida(Previsao)--
-        rotulos[2] = new JLabel("Hora De Saida(Previsao)");
-        rotulos[2].setFont(padraoParaRotulos);
-        rotulos[2].setBounds(120, 60, 150, 20);
-        add(rotulos[2]);
+        //rotulos[2] = new JLabel("Hora De Saida(Previsao)");
+        //rotulos[2].setFont(padraoParaRotulos);
+        //rotulos[2].setBounds(120, 60, 150, 20);
+        //add(rotulos[2]);
 
         horaDeSaidaTF = new JTextField("");
-        horaDeSaidaTF.setFont(padrao);
-        horaDeSaidaTF.setBounds(120, 80, 50, 20);
+        //horaDeSaidaTF.setFont(padrao);
+        horaDeSaidaTF.setBounds(120, 80, 120, 40);
+        horaDeSaidaTF.setBorder(
+                BorderFactory.createTitledBorder(
+                    null, "Hora saida(Previsao)", 0, 0, new Font("Tahoma", 0, 10)
+                )
+        );
+
         add(horaDeSaidaTF);
         //---------------------
 
         //--Hora De Chegada(Previsao)--
-        rotulos[3] = new JLabel("Hora De Chegada(Previsao)");
-        rotulos[3].setFont(padraoParaRotulos);
-        rotulos[3].setBounds(260, 60, 150, 20);
-        add(rotulos[3]);
+        //rotulos[3] = new JLabel("Hora De Chegada(Previsao)");
+        //rotulos[3].setFont(padraoParaRotulos);
+        //rotulos[3].setBounds(260, 60, 150, 20);
+        //add(rotulos[3]);
 
         horaDeChegadaTF = new JTextField("", 5);
-        horaDeChegadaTF.setFont(padrao);
-        horaDeChegadaTF.setBounds(260, 80, 50, 20);
+        //horaDeChegadaTF.setFont(padrao);
+        horaDeChegadaTF.setBounds(260, 80, 130, 40);
+        horaDeChegadaTF.setBorder(
+                BorderFactory.createTitledBorder(
+                    null, "Hora chegada(Previsao)", 0, 0, new Font("Tahoma", 0, 10)
+                )
+        );
+
         add(horaDeChegadaTF);
         //---------------------
 
@@ -110,76 +132,88 @@ public class CadastraTipoDeViagem extends JFrame {
         //--dias da semana--
         segundaCB = new JCheckBox("Segunda");
         segundaCB.setFont(padraoParaRotulos);
-        segundaCB.setBounds(10, 120, 100, 20);
+        segundaCB.setBounds(10, 140, 100, 20);
         add(segundaCB);
-        segundaCB.addItemListener(new CheckBoxHandler());
+        //segundaCB.addItemListener(new CheckBoxHandler());
         //---------------------
         //--dias da semana--
         tercaCB = new JCheckBox("Terca");
         tercaCB.setFont(padraoParaRotulos);
-        tercaCB.setBounds(110, 120, 100, 20);
+        tercaCB.setBounds(110, 140, 100, 20);
         add(tercaCB);
-        tercaCB.addItemListener(new CheckBoxHandler());
+        //tercaCB.addItemListener(new CheckBoxHandler());
         //---------------------
         //--dias da semana--
         quartaCB = new JCheckBox("Quarta");
         quartaCB.setFont(padraoParaRotulos);
-        quartaCB.setBounds(210, 120, 100, 20);
+        quartaCB.setBounds(210, 140, 100, 20);
         add(quartaCB);
-        quartaCB.addItemListener(new CheckBoxHandler());
+        //quartaCB.addItemListener(new CheckBoxHandler());
         //---------------------
         //--dias da semana--
         quintaCB = new JCheckBox("Quinta");
         quintaCB.setFont(padraoParaRotulos);
-        quintaCB.setBounds(10, 160, 100, 20);
+        quintaCB.setBounds(10, 180, 100, 20);
         add(quintaCB);
-        quintaCB.addItemListener(new CheckBoxHandler());
+        //quintaCB.addItemListener(new CheckBoxHandler());
         //---------------------
         //--dias da semana--
         sextaCB = new JCheckBox("Sexta");
         sextaCB.setFont(padraoParaRotulos);
-        sextaCB.setBounds(110, 160, 100, 20);
+        sextaCB.setBounds(110, 180, 100, 20);
         add(sextaCB);
-        sextaCB.addItemListener(new CheckBoxHandler());
+        //sextaCB.addItemListener(new CheckBoxHandler());
         //---------------------
         //--dias da semana--
         sabadoCB = new JCheckBox("Sabado");
         sabadoCB.setFont(padraoParaRotulos);
-        sabadoCB.setBounds(210, 160, 100, 20);
+        sabadoCB.setBounds(210, 180, 100, 20);
         add(sabadoCB);
-        sabadoCB.addItemListener(new CheckBoxHandler());
+        //sabadoCB.addItemListener(new CheckBoxHandler());
         //---------------------
         //--dias da semana--
         domingoCB = new JCheckBox("Domingo");
         domingoCB.setFont(padraoParaRotulos);
-        domingoCB.setBounds(10, 200, 100, 20);
+        domingoCB.setBounds(10, 220, 100, 20);
         add(domingoCB);
-        domingoCB.addItemListener(new CheckBoxHandler());
+        //domingoCB.addItemListener(new CheckBoxHandler());
         //---------------------
 
 
 
         //--Id. Seq. Rodoviaria Partida--
-        rotulos[4] = new JLabel("Id. Seq. Rodoviaria Partida");
-        rotulos[4].setFont(padraoParaRotulos);
-        rotulos[4].setBounds(10, 250, 150, 20);
-        add(rotulos[4]);
+        //rotulos[4] = new JLabel("Id. Seq. Rodoviaria Partida");
+        //rotulos[4].setFont(padraoParaRotulos);
+        //rotulos[4].setBounds(10, 250, 150, 20);
+        // add(rotulos[4]);
 
-        idSeqRodovPartida = new JTextField("");
-        idSeqRodovPartida.setFont(padrao);
-        idSeqRodovPartida.setBounds(10, 270, 20, 20);
+        idSeqRodovPartida = new JNumericField(2);
+        //idSeqRodovPartida.setFont(padrao);
+        idSeqRodovPartida.setBounds(10, 250, 170, 40);
+        idSeqRodovPartida.setBorder(
+                BorderFactory.createTitledBorder(
+                    null, "Id. Seq. Rodoviaria Partida", 0, 0, new Font("Tahoma", 0, 10)
+                )
+        );
+
         add(idSeqRodovPartida);
         //--------------------
 
         //--Id. Seq. Rodoviaria Partida--
-        rotulos[5] = new JLabel("Id. Seq. Rodoviaria Chegada");
-        rotulos[5].setFont(padraoParaRotulos);
-        rotulos[5].setBounds(10, 290, 155, 20);
-        add(rotulos[5]);
+        //rotulos[5] = new JLabel("Id. Seq. Rodoviaria Chegada");
+        //rotulos[5].setFont(padraoParaRotulos);
+        //rotulos[5].setBounds(10, 290, 155, 20);
+        //add(rotulos[5]);
 
-        idSeqRodovChegada = new JTextField("");
-        idSeqRodovChegada.setFont(padrao);
-        idSeqRodovChegada.setBounds(10, 310, 20, 20);
+        idSeqRodovChegada = new JNumericField(2);
+        //idSeqRodovChegada.setFont(padrao);
+        idSeqRodovChegada.setBounds(10, 310, 170, 40);
+        idSeqRodovChegada.setBorder(
+                BorderFactory.createTitledBorder(
+                    null, "Id. Seq. Rodoviaria Chegada", 0, 0, new Font("Tahoma", 0, 10)
+                )
+        );
+
         add(idSeqRodovChegada);
         //--------------------
 
@@ -232,38 +266,6 @@ public class CadastraTipoDeViagem extends JFrame {
 
         getGraphicsConfiguration();
 
-    }
-
-    private class CheckBoxHandler implements ItemListener {
-
-        public void itemStateChanged(ItemEvent event) {
-
-            /*
-            if(event.getItemSelectable().equals(segundaCB) && segundaCB.isSelected() == true)
-            diasDaSemana = diasDaSemana.concat("segunda ");
-            else if(event.getItemSelectable().equals(tercaCB) && tercaCB.isSelected() == true)
-            diasDaSemana = diasDaSemana.concat("terca ");
-            else if(event.getItemSelectable().equals(quartaCB) && quartaCB.isSelected() == true)
-            diasDaSemana = diasDaSemana.concat("quarta ");
-            else if(event.getItemSelectable().equals(quintaCB) && quintaCB.isSelected() == true)
-            diasDaSemana = diasDaSemana.concat("quinta ");
-            else if(event.getItemSelectable().equals(sextaCB) && sextaCB.isSelected() == true)
-            diasDaSemana = diasDaSemana.concat("sexta ");
-            else if(event.getItemSelectable().equals(sabadoCB) && sabadoCB.isSelected() == true)
-            diasDaSemana = diasDaSemana.concat("sabado ");
-            else if(event.getItemSelectable().equals(domingoCB) && domingoCB.isSelected() == true)
-            diasDaSemana = diasDaSemana.concat("domingo ");
-             */
-            /*
-            diasDaSemana = segundaCB.isSelected() ? diasDaSemana.concat("segunda ") : diasDaSemana.concat("");
-            diasDaSemana = tercaCB.isSelected() ? diasDaSemana.concat("terca ") : diasDaSemana.concat("");
-            diasDaSemana = quartaCB.isSelected() ? diasDaSemana.concat("quarta ") : diasDaSemana.concat("");
-            diasDaSemana = quintaCB.isSelected() ? diasDaSemana.concat("quinta ") : diasDaSemana.concat("");
-            diasDaSemana = sextaCB.isSelected() ? diasDaSemana.concat("sexta ") : diasDaSemana.concat("");
-            diasDaSemana = sabadoCB.isSelected() ? diasDaSemana.concat("sabado ") : diasDaSemana.concat("");
-            diasDaSemana = domingoCB.isSelected() ? diasDaSemana.concat("domingo ") : diasDaSemana.concat("");
-             */
-        }
     }
 
     private class ButtonHandlerSai implements ActionListener {

@@ -17,8 +17,7 @@ public class Main {
         /*
           C:\Users\Jader>cd C:\Users\Jader\Documents\NetBeansProjects\SGP\build\classes
 
-        C:\Users\Jader\Documents\NetBeansProjects\SGP\build\classes>rmic administracao.d
-        atabase.DataBaseManagerImpl
+        C:\Users\Jader\Documents\NetBeansProjects\SGP\build\classes>rmic administracao.database.DataBaseManagerImpl
 
          C:\Users\Jader\Documents\NetBeansProjects\SGP\build\classes>rmiregistry
 

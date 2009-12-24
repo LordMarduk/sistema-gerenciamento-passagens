@@ -51,6 +51,7 @@ public class CadastraNovoMotorista extends JFrame {
         super("Cadastrar Motorista");
 
         setBounds(390,220,500,400);
+        setResizable(false);
         setVisible(true);
         setLayout(null);
 

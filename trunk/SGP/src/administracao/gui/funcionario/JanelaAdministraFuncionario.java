@@ -1,7 +1,7 @@
 package administracao.gui.funcionario;
 
 import administracao.database.DataBaseManagerImpl;
-import java.awt.Container;
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.*;
 import java.sql.SQLException;
@@ -11,7 +11,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -39,6 +38,7 @@ public class JanelaAdministraFuncionario extends JFrame {
         super("Administrador de Funcionário");
 
         setBounds(390,220,500,400);
+        setResizable(false);
         setVisible(true);
         setLayout(null);
 
@@ -57,8 +57,6 @@ public class JanelaAdministraFuncionario extends JFrame {
             ex.printStackTrace();
         }
 
-        resultTable = new JTable(tableModel);
-
         tipoFuncionarioJLabel.setBounds(5,0,100,20);
         add(tipoFuncionarioJLabel);
 
@@ -73,7 +71,7 @@ public class JanelaAdministraFuncionario extends JFrame {
         );
         add(nomeFuncionarioBusca);
 
-        cpfAgenteBusca.setBounds(315, 10, 150, 40);
+        cpfAgenteBusca.setBounds(315, 10, 175, 40);
         cpfAgenteBusca.setBorder(
                 BorderFactory.createTitledBorder(
                     null, "CPF *", 0, 0, new Font("Tahoma", 0, 10)
@@ -85,13 +83,16 @@ public class JanelaAdministraFuncionario extends JFrame {
         submitButton.setBounds(5,55,300,30);
         add(submitButton);
 
-        retorna.setBounds(310,55,170,30);
+        retorna.setBounds(310,55,180,30);
         add(retorna);
 
-        resultTable.setBounds(5,90,475,230);
-        add(resultTable);
+        resultTable = new JTable(tableModel);
+        JScrollPane resultScroll = new JScrollPane(resultTable);
 
-        cadastraNovo.setBounds(5,330,475,30);
+        resultScroll.setBounds(5,90,485,230);
+        add(resultScroll);
+
+        cadastraNovo.setBounds(5,330,485,30);
         add(cadastraNovo);
 
         // cria evento ouvinte para submitButton

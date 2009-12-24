@@ -55,6 +55,7 @@ public class CadastraNovoAgente extends JFrame {
         super("Cadastrar Agente");
 
         setBounds(390,220,500,400);
+        setResizable(false);
         setVisible(true);
         setLayout(null);
 

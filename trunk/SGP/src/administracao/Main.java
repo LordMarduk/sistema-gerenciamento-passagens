@@ -37,8 +37,8 @@ public class Main {
             e.printStackTrace();
         }
 
-//        MenuPrincipal mp = new MenuPrincipal(dbm);
-//        mp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        MenuPrincipal mp = new MenuPrincipal(dbm);
+        mp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
 }

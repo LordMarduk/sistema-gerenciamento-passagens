@@ -12,17 +12,16 @@ import util.Date;
  */
 public class Cliente implements Serializable {
 
-    private int    codigo_cli;
+    private int codigo_cli;
     private String nome;
-    private char   sexo;
-    private Date   data_nascimento;
+    private char sexo;
+    private Date data_nascimento;
     private String cpf;
-
     private String endereco;
-
     private String telefone;
-
     private boolean eEstudante;
+
+    private static final long serialVersionUID = -3444356005607489244L;
 
     public Cliente(int codigo_cli, String nome, char sexo, Date data_nascimento, String cpf, String endereco, String telefone, boolean eEstudante) {
         this.codigo_cli = codigo_cli;
@@ -99,7 +98,8 @@ public class Cliente implements Serializable {
         this.telefone = telefone;
     }
 
-    public String toString(){
+    @Override
+    public String toString() {
         return "Codigo: " + codigo_cli +
                 "\nNome: " + nome +
                 "\nSexo: " + sexo +
@@ -107,14 +107,6 @@ public class Cliente implements Serializable {
                 "\nTelefone" + telefone +
                 "\nData de Nascimento: " + data_nascimento +
                 "\nEstudante: " + eEstudante;
-    }
-
-    public String stringToQuery(){
-
-        return "(" + codigo_cli + ", '" + nome + "', '" + sexo + "', to_date('" +
-                data_nascimento + "', 'DD/MM/YYYY'), '" + cpf + "', '" +
-                endereco + "', " + eEstudante + ")";
-
     }
 
 }

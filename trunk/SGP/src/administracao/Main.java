@@ -14,15 +14,6 @@ public class Main {
 
     public static void main(String args[]) {
 
-        /*
-          C:\Users\Jader>cd C:\Users\Jader\Documents\NetBeansProjects\SGP\build\classes
-
-        C:\Users\Jader\Documents\NetBeansProjects\SGP\build\classes>rmic administracao.database.DataBaseManagerImpl
-
-         C:\Users\Jader\Documents\NetBeansProjects\SGP\build\classes>rmiregistry
-
-         */
-
         try {
 
             System.out.println("Ligando Servidor...");
@@ -32,7 +23,6 @@ public class Main {
             Naming.rebind("rmi://localhost:1099/DataBaseManagerService", dbm);
 
             System.out.println("... Servidor Ligado!");
-
 
         } catch (RemoteException ex) {
             ex.printStackTrace();
@@ -47,8 +37,8 @@ public class Main {
             e.printStackTrace();
         }
 
-        MenuPrincipal mp = new MenuPrincipal(dbm);
-        mp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        MenuPrincipal mp = new MenuPrincipal(dbm);
+//        mp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
 }

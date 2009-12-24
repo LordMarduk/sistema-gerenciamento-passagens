@@ -113,7 +113,7 @@ public class CadastraNovoMotorista extends JFrame {
         telefoneMotorista.setBounds(5,155,270,40);
         telefoneMotorista.setBorder(
                 BorderFactory.createTitledBorder(
-                    null, "Endereço", 0, 0, new Font("Tahoma", 0, 10)
+                    null, "Telefone", 0, 0, new Font("Tahoma", 0, 10)
                 )
         );
         add(telefoneMotorista);

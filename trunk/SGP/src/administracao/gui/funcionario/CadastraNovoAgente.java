@@ -117,7 +117,7 @@ public class CadastraNovoAgente extends JFrame {
         telefoneAgente.setBounds(5,155,270,40);
         telefoneAgente.setBorder(
                 BorderFactory.createTitledBorder(
-                    null, "Endereço", 0, 0, new Font("Tahoma", 0, 10)
+                    null, "Telefone", 0, 0, new Font("Tahoma", 0, 10)
                 )
         );
         add(telefoneAgente);

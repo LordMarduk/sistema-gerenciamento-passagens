@@ -2,6 +2,7 @@ package util;
 
 import administracao.viagens.TipoDeViagem;
 import administracao.viagens.InstanciaDeViagem;
+import cliente.Cliente;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -9,7 +10,7 @@ public interface DataBaseManager extends Remote{
     
     public boolean closeConnection() throws RemoteException;
 
-    public boolean insertCliente(String novoCliente) throws RemoteException;
+    public boolean insertCliente(Cliente novoCliente) throws RemoteException;
 
     public int maximunValueCliente() throws RemoteException;
 

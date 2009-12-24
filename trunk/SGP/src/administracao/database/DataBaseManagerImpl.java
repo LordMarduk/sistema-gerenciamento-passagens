@@ -18,7 +18,7 @@ import administracao.viagens.TipoDeViagem;
 
 /**
  *
- * @author Marcio Passos
+ * @author Marcello Passos
  * @since 3 de dezembro de 2009
  * Manipulacao do Banco de Dados
  *
@@ -35,22 +35,22 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
 
         try {
 
-            Class.forName("org.postgresql.Driver");
+            Class.forName(JDBC_DRIVER);
 
             connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
 
         } catch (SQLException e) {
 
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "SQL Exception!", "Erro", 0);
-            //System.exit(1);
+            JOptionPane.showMessageDialog(null, "SQL Exception! hehe", "Erro", 0);
+        //System.exit(1);
 
         } catch (ClassNotFoundException e) {
 
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Class Not Found Exception!", "Erro", 0);
             closeConnection();
-            //System.exit(1);
+        //System.exit(1);
 
         }
 
@@ -59,27 +59,32 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
 //     FUNCOES DE CLIENTE
     public boolean insertCliente(Cliente novoCliente) throws RemoteException {
 
-        return insertCliente(novoCliente.stringToQuery());
+        String sql =
+            "INSERT INTO cliente " +
+                "(id_seq_cliente, nome, sexo, data_nascimento, cpf, endereco," +
+                " telefone, e_estudante)" +
+            "VALUES(" +
+                novoCliente.getCodigo_cli() + ", '" +
+                novoCliente.getNome() + "' , '" +
+                novoCliente.getSexo() + "' , " +
+                "to_date('" + novoCliente.getData_nascimento() + "', 'DD/MM/YYYY'), '" +
+                novoCliente.getCpf() + "' , '" +
+                novoCliente.getEndereco() + "' , '" +
+                novoCliente.getTelefone() + "' , " +
+                novoCliente.isEEstudante() +
+            ")";
 
-    }
+        System.out.println(sql);
 
-    public boolean insertCliente(String novoCliente) throws RemoteException {
-
-        Statement stm = null;
         try {
-
-            stm = connection.createStatement();
-            int i = stm.executeUpdate("INSERT INTO cliente VALUES" + novoCliente);
+            Statement stm = connection.createStatement();
+            stm.executeUpdate(sql);
+            stm.close();
             return true;
-
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "SQL Exception!", "Erro", 0);
-            return false;
-            //System.exit(1);
-
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
+        return false;
 
     }
 
@@ -89,7 +94,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         try {
 
             stm = connection.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT max(codigo_cli) FROM cliente");
+            ResultSet rs = stm.executeQuery("SELECT max(id_seq_cliente) FROM cliente");
             rs.next();
             return rs.getInt(1);
 
@@ -98,7 +103,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "SQL Exception!", "Erro", 0);
             return -1;
-            //System.exit(1);
+        //System.exit(1);
 
         }
 

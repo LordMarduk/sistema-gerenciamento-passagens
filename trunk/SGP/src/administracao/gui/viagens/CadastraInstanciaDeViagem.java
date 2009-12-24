@@ -9,14 +9,11 @@ import javax.swing.BorderFactory;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import administracao.database.DataBaseManagerImpl;
 import javax.swing.JComboBox;
-import javax.xml.crypto.Data;
 import util.Auxiliares;
 import administracao.viagens.InstanciaDeViagem;
 
@@ -24,7 +21,7 @@ public class CadastraInstanciaDeViagem extends JFrame {
 
     protected Font padrao = new Font("Arial", Font.PLAIN, 12);
     protected Font padraoParaRotulos = new Font("Arial", Font.BOLD, 11);
-    protected JLabel[] rotulos = new JLabel[20];
+    protected JLabel dataJL;
     public JTextField idSeqTdvTF;
     public JTextField horaDeSaidaTF;
     public JTextField numVagasDisponiveisTF;
@@ -51,69 +48,70 @@ public class CadastraInstanciaDeViagem extends JFrame {
         setSize(440, 380);
         setResizable(false);
         setLocation(250, 100);
+        setVisible(true);
         //---------------------
 
         this.dbm = dbm;
 
         this.tipoOperacao = tipoOperacao;
 
-        //--Identificador Sequencial--
-        rotulos[0] = new JLabel("Id. Seq. Tipo De Viagem");
-        rotulos[0].setFont(padraoParaRotulos);
-        rotulos[0].setBounds(10, 10, 150, 20);
-        add(rotulos[0]);
-
         idSeqTdvTF = new JTextField("");
         idSeqTdvTF.setFont(padrao);
-        idSeqTdvTF.setBounds(10, 30, 20, 20);
+        idSeqTdvTF.setBounds(10, 30, 150, 40);
+        idSeqTdvTF.setBorder(
+                BorderFactory.createTitledBorder(
+                    null, "Id. Seq. Tipo De Viagem", 0, 0, new Font("Tahoma", 0, 10)
+                )
+        );
+
         add(idSeqTdvTF);
         //--------------------
 
         //--Vagas Disponiveis--
-        rotulos[1] = new JLabel("Vagas Disponiveis");
-        rotulos[1].setFont(padraoParaRotulos);
-        rotulos[1].setBounds(10, 60, 180, 20);
-        add(rotulos[1]);
-
         numVagasDisponiveisTF = new JTextField("");
         numVagasDisponiveisTF.setFont(padrao);
-        numVagasDisponiveisTF.setBounds(10, 80, 20, 20);
+        numVagasDisponiveisTF.setBounds(10, 150, 20, 40);
         numVagasDisponiveisTF.setEditable(false);
+        numVagasDisponiveisTF.setBorder(
+                BorderFactory.createTitledBorder(
+                    null, "Numero De Vagas Disponiveis", 0, 0, new Font("Tahoma", 0, 10)
+                )
+        );
+
         add(numVagasDisponiveisTF);
         //---------------------
 
         //--Campo Hora De Saida--
-        rotulos[2] = new JLabel("Hora De Saida");
-        rotulos[2].setFont(padraoParaRotulos);
-        rotulos[2].setBounds(160, 60, 150, 20);
-        add(rotulos[2]);
-
         horaDeSaidaTF = new JTextField("");
         horaDeSaidaTF.setFont(padrao);
-        horaDeSaidaTF.setBounds(160, 80, 50, 20);
+        horaDeSaidaTF.setBounds(160, 80, 120, 40);
         add(horaDeSaidaTF);
-        //---------------------
-
-        //--Hora De Chegada--
-        rotulos[3] = new JLabel("Hora De Chegada");
-        rotulos[3].setFont(padraoParaRotulos);
-        rotulos[3].setBounds(300, 60, 150, 20);
-        add(rotulos[3]);
+        horaDeSaidaTF.setBorder(
+                BorderFactory.createTitledBorder(
+                    null, "Horario De Saida", 0, 0, new Font("Tahoma", 0, 10)
+                )
+        );
 
         horaDeChegadaTF = new JTextField("", 5);
         horaDeChegadaTF.setFont(padrao);
-        horaDeChegadaTF.setBounds(300, 80, 50, 20);
+        horaDeChegadaTF.setBounds(300, 80, 120, 40);
+        horaDeChegadaTF.setBorder(
+                BorderFactory.createTitledBorder(
+                    null, "Horario De Chegada", 0, 0, new Font("Tahoma", 0, 10)
+                )
+        );
+
         add(horaDeChegadaTF);
         //---------------------
-
-
         //--observacoes--
-        rotulos[4] = new JLabel("Observacoes:");
-        rotulos[4].setFont(padraoParaRotulos);
-        rotulos[4].setBounds(250, 150, 120, 20);
-        add(rotulos[4]);
-
+      
         observacaoTA = new JTextArea();
+        observacaoTA.setBorder(
+                BorderFactory.createTitledBorder(
+                    null, "Observacoes:", 0, 0, new Font("Tahoma", 0, 10)
+                )
+        );
+
         //observacaoTA.setText(f.retornaobservacaoTA());
         //observacaoTA.setBackground(this.getBackground());
         observacaoTA.setBounds(200, 170, 200, 100);
@@ -122,12 +120,10 @@ public class CadastraInstanciaDeViagem extends JFrame {
         add(observacaoTA);
 
         //data
-        rotulos[5] = new JLabel("Data");
-        rotulos[5].setFont(padraoParaRotulos);
-        rotulos[5].setBounds(10, 110, 75, 20);
-        add(rotulos[5]);
+        //dataJL = new JLabel("Data");
+        //dataJL.setBounds(10, 110, 75, 20);
+        //add(dataJL);
 
-        escolhaDeDia = new JComboBox(Auxiliares.DIAS);
         escolhaDeDia.setMaximumRowCount(4);
         escolhaDeDia.setFont(padrao);
         escolhaDeDia.setSelectedIndex(0);
@@ -151,30 +147,30 @@ public class CadastraInstanciaDeViagem extends JFrame {
 
 
         //--Id. Seq. Carro--
-        rotulos[6] = new JLabel("Id. Seq. Carro");
-        rotulos[6].setFont(padraoParaRotulos);
-        rotulos[6].setBounds(10, 250, 150, 20);
-        add(rotulos[6]);
-
         idSeqCarroTF = new JTextField("");
         idSeqCarroTF.setFont(padrao);
-        idSeqCarroTF.setBounds(10, 270, 20, 20);
+        idSeqCarroTF.setBounds(10, 270, 120, 40);
+        idSeqCarroTF.setBorder(
+                BorderFactory.createTitledBorder(
+                    null, "Id. Seq. Carro", 0, 0, new Font("Tahoma", 0, 10)
+                )
+        );
+
         add(idSeqCarroTF);
         //--------------------
-
         //--Id. Seq. Rodoviaria Partida--
-        rotulos[7] = new JLabel("Id. Seq. Motorista");
-        rotulos[7].setFont(padraoParaRotulos);
-        rotulos[7].setBounds(10, 290, 155, 20);
-        add(rotulos[7]);
-
+        
         idSeqMotoristaTF = new JTextField("");
         idSeqMotoristaTF.setFont(padrao);
-        idSeqMotoristaTF.setBounds(10, 310, 30, 20);
+        idSeqMotoristaTF.setBounds(10, 310, 120, 40);
+        idSeqMotoristaTF.setBorder(
+                BorderFactory.createTitledBorder(
+                    null, "Id. Seq. Motorista", 0, 0, new Font("Tahoma", 0, 10)
+                )
+        );
+
         add(idSeqMotoristaTF);
         //--------------------
-
-
 
         //--Bot�o sair--
         sair = new JButton("Sair");

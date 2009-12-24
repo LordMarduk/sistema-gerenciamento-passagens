@@ -21,7 +21,7 @@ public class TestaCadastraInstanciaDeViagem extends JFrame{
     {
         dbm = new DataBaseManagerImpl();
          CadastraInstanciaDeViagem ctdv = new CadastraInstanciaDeViagem(0,dbm);
-         ctdv.setVisible(true);
+         //ctdv.setVisible(true);
          ctdv.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 

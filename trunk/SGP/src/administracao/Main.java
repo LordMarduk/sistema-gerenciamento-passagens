@@ -8,6 +8,14 @@ import administracao.gui.MenuPrincipal;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
+/*
+C:\Users\Jader>cd C:\Users\Jader\Documents\NetBeansProjects\SGP\build\classes
+
+C:\Users\Jader\Documents\NetBeansProjects\SGP\build\classes>rmic administracao.database.DataBaseManagerImpl
+
+C:\Users\Jader\Documents\NetBeansProjects\SGP\build\classes>rmiregistry
+
+ */
 public class Main {
 
     public static DataBaseManagerImpl dbm;
@@ -30,9 +38,9 @@ public class Main {
             ex.printStackTrace();
         }
 
-        UIManager.LookAndFeelInfo[] lafs =  UIManager.getInstalledLookAndFeels();
+        UIManager.LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();
         try {
-           UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         } catch (Exception e) {
             e.printStackTrace();
         }

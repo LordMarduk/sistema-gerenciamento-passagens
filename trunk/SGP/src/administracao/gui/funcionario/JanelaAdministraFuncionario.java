@@ -1,6 +1,7 @@
 package administracao.gui.funcionario;
 
 import administracao.database.DataBaseManagerImpl;
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.*;
 import java.sql.SQLException;
@@ -8,22 +9,28 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import util.Auxiliares;
 import util.JNumericField;
+import util.TableModel;
 
 
 public class JanelaAdministraFuncionario extends JFrame {
 
+    private JLabel tipoFuncionarioJLabel = new JLabel("Tipo Funcionário *");
     private JComboBox tipoFuncionario = new JComboBox(Auxiliares.TIPO_FUNCIONARIO);
-    private FuncionarioTableModel tableModel;
-    private JTextField nomeAgenteBusca = new JTextField(40);
+    private TableModel tableModel;
+    private JTextField nomeFuncionarioBusca = new JTextField(40);
     private JTextField cpfAgenteBusca = new JNumericField(11);
-    private JTable resultTable;   
+    private JTable resultTable;
     private JButton cadastraNovo = new JButton("Cadastrar Novo");
     private JButton retorna = new JButton("Retornar");
+    String consulta = "SELECT * FROM funcionario";
 
     public final DataBaseManagerImpl dbm;
 
@@ -43,7 +50,7 @@ public class JanelaAdministraFuncionario extends JFrame {
 
         try {
             // cria o TableModel
-            tableModel = new FuncionarioTableModel(dbm);
+            tableModel = new TableModel(dbm, this.consulta);
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
@@ -52,18 +59,21 @@ public class JanelaAdministraFuncionario extends JFrame {
 
         resultTable = new JTable(tableModel);
 
-        tipoFuncionario.setBounds(5,5,100,40);
+        tipoFuncionarioJLabel.setBounds(5,0,100,20);
+        add(tipoFuncionarioJLabel);
+
+        tipoFuncionario.setBounds(5,15,100,35);
         add(tipoFuncionario);
 
-        nomeAgenteBusca.setBounds(110,5,200,40);
-        nomeAgenteBusca.setBorder(
+        nomeFuncionarioBusca.setBounds(110,10,200,40);
+        nomeFuncionarioBusca.setBorder(
                 BorderFactory.createTitledBorder(
                     null, "Nome *", 0, 0, new Font("Tahoma", 0, 10)
                 )
         );
-        add(nomeAgenteBusca);
+        add(nomeFuncionarioBusca);
 
-        cpfAgenteBusca.setBounds(315, 5, 150, 40);
+        cpfAgenteBusca.setBounds(315, 10, 150, 40);
         cpfAgenteBusca.setBorder(
                 BorderFactory.createTitledBorder(
                     null, "CPF *", 0, 0, new Font("Tahoma", 0, 10)
@@ -72,16 +82,16 @@ public class JanelaAdministraFuncionario extends JFrame {
         add(cpfAgenteBusca);
 
         JButton submitButton = new JButton("Buscar");
-        submitButton.setBounds(5,45,300,30);
+        submitButton.setBounds(5,55,300,30);
         add(submitButton);
 
-        retorna.setBounds(310,45,170,30);
+        retorna.setBounds(310,55,170,30);
         add(retorna);
 
-        resultTable.setBounds(5,80,475,230);
+        resultTable.setBounds(5,90,475,230);
         add(resultTable);
 
-        cadastraNovo.setBounds(5,320,475,30);
+        cadastraNovo.setBounds(5,330,475,30);
         add(cadastraNovo);
 
         // cria evento ouvinte para submitButton
@@ -94,11 +104,16 @@ public class JanelaAdministraFuncionario extends JFrame {
                         // realiza uma nova consulta
                         try {
                             if(tipoFuncionario.getSelectedIndex() == 1)
-                                tableModel.setQuery("SELECT * FROM funcionario WHERE nome LIKE '%" + nomeAgenteBusca.getText() + "%'");
+                                tableModel.setQuery("SELECT * FROM funcionario INNER JOIN motorista ON funcionario.id_seq_funcionario = motorista.id_seq_motorista WHERE nome LIKE '%" + nomeFuncionarioBusca.getText() + "%'");
                             else if(tipoFuncionario.getSelectedIndex() == 2)
-                                tableModel.setQuery("SELECT * FROM funcionario WHERE cpf LIKE '%" + nomeAgenteBusca.getText() + "%'");
+                                tableModel.setQuery("SELECT * FROM funcionario INNER JOIN agente ON funcionario.id_seq_funcionario = agente.id_seq_agente WHERE nome LIKE '%" + nomeFuncionarioBusca.getText() + "%'");
                             else
-                                tableModel.setQuery("SELECT * FROM funcionario");
+                                JOptionPane.showMessageDialog(
+                                    null,
+                                    "Escolha o tipo de funcionário",
+                                    "Aviso",
+                                    JOptionPane.INFORMATION_MESSAGE
+                                );                                
                             } // fim do try
                         catch (SQLException sqlException) {
                             JOptionPane.showMessageDialog(null,
@@ -106,7 +121,8 @@ public class JanelaAdministraFuncionario extends JFrame {
                                     JOptionPane.ERROR_MESSAGE);
                         }
                     }
-                });
+                }
+        );
 
          retorna.addActionListener(
                 new ActionListener() {
@@ -120,7 +136,32 @@ public class JanelaAdministraFuncionario extends JFrame {
                                     JOptionPane.ERROR_MESSAGE);
                         }
                     }
-                });
+                }
+         );
+
+         cadastraNovo.addActionListener(
+                new ActionListener() {
+
+                    public void actionPerformed(ActionEvent event) {
+
+                        if(tipoFuncionario.getSelectedIndex() == 1){
+                            new CadastraNovoMotorista(dbm);
+                        }
+                        else if (tipoFuncionario.getSelectedIndex() == 2){
+                            new CadastraNovoAgente(dbm);                            
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    "Escolha o tipo de funcionário",
+                                    "Aviso",
+                                    JOptionPane.INFORMATION_MESSAGE
+                            );
+                        }
+                        
+                    }
+                }
+         );
     }
 
 }

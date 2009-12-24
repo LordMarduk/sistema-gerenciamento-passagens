@@ -1,8 +1,5 @@
 package util;
 
-import javax.swing.JComponent;
-import javax.swing.JTextField;
-
 public class Auxiliares {
 
     public static final int CADASTRAR = 0;
@@ -27,7 +24,7 @@ public class Auxiliares {
     "2009","2010","2011","2012","2013","2014","2015","2016","2017",
             "2018","2019","2020"};
 
-    public static final String[] TIPO_FUNCIONARIO = {"","motorista","agente"};
+    public static final String[] TIPO_FUNCIONARIO = {"---Selecione---","motorista","agente"};
 
     public static final String[] NUMERO_POLTRONA = {"1", "2", "3", "4", "5",
     	"6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17",

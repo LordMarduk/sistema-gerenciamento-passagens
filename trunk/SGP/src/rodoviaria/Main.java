@@ -1,12 +1,16 @@
 package rodoviaria;
 
+import cliente.Cliente;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import rodoviaria.gui.NovoCliente;
 import util.DataBaseManager;
 import javax.swing.UIManager;
+import util.Date;
 
 public class Main {
 
@@ -34,7 +38,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        NovoCliente ncf = new NovoCliente(dbm);
+        NovoCliente ncframe = new NovoCliente(dbm);
 
     }
 

@@ -47,7 +47,7 @@ public class MenuPrincipal extends JFrame
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
-
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         this.dbm = dbm;
 

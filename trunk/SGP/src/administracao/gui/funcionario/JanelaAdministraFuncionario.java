@@ -28,7 +28,7 @@ public class JanelaAdministraFuncionario extends JFrame {
     private JTextField cpfAgenteBusca = new JNumericField(11);
     private JTable resultTable;
     private JButton cadastraNovo = new JButton("Cadastrar Novo");
-    private JButton retorna = new JButton("Retornar");
+    private JButton retorna = new JButton("Retornar Todos");
     String consulta = "SELECT * FROM funcionario";
 
     public final DataBaseManagerImpl dbm;

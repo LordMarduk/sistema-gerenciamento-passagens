@@ -69,6 +69,7 @@ public class NovoCliente extends JFrame {
         setBounds(400, 100, 500, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
+        setResizable(false);
         setLayout(null);
 
         this.dbm = dbm;
@@ -343,9 +344,7 @@ public class NovoCliente extends JFrame {
 
                         novo = new Cliente(cod, nom, sex, dat, cpf, end, tel, est);
 
-//                        System.out.println(novo.stringToQuery());
-
-                        dbm.insertCliente(novo.stringToQuery());
+                        dbm.insertCliente(novo);
                     
                         dbm.closeConnection();
 

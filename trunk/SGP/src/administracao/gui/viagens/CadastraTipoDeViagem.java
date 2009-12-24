@@ -51,6 +51,8 @@ public class CadastraTipoDeViagem extends JFrame {
         setSize(440, 380);
         setResizable(false);
         setLocation(250, 100);
+        setVisible(true);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         //---------------------
 
         this.dbm = dbm;
@@ -63,7 +65,7 @@ public class CadastraTipoDeViagem extends JFrame {
         identificadorSequencialTF = new JNumericField(2);
         //identificadorSequencialTF.setFont(padrao);
         identificadorSequencialTF.setBounds(10, 20, 140, 40);
-        //identificadorSequencialTF.setEditable(false);
+        identificadorSequencialTF.setEditable(false);
 
          identificadorSequencialTF.setBorder(
                 BorderFactory.createTitledBorder(

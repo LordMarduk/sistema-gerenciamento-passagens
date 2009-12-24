@@ -1,25 +1,28 @@
 package administracao.gui.viagens;
 
 import administracao.database.DataBaseManagerImpl;
+import administracao.viagens.InstanciaDeViagem;
 import administracao.viagens.TipoDeViagem;
+import util.TableModel;
 import java.sql.*;
 import java.awt.event.*;
 import javax.swing.JFrame;
-import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
-//import javax.swing.ScrollPaneConstants;
 import javax.swing.JTable;
 import javax.swing.JButton;
-import javax.swing.Box;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import util.Auxiliares;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 public class GerenciaViagens extends JFrame {
@@ -29,100 +32,90 @@ public class GerenciaViagens extends JFrame {
     private JTextField consultaTF;
     private JButton retornarBuscaButton;
     private JButton pesquisarButton;
+    private JButton cadastroButton;
     private JTable resultTable;
     public final DataBaseManagerImpl dbm;
     private JComboBox flagViagens;
-    FlowLayout layout;
-    BorderLayout border;
-    JPanel painel;
-    JPanel painel2;
-    JPanel painel3;
 
     public GerenciaViagens(final DataBaseManagerImpl dbm) {
+
         super("Viagens");
 
-        setLocationRelativeTo(this);
-        //setLayout(null);
-        setBounds(390, 220, 500, 400);
+        //paineis para organizar componentes
+        JPanel p = new JPanel();
+        JPanel p2 = new JPanel();
+        JPanel p3 = new JPanel();
+        JPanel p4 = new JPanel();
+
+        //configura o layout para BoxLayout Vertical
+        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+        p2.setLayout(new FlowLayout(FlowLayout.LEFT));
+        p3.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        p4.setLayout(new BorderLayout());
+
+        setLocation(300,200);
+        setSize(650, 400);
+        setResizable(false);
         setVisible(true);
-
-        layout = new FlowLayout();
-        border = new BorderLayout();
-        painel = new JPanel();
-        painel2 = new JPanel();
-        painel3 = new JPanel();
-        setLayout(border);
-
-        layout.setAlignment(FlowLayout.LEFT);
-        painel.setLayout(layout);
 
         this.dbm = dbm;
 
-
         try {
             // cria o TableModel
-            tableModel = new TableModel(dbm);
+            //aqui deve ser ordenado pela data*************************************************
+            tableModel = new TableModel(dbm, "select * from instancia_de_viagem");
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         }
 
+
         flagViagens = new JComboBox(Auxiliares.FLAG_VIAGENS);
-        flagViagens.setBounds(5, 5, 120, 50);
+        flagViagens.setBackground(Color.GRAY);
+        flagViagens.setFont(new Font("Verdana", 0, 15));
 
         filtroTF = new JTextField("", 15);
         filtroTF.setBorder(
                 BorderFactory.createTitledBorder(
-                null, "Filtro", 0, 0, new Font("Tahoma", 0, 10)));
+                null, "Filtro", 0, 0, new Font("Verdana", 0, 10)));
 
         consultaTF = new JTextField("", 30);
         consultaTF.setBorder(
                 BorderFactory.createTitledBorder(
-                null, "Consulta", 0, 0, new Font("Tahoma", 0, 10)));
+                null, "Consulta", 0, 0, new Font("Verdana", 0, 10)));
 
+        pesquisarButton = new JButton("Buscar");
+        pesquisarButton.setFont(new Font("Verdana", 0, 12));
 
-        // configura o JButton para enviar consulta
-        pesquisarButton = new JButton("Busca Tipos De Viagem");
-        pesquisarButton.setSize(30,30);
-        retornarBuscaButton = new JButton("Retornar busca");
-        retornarBuscaButton.setSize(30,30);
-       
+        retornarBuscaButton = new JButton("Retornar Todos");
+        retornarBuscaButton.setFont(new Font("Verdana", 0, 12));
 
+        p2.add(flagViagens);
+        p2.add(filtroTF);
+        p2.add(consultaTF);
 
-
-        painel.add(flagViagens);
-        painel.add(filtroTF);
-        painel.add(consultaTF);
-        //painel.add(pesquisarButton);
-        //painel.add(retornarBuscaButton);
-
-        painel2.add(pesquisarButton);
-        painel2.add(retornarBuscaButton);
-
-        add(painel, BorderLayout.NORTH);
-        add(painel2, BorderLayout.CENTER);
-       
+        p3.add(pesquisarButton);
+        p3.add(retornarBuscaButton);
 
         // cria o delegado JTable para tableModel
         resultTable = new JTable(tableModel);
-        //add(resultTable);
+
 
         //botao de cadastro:
-        JButton cadastroButton = new JButton("Cadastrar Novo");
-        cadastroButton.setSize(300, 50);
-        //jPanel3.add(cadastroButton);
-        //add(cadastroButton);
-        //Box box2 = Box.createHorizontalBox();
-        //box2.add(Box.createHorizontalGlue());
-        //box2.add(cadastroButton);
+        cadastroButton = new JButton("Cadastrar Novo");
+        cadastroButton.setFont(new Font("Verdana", 0, 14));
+        p4.add(cadastroButton);
 
-        // posiciona os componentes GUI no painel de conte�do
-        //add(box, BorderLayout.NORTH);
-        //add(jPanel1,BorderLayout.NORTH);
-        add(new JScrollPane(resultTable), BorderLayout.SOUTH);
-        //add(jPanel3, BorderLayout.SOUTH);
-        //add(box2, BorderLayout.SOUTH);
+        p.add(p2);
+        p.add(p3);
+        JSeparator separador = new JSeparator(JSeparator.HORIZONTAL);
+        p.add(separador);
+        p.add(new JScrollPane(resultTable), BorderLayout.CENTER);
+        p.add(separador);
+        p.add(p4);
+        add(p);
+
 
         // cria evento ouvinte para cadastroButton
         cadastroButton.addActionListener(
@@ -131,10 +124,14 @@ public class GerenciaViagens extends JFrame {
                     public void actionPerformed(ActionEvent event) {
 
                         try {
-                            CadastraTipoDeViagem ctdv = new CadastraTipoDeViagem(0, dbm);
-                            //ctdv.setLocationRelativeTo();
-                            ctdv.setVisible(true);
-                            ctdv.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                            //se o flag tiver em instancia de viagem
+                            if (flagViagens.getSelectedIndex() == 0) {
+                                new CadastraInstanciaDeViagem(Auxiliares.CADASTRAR, dbm);
+                            }
+                            //se o flag tiver em tipo de viagem
+                            if (flagViagens.getSelectedIndex() == 1) {
+                                new CadastraTipoDeViagem(Auxiliares.CADASTRAR, dbm);
+                            }
 
                         } // fim do try
                         catch (Exception s) {
@@ -155,7 +152,16 @@ public class GerenciaViagens extends JFrame {
                     public void actionPerformed(ActionEvent event) {
                         // realiza uma nova consulta
                         try {
-                            tableModel.setQuery("SELECT * FROM tipo_de_viagem WHERE dias_da_semana LIKE '%" + /*queryArea.getText() +*/ "%'");
+                            if (flagViagens.getSelectedIndex() == 0) {
+                                //devo usar um order by pela data depois******************************************
+                                tableModel.setQuery("SELECT * FROM instancia_de_viagem  WHERE " +
+                                        filtroTF.getText() + " LIKE '%" + consultaTF.getText() + "%'");
+                            }
+                            if (flagViagens.getSelectedIndex() == 1) {
+                                tableModel.setQuery("SELECT * FROM tipo_de_viagem  WHERE " +
+                                        filtroTF.getText() + " LIKE '%" + consultaTF.getText() +
+                                        "%' ORDER BY id_seq_tdv");
+                            }
 
                         } // fim do try
                         catch (SQLException sqlException) {
@@ -171,7 +177,15 @@ public class GerenciaViagens extends JFrame {
 
                     public void actionPerformed(ActionEvent event) {
                         try {
-                            tableModel.setQuery("SELECT * FROM tipo_de_viagem");
+                            if (flagViagens.getSelectedIndex() == 0) {
+                                //aqui devo ordenar pela data***********************************************
+                                tableModel.setQuery("SELECT * FROM instancia_de_viagem");
+                            }
+
+                            if (flagViagens.getSelectedIndex() == 1) {
+                                tableModel.setQuery("SELECT * FROM tipo_de_viagem ORDER BY id_seq_tdv");
+                            }
+
                         } catch (SQLException sqlException) {
                             JOptionPane.showMessageDialog(null,
                                     sqlException.getMessage(), "Erro de Database",
@@ -207,21 +221,30 @@ public class GerenciaViagens extends JFrame {
         public void apertarNoJTable() {
             int select = resultTable.getSelectedRow();
             if (select >= 0) {
+                
                 try {
-                    //lugar especifico onde clicou
+                     //lugar especifico onde clicou
                     Integer clicado = new Integer(resultTable.getValueAt(select, 0).toString());
-                    //TipoDeViagemTableModel tdvtm = new TipoDeViagemTableModel();
 
-                    //objeto que irá buscar o que foi clicado
+                    if (flagViagens.getSelectedIndex() == 0) {
+                        //quando buscar esse sera preenchido
+                        InstanciaDeViagem idv = new InstanciaDeViagem();
+                        //efetua a busca e preenche
+                        idv = dbm.selectInstanciaDeViagem(clicado, null);
+                        //janela que exibira os dados    mapeamento: objeto -> GUI
+                        CadastraInstanciaDeViagem cidv = inserirInstanciaDeViagemEmGui(idv);
+                    }
 
-                    //quando buscar esse sera preenchido
-                    TipoDeViagem tdv = new TipoDeViagem();
-                    //efetua a busca e preenche
-                    tdv = dbm.selectTipoDeViagem(clicado);
-                    //janela que exibira os dados    mapeamento: objeto -> GUI
-                    CadastraTipoDeViagem ctdv = inserirObjetoEmGui(tdv);
-                    ctdv.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                    ctdv.setVisible(true);
+                    if (flagViagens.getSelectedIndex() == 1) {
+                        //quando buscar esse sera preenchido
+                        TipoDeViagem tdv = new TipoDeViagem();
+                        //efetua a busca e preenche
+                        tdv = dbm.selectTipoDeViagem(clicado);
+                        //janela que exibira os dados    mapeamento: objeto -> GUI
+                        CadastraTipoDeViagem ctdv = inserirTipoDeViagemEmGui(tdv);
+                    }
+
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -232,13 +255,13 @@ public class GerenciaViagens extends JFrame {
         }
     }
 
-    public CadastraTipoDeViagem inserirObjetoEmGui(TipoDeViagem tdv) {
+    public CadastraTipoDeViagem inserirTipoDeViagemEmGui(TipoDeViagem tdv) {
         CadastraTipoDeViagem ctdv = new CadastraTipoDeViagem(1, dbm);
 
         ctdv.identificadorSequencialTF.setText(String.valueOf(tdv.getIdSeqTdv()));
         ctdv.valorViagemTF.setText(String.valueOf(tdv.getValorViagem()));
         ctdv.horaDeSaidaTF.setText(tdv.getHoraPrevSaida());
-        //ctdv.filtroTF.setText(tdv.getHoraPrevChegada());
+        ctdv.horaDeChegadaTF.setText(tdv.getHoraPrevChegada());
 
         //tratar dos check boxes(dias da semana):
         if (tdv.getDiasDaSemana().indexOf("segunda") != -1) {
@@ -267,6 +290,39 @@ public class GerenciaViagens extends JFrame {
         ctdv.idSeqRodovChegada.setText(String.valueOf(tdv.getIdSeqRodovChegada()));
 
         return ctdv;
+    }
+
+    public CadastraInstanciaDeViagem inserirInstanciaDeViagemEmGui(InstanciaDeViagem idv)
+    {
+        CadastraInstanciaDeViagem cidv = new CadastraInstanciaDeViagem(1,null);
+
+        cidv.idSeqTdvTF.setText(String.valueOf(idv.getIdSeqTdv()));
+        cidv.numVagasDisponiveisTF.setText(String.valueOf(idv.getNumVagasDisponiveis()));
+        cidv.horaDeSaidaTF.setText(idv.getHoraRealSaida());
+        cidv.horaDeChegadaTF.setText(idv.getHoraRealChegada());
+        cidv.observacaoTA.setText(idv.getObservacoes());
+
+        SimpleDateFormat in= new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy");
+        String result = "";
+		try {
+			result = out.format(in.parse(idv.getData().toString()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        //Date aux = (Date)formatter.parse("01/29/02");
+        //String dataParaString = formatter.format(in.parse(date.toString()));
+        //String dataParaString = idv.getData()
+
+        cidv.escolhaDeDia.setSelectedItem(result.substring(0,1));
+        cidv.escolhaDeMes.setSelectedItem(result.substring(3,4));
+        cidv.escolhaDeAno.setSelectedItem(result.substring(6,7));
+
+        cidv.idSeqCarroTF.setText(String.valueOf(idv.getIdSeqCarro()));
+        cidv.idSeqMotoristaTF.setText(String.valueOf(idv.getIdSeqMotorista()));
+
+        return cidv;
     }
 } // fim da classe DisplayQueryFilme
 

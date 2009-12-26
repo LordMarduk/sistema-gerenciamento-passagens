@@ -10,6 +10,8 @@ import java.util.logging.Logger;
 import rodoviaria.gui.NovoCliente;
 import util.DataBaseManager;
 import javax.swing.UIManager;
+import rodoviaria.gui.GerenciamentoDeClientes;
+import rodoviaria.gui.Login;
 import util.Date;
 
 public class Main {
@@ -30,15 +32,16 @@ public class Main {
         catch (RemoteException ex) {
             ex.printStackTrace();
         }
-
-        UIManager.LookAndFeelInfo[] lafs =  UIManager.getInstalledLookAndFeels();
+        
         try {
-           UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+           UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        NovoCliente ncframe = new NovoCliente(dbm);
+        Login loginframe = new Login(dbm);
+        //NovoCliente ncframe = new NovoCliente(dbm);
+        //GerenciamentoDeClientes gcframe = new GerenciamentoDeClientes(dbm);
 
     }
 

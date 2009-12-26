@@ -1,11 +1,9 @@
 package rodoviaria.gui;
 
 import util.JNumericField;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import util.Date;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -17,7 +15,6 @@ import cliente.Cliente;
 import java.rmi.RemoteException;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
-//import nucleo_administracao.database.DataBaseManager;
 import util.Auxiliares;
 import util.DataBaseManager;
 
@@ -59,7 +56,7 @@ public class NovoCliente extends JFrame {
     public static final int ALTURA            = 500;
     public static final int LINHA             = 50;
     public static final int MEIO              = 250;
-    public static final int COMPONENT_HEIGHT  = 40;
+    public static final int COMPONENT_HEIGHT  = 28;
 
     public final DataBaseManager dbm;
 
@@ -67,92 +64,80 @@ public class NovoCliente extends JFrame {
 
         super("Novo Passageiro");
         setBounds(400, 100, 500, 500);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(2); //dispose on close
         setVisible(true);
         setResizable(false);
         setLayout(null);
 
         this.dbm = dbm;
 
+        JLabel nomeLabel = new JLabel("Nome*");
+        nomeLabel.setBounds(MARGEM_HORIZONTAL, 10, 100, 20);
+        add(nomeLabel);
         nomeTF.setBounds
                 (MARGEM_HORIZONTAL, MARGEM_VERTICAL,
                 LARGURA - (2 * MARGEM_HORIZONTAL), COMPONENT_HEIGHT);
-        nomeTF.setBorder(
-                BorderFactory.createTitledBorder(
-                    null, "Nome *", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
         add(nomeTF);
-        
+
+        JLabel logradouroLabel = new JLabel("Logradouro");
+        logradouroLabel.setBounds(MARGEM_HORIZONTAL, 60, 100, 20);
+        add(logradouroLabel);
         logradouroTF.setBounds
                 (MARGEM_HORIZONTAL, MARGEM_VERTICAL + LINHA,
                 300, COMPONENT_HEIGHT);
-        logradouroTF.setBorder(
-                BorderFactory.createTitledBorder(
-                    null, "Logradouro", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
         add(logradouroTF);
 
+        JLabel bairroLabel = new JLabel("Bairro");
+        bairroLabel.setBounds(MARGEM_HORIZONTAL + 305, 60, 100, 20);
+        add(bairroLabel);
         bairroTF.setBounds
                 (MARGEM_HORIZONTAL + 305, MARGEM_VERTICAL + LINHA,
                 LARGURA - (2 * MARGEM_HORIZONTAL) - 305, COMPONENT_HEIGHT);
-        bairroTF.setBorder(
-                BorderFactory.createTitledBorder(
-                    null, "Bairro", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
+        add(bairroTF);
 
+        JLabel numeroLabel = new JLabel("Número");
+        numeroLabel.setBounds(MARGEM_HORIZONTAL, 110, 100, 20);
+        add(numeroLabel);
         numeroNF.setBounds
                 (MARGEM_HORIZONTAL, MARGEM_VERTICAL + (2 * LINHA),
                 75, COMPONENT_HEIGHT);
-        numeroNF.setBorder(
-                BorderFactory.createTitledBorder(
-                    null, "Numero", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
         add(numeroNF);
 
+        JLabel complLabel = new JLabel("Complemento");
+        complLabel.setBounds(MARGEM_HORIZONTAL + 85, 110, 100, 20);
+        add(complLabel);
         complementoTF.setBounds
                 (MARGEM_HORIZONTAL + 85, MARGEM_VERTICAL + (2 * LINHA),
                 LARGURA - (2 * MARGEM_HORIZONTAL) - 85, COMPONENT_HEIGHT);
-        complementoTF.setBorder(
-                BorderFactory.createTitledBorder(
-                    null, "Complemento", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
         add(complementoTF);
 
-        add(bairroTF);
-
+        JLabel cidadeLabel = new JLabel("Cidade");
+        cidadeLabel.setBounds(MARGEM_HORIZONTAL, 160, 100, 20);
+        add(cidadeLabel);
         cidadeTF.setBounds
                 (MARGEM_HORIZONTAL, MARGEM_VERTICAL + (3 * LINHA),
                 MEIO - MARGEM_HORIZONTAL - 5, COMPONENT_HEIGHT);
-        cidadeTF.setBorder(
-                BorderFactory.createTitledBorder(
-                    null, "Cidade", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
         add(cidadeTF);
 
+        JLabel ufLabel = new JLabel("UF");
+        ufLabel.setBounds(MEIO + 5, 160, 30, 20);
+        add(ufLabel);
         estadoCB.setBounds
-                (MEIO + 5, MARGEM_VERTICAL + (3 * LINHA) + 5,
-                50, 30);
+                (MEIO + 5, MARGEM_VERTICAL + (3 * LINHA) - 1,
+                50, COMPONENT_HEIGHT + 2);
         add(estadoCB);
 
+        JLabel cepLabel = new JLabel("CEP");
+        cepLabel.setBounds(MEIO + 65, 160, 100, 20);
+        add(cepLabel);
         cepNF.setBounds
                 (MEIO + 65, MARGEM_VERTICAL + (3 * LINHA),
                 LARGURA - MEIO - MARGEM_HORIZONTAL - 65, COMPONENT_HEIGHT);
-        cepNF.setBorder(
-                BorderFactory.createTitledBorder(
-                    null, "CEP", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
         add(cepNF);
 
-        JLabel sexo = new JLabel("sexo *");
+        JLabel sexo = new JLabel("Sexo*");
         sexo.setBounds
-                (MARGEM_HORIZONTAL, MARGEM_VERTICAL + (4 * LINHA) - 7,
+                (MARGEM_HORIZONTAL, MARGEM_VERTICAL + (4 * LINHA) - 10,
                 50, 20);
         add(sexo);
 
@@ -167,14 +152,12 @@ public class NovoCliente extends JFrame {
         add(masculinoRB);
         add(femininoRB);
 
+        JLabel cpfLabel = new JLabel("CPF");
+        cpfLabel.setBounds(130, 220, 100, 20);
+        add(cpfLabel);
         cpfNF.setBounds
                 (MARGEM_HORIZONTAL + 100, MARGEM_VERTICAL + (4 * LINHA) + 10,
                 225, COMPONENT_HEIGHT);
-        cpfNF.setBorder(
-                BorderFactory.createTitledBorder(
-                    null, "CPF", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
         add(cpfNF);
 
         estudanteChB.setBounds
@@ -182,43 +165,36 @@ public class NovoCliente extends JFrame {
                 LARGURA - 2 * MARGEM_HORIZONTAL - 280, COMPONENT_HEIGHT);
         add(estudanteChB);
 
-        JLabel nasc = new JLabel("Data de nascimento *");
-        nasc.setBounds
-                (MARGEM_HORIZONTAL, MARGEM_VERTICAL + (5 * LINHA) + 10,
-                120, 20);
+        JLabel nasc = new JLabel("Data de nascimento*");
+        nasc.setBounds(MARGEM_HORIZONTAL, MARGEM_VERTICAL + (5 * LINHA) + 10, 120, 20);
         add(nasc);
-
         diaNascimentoCB.setBounds
                 (MARGEM_HORIZONTAL, MARGEM_VERTICAL + (5 * LINHA) + 30,
-                50, 27);
+                50, COMPONENT_HEIGHT + 2);
         add(diaNascimentoCB);
         mesNascimentoCB.setBounds
                 (MARGEM_HORIZONTAL + 55, MARGEM_VERTICAL + (5 * LINHA) + 30,
-                125, 27);
+                125, COMPONENT_HEIGHT + 2);
         add(mesNascimentoCB);
         anoNascimentoNF.setBounds
                 (MARGEM_HORIZONTAL + 185, MARGEM_VERTICAL + (5 * LINHA) + 30,
-                50, 27);
+                50, COMPONENT_HEIGHT + 2);
         add(anoNascimentoNF);
 
+        JLabel dddLabel = new JLabel("DDD");
+        dddLabel.setBounds(MEIO + 30, 290, 30, 20);
+        add(dddLabel);
         dddNF.setBounds
-                (MEIO + 30, MARGEM_VERTICAL + (5 * LINHA) + 20,
-                40, COMPONENT_HEIGHT);
-        dddNF.setBorder(
-                BorderFactory.createTitledBorder(
-                    null, "ddd", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
+                (MEIO + 30, MARGEM_VERTICAL + (5 * LINHA) + 30,
+                40, COMPONENT_HEIGHT + 2);
         add(dddNF);
 
+        JLabel telLabel = new JLabel("Telefone");
+        telLabel.setBounds(MEIO + 75, 290, 100, 20);
+        add(telLabel);
         telefoneNF.setBounds
-                (MEIO + 75, MARGEM_VERTICAL + (5 * LINHA) + 20,
-                LARGURA - MEIO - MARGEM_HORIZONTAL - 75, COMPONENT_HEIGHT);
-        telefoneNF.setBorder(
-                BorderFactory.createTitledBorder(
-                    null, "Telefone", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
+                (MEIO + 75, MARGEM_VERTICAL + (5 * LINHA) + 30,
+                LARGURA - MEIO - MARGEM_HORIZONTAL - 75, COMPONENT_HEIGHT + 2);
         add(telefoneNF);
 
         concluirB.setBounds(50, 400, 195, 50);
@@ -230,8 +206,7 @@ public class NovoCliente extends JFrame {
             new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
-                    //dispose();
-                    System.exit(0);
+                    dispose();
                 }
 
             }

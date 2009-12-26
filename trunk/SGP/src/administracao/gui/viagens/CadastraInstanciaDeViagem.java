@@ -1,5 +1,7 @@
 package administracao.gui.viagens;
 
+import java.text.FieldPosition;
+import java.text.ParsePosition;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -277,16 +279,24 @@ public class CadastraInstanciaDeViagem extends JFrame {
         InstanciaDeViagem idv = new InstanciaDeViagem();
 
         idv.setIdSeqTdv(Integer.parseInt(idSeqTdvTF.getText()));
-        
-        DateFormat formatter = new SimpleDateFormat("MM/dd/yy");
-        //Date aux = (Date)formatter.parse("01/29/02");  
-        idv.setData((Date)formatter.parse((String)escolhaDeDia.getSelectedItem()
-        		+ String.valueOf(escolhaDeMes.getSelectedIndex() + 1)
-        		+ (String)escolhaDeAno.getSelectedItem()));
 
-        JOptionPane.showMessageDialog(this,idv.getData());
-        System.out.println(idv.getData());
-        System.out.println("pqp");
+        //int dia = escolha
+                //int mes =
+                //int ano =
+
+                //DateFormat dat = new SimpleDateFormat
+
+
+        
+       // DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
+        //Date aux = (Date)formatter.parse("01/29/02");  
+        //idv.setData((Date)formatter.parse((String)escolhaDeDia.getSelectedItem()
+        		//+ String.valueOf(escolhaDeMes.getSelectedIndex() + 1)
+        		//+ (String)escolhaDeAno.getSelectedItem()));
+
+        //JOptionPane.showMessageDialog(this,idv.getData());
+        //System.out.println(idv.getData());
+        //System.out.println("pqp");
         		
         idv.setNumVagasDisponiveis(Integer.parseInt(numVagasDisponiveisTF.getText()));
         idv.setHoraRealSaida(horaDeSaidaTF.getText());

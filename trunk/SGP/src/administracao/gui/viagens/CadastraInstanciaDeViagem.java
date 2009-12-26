@@ -16,18 +16,20 @@ import administracao.database.DataBaseManagerImpl;
 import javax.swing.JComboBox;
 import util.Auxiliares;
 import administracao.viagens.InstanciaDeViagem;
+import util.JNumericField;
+import javax.swing.JOptionPane;
 
 public class CadastraInstanciaDeViagem extends JFrame {
 
     protected Font padrao = new Font("Arial", Font.PLAIN, 12);
     protected Font padraoParaRotulos = new Font("Arial", Font.BOLD, 11);
     protected JLabel dataJL;
-    public JTextField idSeqTdvTF;
+    public JNumericField idSeqTdvTF;
     public JTextField horaDeSaidaTF;
-    public JTextField numVagasDisponiveisTF;
+    public JNumericField numVagasDisponiveisTF;
     public JTextField horaDeChegadaTF;
-    public JTextField idSeqCarroTF;
-    public JTextField idSeqMotoristaTF;
+    public JNumericField idSeqCarroTF;
+    public JNumericField idSeqMotoristaTF;
     protected JButton cadastrarIdvButton;
     protected JButton updateIdvButton;
     protected JButton deleteIdvButton;
@@ -55,9 +57,9 @@ public class CadastraInstanciaDeViagem extends JFrame {
 
         this.tipoOperacao = tipoOperacao;
 
-        idSeqTdvTF = new JTextField("");
+        idSeqTdvTF = new JNumericField(2);
         idSeqTdvTF.setFont(padrao);
-        idSeqTdvTF.setBounds(10, 30, 150, 40);
+        idSeqTdvTF.setBounds(10, 30, 130, 40);
         idSeqTdvTF.setBorder(
                 BorderFactory.createTitledBorder(
                     null, "Id. Seq. Tipo De Viagem", 0, 0, new Font("Tahoma", 0, 10)
@@ -68,40 +70,41 @@ public class CadastraInstanciaDeViagem extends JFrame {
         //--------------------
 
         //--Vagas Disponiveis--
-        numVagasDisponiveisTF = new JTextField("");
+        numVagasDisponiveisTF = new JNumericField(2);
         numVagasDisponiveisTF.setFont(padrao);
-        numVagasDisponiveisTF.setBounds(10, 150, 20, 40);
+        numVagasDisponiveisTF.setBounds(170, 30, 130, 40);
         numVagasDisponiveisTF.setEditable(false);
         numVagasDisponiveisTF.setBorder(
                 BorderFactory.createTitledBorder(
                     null, "Numero De Vagas Disponiveis", 0, 0, new Font("Tahoma", 0, 10)
                 )
         );
-
         add(numVagasDisponiveisTF);
+
         //---------------------
 
         //--Campo Hora De Saida--
         horaDeSaidaTF = new JTextField("");
         horaDeSaidaTF.setFont(padrao);
-        horaDeSaidaTF.setBounds(160, 80, 120, 40);
+        horaDeSaidaTF.setBounds(10, 80, 130, 40);
         add(horaDeSaidaTF);
         horaDeSaidaTF.setBorder(
                 BorderFactory.createTitledBorder(
                     null, "Horario De Saida", 0, 0, new Font("Tahoma", 0, 10)
                 )
         );
+        add(horaDeSaidaTF);
 
         horaDeChegadaTF = new JTextField("", 5);
         horaDeChegadaTF.setFont(padrao);
-        horaDeChegadaTF.setBounds(300, 80, 120, 40);
+        horaDeChegadaTF.setBounds(170, 80, 130, 40);
         horaDeChegadaTF.setBorder(
                 BorderFactory.createTitledBorder(
                     null, "Horario De Chegada", 0, 0, new Font("Tahoma", 0, 10)
                 )
         );
-
         add(horaDeChegadaTF);
+
         //---------------------
         //--observacoes--
       
@@ -120,34 +123,35 @@ public class CadastraInstanciaDeViagem extends JFrame {
         add(observacaoTA);
 
         //data
-        //dataJL = new JLabel("Data");
-        //dataJL.setBounds(10, 110, 75, 20);
-        //add(dataJL);
+        dataJL = new JLabel("Data");
+        dataJL.setBounds(10, 130, 75, 20);
+        add(dataJL);
 
+        escolhaDeDia = new JComboBox(Auxiliares.DIAS);
         escolhaDeDia.setMaximumRowCount(4);
         escolhaDeDia.setFont(padrao);
         escolhaDeDia.setSelectedIndex(0);
-        escolhaDeDia.setBounds(10, 130,60, 20);
+        escolhaDeDia.setBounds(10, 160,60, 20);
         add(escolhaDeDia);
 
         escolhaDeMes = new JComboBox(Auxiliares.MESES);
         escolhaDeMes.setMaximumRowCount(4);
         escolhaDeMes.setFont(padrao);
         escolhaDeMes.setSelectedIndex(0);
-        escolhaDeMes.setBounds(10, 160,80, 20);
+        escolhaDeMes.setBounds(10, 190,80, 20);
         add(escolhaDeMes);
 
         escolhaDeAno = new JComboBox(Auxiliares.ANOS);
         escolhaDeAno.setMaximumRowCount(4);
         escolhaDeAno.setFont(padrao);
         escolhaDeAno.setSelectedIndex(0);
-        escolhaDeAno.setBounds(10, 190,60, 20);
+        escolhaDeAno.setBounds(10, 220,60, 20);
         add(escolhaDeAno);
         //---------------------
 
 
         //--Id. Seq. Carro--
-        idSeqCarroTF = new JTextField("");
+        idSeqCarroTF = new JNumericField(2);
         idSeqCarroTF.setFont(padrao);
         idSeqCarroTF.setBounds(10, 270, 120, 40);
         idSeqCarroTF.setBorder(
@@ -160,7 +164,7 @@ public class CadastraInstanciaDeViagem extends JFrame {
         //--------------------
         //--Id. Seq. Rodoviaria Partida--
         
-        idSeqMotoristaTF = new JTextField("");
+        idSeqMotoristaTF = new JNumericField(3);
         idSeqMotoristaTF.setFont(padrao);
         idSeqMotoristaTF.setBounds(10, 310, 120, 40);
         idSeqMotoristaTF.setBorder(
@@ -233,7 +237,8 @@ public class CadastraInstanciaDeViagem extends JFrame {
         public void actionPerformed(ActionEvent action) {
             try {
                 InstanciaDeViagem idv = insereGuiEmObjeto();
-                dbm.insertInstanciaDeViagem(idv);
+                System.out.println("teste");
+                //dbm.insertInstanciaDeViagem(idv);
 
             } catch (Exception e) {
             }
@@ -276,8 +281,12 @@ public class CadastraInstanciaDeViagem extends JFrame {
         DateFormat formatter = new SimpleDateFormat("MM/dd/yy");
         //Date aux = (Date)formatter.parse("01/29/02");  
         idv.setData((Date)formatter.parse((String)escolhaDeDia.getSelectedItem()
-        		+ (String)escolhaDeMes.getSelectedItem()
+        		+ String.valueOf(escolhaDeMes.getSelectedIndex() + 1)
         		+ (String)escolhaDeAno.getSelectedItem()));
+
+        JOptionPane.showMessageDialog(this,idv.getData());
+        System.out.println(idv.getData());
+        System.out.println("pqp");
         		
         idv.setNumVagasDisponiveis(Integer.parseInt(numVagasDisponiveisTF.getText()));
         idv.setHoraRealSaida(horaDeSaidaTF.getText());

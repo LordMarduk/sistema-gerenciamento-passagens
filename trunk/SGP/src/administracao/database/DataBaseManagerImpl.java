@@ -1,6 +1,7 @@
 package administracao.database;
 
 
+import administracao.funcionario.Funcionario;
 import cliente.Cliente;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -351,6 +352,18 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         return false;
 
     }
+
+    //////////////////////////////////////////////////////////////////
+    public void insertAgente(Funcionario novoAgente) throws RemoteException {
+
+        System.out.println(novoAgente.getNome());
+        //System.out.println(novoAgente.getSexo());
+        //System.out.println(novoAgente.getDatanascimento());
+        System.out.println(novoAgente.getCpf());
+        System.out.println(novoAgente.getTelefone());
+        System.out.println(novoAgente.getEndereco());
+    }
+    /////////////////////////////////////////////////////////////////
 
 //    FECHAR CONEXAO
     public boolean closeConnection() throws RemoteException {

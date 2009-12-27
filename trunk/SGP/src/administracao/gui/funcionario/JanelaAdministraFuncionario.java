@@ -105,10 +105,10 @@ public class JanelaAdministraFuncionario extends JFrame {
                         // realiza uma nova consulta
                         try {
                             if(tipoFuncionario.getSelectedIndex() == 1)
-                                tableModel.setQuery("SELECT * FROM funcionario INNER JOIN motorista ON funcionario.id_seq_funcionario = motorista.id_seq_motorista WHERE nome LIKE '%" + nomeFuncionarioBusca.getText() + "%'");
-                            else if(tipoFuncionario.getSelectedIndex() == 2)
                                 tableModel.setQuery("SELECT * FROM funcionario INNER JOIN agente ON funcionario.id_seq_funcionario = agente.id_seq_agente WHERE nome LIKE '%" + nomeFuncionarioBusca.getText() + "%'");
-                            else
+                            else if(tipoFuncionario.getSelectedIndex() == 2)
+                                tableModel.setQuery("SELECT * FROM funcionario INNER JOIN motorista ON funcionario.id_seq_funcionario = motorista.id_seq_motorista WHERE nome LIKE '%" + nomeFuncionarioBusca.getText() + "%'");
+                            else{
                                 JOptionPane.showMessageDialog(
                                     null,
                                     "Escolha o tipo de funcionário",
@@ -116,7 +116,7 @@ public class JanelaAdministraFuncionario extends JFrame {
                                     JOptionPane.INFORMATION_MESSAGE
                                 );                                
                             } // fim do try
-                        catch (SQLException sqlException) {
+                        }catch (SQLException sqlException) {
                             JOptionPane.showMessageDialog(null,
                                     sqlException.getMessage(), "Database error",
                                     JOptionPane.ERROR_MESSAGE);
@@ -146,10 +146,10 @@ public class JanelaAdministraFuncionario extends JFrame {
                     public void actionPerformed(ActionEvent event) {
 
                         if(tipoFuncionario.getSelectedIndex() == 1){
-                            new CadastraNovoMotorista(dbm);
+                            new CadastraNovoAgente(dbm); 
                         }
                         else if (tipoFuncionario.getSelectedIndex() == 2){
-                            new CadastraNovoAgente(dbm);                            
+                            new CadastraNovoMotorista(dbm);
                         }
                         else{
                             JOptionPane.showMessageDialog(

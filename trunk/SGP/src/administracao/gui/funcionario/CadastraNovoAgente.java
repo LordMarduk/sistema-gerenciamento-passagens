@@ -1,7 +1,10 @@
 package administracao.gui.funcionario;
 
 import administracao.database.DataBaseManagerImpl;
+import administracao.funcionario.Funcionario;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -47,6 +50,8 @@ public class CadastraNovoAgente extends JFrame {
     private JButton cadastrar = new JButton("Cadastrar");
     private JButton apagar = new JButton("Apagar");
     private JButton sair = new JButton("Sair");
+
+    protected String sexo2 = "";
 
     public final DataBaseManagerImpl dbm;
 
@@ -147,6 +152,7 @@ public class CadastraNovoAgente extends JFrame {
         add(senhaAgente2);
 
         cadastrar.setBounds(110,250,130,50);
+        cadastrar.addActionListener(new ButtonHandlerCadastra());
         add(cadastrar);
 
         atualizar.setBounds(245,250,130,50);
@@ -160,5 +166,29 @@ public class CadastraNovoAgente extends JFrame {
 
     }
 
+    private class ButtonHandlerCadastra implements ActionListener {
+
+        public void actionPerformed(ActionEvent action) {
+            try {
+                Funcionario fun = setarEmObjetos();
+                dbm.insertAgente(fun);
+
+            } catch (Exception e) {
+            }
+            dispose();
+        }//fim de ActionPerformed
+    }//fim da classe interna ButtonHandler
+
+    public Funcionario setarEmObjetos() throws Exception {
+
+        Funcionario novo = new Funcionario();
+        
+            novo.setNome(nomeAgente.getText());
+            novo.setCpf(cpfAgente.getText());
+            novo.setEndereco(enderecoAgente.getText());
+            novo.setTelefone(telefoneAgente.getText());
+
+        return novo;
+    }
 
 }

@@ -1,0 +1,5 @@
+cd D:\Ronei\UNIVERSIDADE FEDERAL DA PARAÍBA\Banco de Dados I\Projeto\SGP\build\classes
+
+rmic administracao.database.DataBaseManagerImpl
+
+rmiregistry

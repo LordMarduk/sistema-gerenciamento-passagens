@@ -187,6 +187,7 @@ public class CadastraNovoAgente extends JFrame {
 
             char sex = masculinoRB.isSelected() ? 'M' : 'F';
 
+            /*
                 int d = diaNascimentoAgente.getSelectedIndex() + 1;
                 String dia = Integer.toString(d);
                 int m = mesNascimentoAgente.getSelectedIndex() + 1;
@@ -204,13 +205,14 @@ public class CadastraNovoAgente extends JFrame {
 
             SimpleDateFormat formato = new SimpleDateFormat("yyy-mm-dd");
             dataAgente = new Date(formato.parse(dataAgente2).getTime());
-
+            */
+            
             novo.setNome(nomeAgente.getText());
             novo.setCpf(Long.parseLong(cpfAgente.getText()));
             novo.setEndereco(enderecoAgente.getText());
             novo.setTelefone(Long.parseLong(telefoneAgente.getText()));
             novo.setSexo(Character.toString(sex));
-            novo.setDatanascimento(dataAgente);
+            //novo.setDatanascimento(dataAgente);
 
         return novo;
     }

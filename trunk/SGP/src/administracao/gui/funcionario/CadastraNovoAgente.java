@@ -5,6 +5,8 @@ import administracao.funcionario.Funcionario;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -51,7 +53,7 @@ public class CadastraNovoAgente extends JFrame {
     private JButton apagar = new JButton("Apagar");
     private JButton sair = new JButton("Sair");
 
-    protected String sexo2 = "";
+    private Date dataAgente;
 
     public final DataBaseManagerImpl dbm;
 
@@ -182,11 +184,33 @@ public class CadastraNovoAgente extends JFrame {
     public Funcionario setarEmObjetos() throws Exception {
 
         Funcionario novo = new Funcionario();
-        
+
+            char sex = masculinoRB.isSelected() ? 'M' : 'F';
+
+                int d = diaNascimentoAgente.getSelectedIndex() + 1;
+                String dia = Integer.toString(d);
+                int m = mesNascimentoAgente.getSelectedIndex() + 1;
+                String mes = Integer.toString(m);
+                int a;
+                try{
+                    a = Integer.parseInt( anoNascimentoAgente.getText() );                    
+                }
+                catch(NumberFormatException ex){
+                    a = 0;                    
+                }
+                String ano = Integer.toString(a);
+                
+            String dataAgente2 = ano + "-" + mes + "-" + dia;
+
+            SimpleDateFormat formato = new SimpleDateFormat("yyy-mm-dd");
+            dataAgente = new Date(formato.parse(dataAgente2).getTime());
+
             novo.setNome(nomeAgente.getText());
-            novo.setCpf(cpfAgente.getText());
+            novo.setCpf(Long.parseLong(cpfAgente.getText()));
             novo.setEndereco(enderecoAgente.getText());
-            novo.setTelefone(telefoneAgente.getText());
+            novo.setTelefone(Long.parseLong(telefoneAgente.getText()));
+            novo.setSexo(Character.toString(sex));
+            novo.setDatanascimento(dataAgente);
 
         return novo;
     }

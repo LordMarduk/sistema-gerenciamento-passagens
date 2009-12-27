@@ -357,11 +357,34 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
     public void insertAgente(Funcionario novoAgente) throws RemoteException {
 
         System.out.println(novoAgente.getNome());
-        //System.out.println(novoAgente.getSexo());
-        //System.out.println(novoAgente.getDatanascimento());
+        System.out.println(novoAgente.getSexo());
+        System.out.println(novoAgente.getDatanascimento());
         System.out.println(novoAgente.getCpf());
         System.out.println(novoAgente.getTelefone());
         System.out.println(novoAgente.getEndereco());
+
+        try {
+            PreparedStatement pst = null;
+            //ResultSet rs = null;
+
+            String sql = "INSERT INTO funcionario(nome,sexo," +
+                    "datanascimento,cpf,endereco," +
+                    "telefone) VALUES(?,'11/11/1111',?,?,?,?) ";
+
+            pst = connection.prepareStatement(sql);            
+            pst.setString(1, novoAgente.getNome());            
+            pst.setString(2, novoAgente.getSexo());
+            pst.setLong(3, novoAgente.getCpf());
+            pst.setString(4, novoAgente.getEndereco());
+            pst.setLong(5, novoAgente.getTelefone());
+            
+            pst.executeUpdate();
+            pst.close();
+
+        } catch (SQLException e) {
+            // se houve algum erro, uma exceção é gerada para informar o erro
+            e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
+        }
     }
     /////////////////////////////////////////////////////////////////
 

@@ -1,6 +1,7 @@
 package administracao.funcionario;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 public class Funcionario implements Serializable{
 
@@ -18,12 +19,12 @@ public class Funcionario implements Serializable{
         /**
          * This attribute maps to the column data in the funcionario table.
          */
-        protected String datanascimento;
+        protected Date datanascimento;
 
         /**
          * This attribute maps to the column cpf in the funcionario table.
          */
-        protected String cpf;
+        protected long cpf;
 
         /**
          * This attribute maps to the column endereco in the funcionario table.
@@ -33,7 +34,7 @@ public class Funcionario implements Serializable{
         /**
          * This attribute maps to the column telefone in the funcionario table.
          */
-        protected String telefone;
+        protected long telefone;
 
        
         public Funcionario(){}
@@ -43,11 +44,11 @@ public class Funcionario implements Serializable{
          * get's
          */
 
-        public String getCpf() {
+        public long getCpf() {
             return cpf;
         }
 
-        public String getDatanascimento() {
+        public Date getDatanascimento() {
             return datanascimento;
         }
 
@@ -63,7 +64,7 @@ public class Funcionario implements Serializable{
             return sexo;
         }
 
-        public String getTelefone() {
+        public long getTelefone() {
             return telefone;
         }
 
@@ -78,11 +79,11 @@ public class Funcionario implements Serializable{
          */
 
 
-        public void setCpf(String cpf) {
+        public void setCpf(long cpf) {
             this.cpf = cpf;
         }
 
-        public void setDatanascimento(String datanascimento) {
+        public void setDatanascimento(Date datanascimento) {
             this.datanascimento = datanascimento;
         }
 
@@ -98,7 +99,7 @@ public class Funcionario implements Serializable{
             this.sexo = sexo;
         }
 
-        public void setTelefone(String telefone) {
+        public void setTelefone(long telefone) {
             this.telefone = telefone;
         }
 
@@ -118,6 +119,7 @@ public class Funcionario implements Serializable{
             ret.append( ", telefone=" + telefone );
             return ret.toString();
         }
+
 
 }
 

@@ -1,40 +1,26 @@
 package administracao.funcionario;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 public class Funcionario implements Serializable{
 
+        protected int id_seq_funcionario;
 
-        /**
-         * This attribute maps to the column nome in the funcionario table.
-         */
         protected String nome;
 
-        /**
-         * This attribute maps to the column sexo in the funcionario table.
-         */
         protected String sexo;
 
-        /**
-         * This attribute maps to the column data in the funcionario table.
-         */
-        protected Date datanascimento;
+        protected String datanascimento;
 
-        /**
-         * This attribute maps to the column cpf in the funcionario table.
-         */
         protected long cpf;
 
-        /**
-         * This attribute maps to the column endereco in the funcionario table.
-         */
         protected String endereco;
 
-        /**
-         * This attribute maps to the column telefone in the funcionario table.
-         */
         protected long telefone;
+
+        protected String usuario;
+
+        protected String senha;
 
        
         public Funcionario(){}
@@ -48,7 +34,7 @@ public class Funcionario implements Serializable{
             return cpf;
         }
 
-        public Date getDatanascimento() {
+        public String getDatanascimento() {
             return datanascimento;
         }
 
@@ -68,7 +54,17 @@ public class Funcionario implements Serializable{
             return telefone;
         }
 
+        public int getIdSeqFuncionario(){
+            return id_seq_funcionario;
+        }
 
+        public String getUsuario() {
+            return usuario;
+        }
+
+        public String getSenha() {
+            return senha;
+        }
 
         /*
          * Fim do get's
@@ -83,7 +79,7 @@ public class Funcionario implements Serializable{
             this.cpf = cpf;
         }
 
-        public void setDatanascimento(Date datanascimento) {
+        public void setDatanascimento(String datanascimento) {
             this.datanascimento = datanascimento;
         }
 
@@ -103,7 +99,17 @@ public class Funcionario implements Serializable{
             this.telefone = telefone;
         }
 
-        
+        public void setIdSeqFuncionario (int id_seq_funcionario){
+            this.id_seq_funcionario = id_seq_funcionario;
+        }
+
+        public void setUsuario(String usuario) {
+            this.usuario = usuario;
+        }
+
+        public void setSenha(String senha) {
+            this.senha = senha;
+        }
         /*
          * Fim dos set's
          */

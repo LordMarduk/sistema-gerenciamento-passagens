@@ -5,19 +5,21 @@ import administracao.funcionario.Funcionario;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 import util.Auxiliares;
 import util.JNumericField;
+import util.Date;
 
 /**
  *
@@ -48,12 +50,14 @@ public class CadastraNovoAgente extends JFrame {
     private JPasswordField senhaAgente = new JPasswordField(10);
     private JPasswordField senhaAgente2 = new JPasswordField(10);
 
+    private JFormattedTextField data_nascimento;
+
     private JButton atualizar = new JButton("Atualizar");
     private JButton cadastrar = new JButton("Cadastrar");
     private JButton apagar = new JButton("Apagar");
     private JButton sair = new JButton("Sair");
 
-    private Date dataAgente;
+    MaskFormatter formatter = null;
 
     public final DataBaseManagerImpl dbm;
 
@@ -90,6 +94,22 @@ public class CadastraNovoAgente extends JFrame {
         add(masculinoRB);
         add(femininoRB);
 
+        try {
+            formatter = new MaskFormatter("##/##/####");
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        data_nascimento = new javax.swing.JFormattedTextField(formatter);
+
+        data_nascimento.setBounds(5,65,200,40);
+        data_nascimento.setBorder(
+                BorderFactory.createTitledBorder(
+                    null, "Data Nascimento", 0, 0, new Font("Tahoma", 0, 10)
+                )
+        );
+        add(data_nascimento);
+        /*
         dataNascimento.setBounds(5,50,100,15);
         add(dataNascimento);
 
@@ -104,7 +124,8 @@ public class CadastraNovoAgente extends JFrame {
         add(diaNascimentoAgente);
         add(mesNascimentoAgente);
         add(anoNascimentoAgente);
-
+        */
+        
         cpfAgente.setBounds(220,65,255,40);
         cpfAgente.setBorder(
                 BorderFactory.createTitledBorder(
@@ -185,34 +206,16 @@ public class CadastraNovoAgente extends JFrame {
 
         Funcionario novo = new Funcionario();
 
-            char sex = masculinoRB.isSelected() ? 'M' : 'F';
-
-            /*
-                int d = diaNascimentoAgente.getSelectedIndex() + 1;
-                String dia = Integer.toString(d);
-                int m = mesNascimentoAgente.getSelectedIndex() + 1;
-                String mes = Integer.toString(m);
-                int a;
-                try{
-                    a = Integer.parseInt( anoNascimentoAgente.getText() );                    
-                }
-                catch(NumberFormatException ex){
-                    a = 0;                    
-                }
-                String ano = Integer.toString(a);
-                
-            String dataAgente2 = ano + "-" + mes + "-" + dia;
-
-            SimpleDateFormat formato = new SimpleDateFormat("yyy-mm-dd");
-            dataAgente = new Date(formato.parse(dataAgente2).getTime());
-            */
+            char sex = masculinoRB.isSelected() ? 'M' : 'F';            
             
             novo.setNome(nomeAgente.getText());
             novo.setCpf(Long.parseLong(cpfAgente.getText()));
             novo.setEndereco(enderecoAgente.getText());
             novo.setTelefone(Long.parseLong(telefoneAgente.getText()));
             novo.setSexo(Character.toString(sex));
-            //novo.setDatanascimento(dataAgente);
+            novo.setDatanascimento(data_nascimento.getText());
+            novo.setUsuario(usuarioAgente.getText());
+            novo.setSenha(senhaAgente.getText());
 
         return novo;
     }

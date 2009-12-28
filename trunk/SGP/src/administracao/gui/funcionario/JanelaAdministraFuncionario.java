@@ -28,8 +28,7 @@ public class JanelaAdministraFuncionario extends JFrame {
     private JTextField cpfAgenteBusca = new JNumericField(11);
     private JTable resultTable;
     private JButton cadastraNovo = new JButton("Cadastrar Novo");
-    private JButton retorna = new JButton("Retornar Todos");
-    String consulta = "SELECT * FROM funcionario";
+    private JButton retorna = new JButton("Retornar Todos");   
 
     public final DataBaseManagerImpl dbm;
 
@@ -49,8 +48,8 @@ public class JanelaAdministraFuncionario extends JFrame {
         //-----
 
         try {
-            // cria o TableModel
-            tableModel = new TableModel(dbm, this.consulta);
+            // cria o TableModel            
+            tableModel = new TableModel(dbm, "SELECT * FROM funcionario");
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
@@ -84,6 +83,20 @@ public class JanelaAdministraFuncionario extends JFrame {
         add(submitButton);
 
         retorna.setBounds(310,55,180,30);
+        retorna.addActionListener(
+                new ActionListener() {
+
+                    public void actionPerformed(ActionEvent event) {
+                        try {
+                            tableModel.setQuery("SELECT * FROM funcionario");
+                        } catch (SQLException sqlException) {
+                            JOptionPane.showMessageDialog(null,
+                                    sqlException.getMessage(), "Erro de Database",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+         );
         add(retorna);
 
         resultTable = new JTable(tableModel);
@@ -93,6 +106,29 @@ public class JanelaAdministraFuncionario extends JFrame {
         add(resultScroll);
 
         cadastraNovo.setBounds(5,330,485,30);
+        cadastraNovo.addActionListener(
+                new ActionListener() {
+
+                    public void actionPerformed(ActionEvent event) {
+
+                        if(tipoFuncionario.getSelectedIndex() == 1){
+                            new CadastraNovoAgente(dbm);
+                        }
+                        else if (tipoFuncionario.getSelectedIndex() == 2){
+                            new CadastraNovoMotorista(dbm);
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    "Escolha o tipo de funcionário",
+                                    "Aviso",
+                                    JOptionPane.INFORMATION_MESSAGE
+                            );
+                        }
+
+                    }
+                }
+         );
         add(cadastraNovo);
 
         // cria evento ouvinte para submitButton
@@ -123,46 +159,9 @@ public class JanelaAdministraFuncionario extends JFrame {
                         }
                     }
                 }
-        );
+        );       
 
-         retorna.addActionListener(
-                new ActionListener() {
-
-                    public void actionPerformed(ActionEvent event) {
-                        try {
-                            tableModel.setQuery("SELECT * FROM funcionario");
-                        } catch (SQLException sqlException) {
-                            JOptionPane.showMessageDialog(null,
-                                    sqlException.getMessage(), "Erro de Database",
-                                    JOptionPane.ERROR_MESSAGE);
-                        }
-                    }
-                }
-         );
-
-         cadastraNovo.addActionListener(
-                new ActionListener() {
-
-                    public void actionPerformed(ActionEvent event) {
-
-                        if(tipoFuncionario.getSelectedIndex() == 1){
-                            new CadastraNovoAgente(dbm); 
-                        }
-                        else if (tipoFuncionario.getSelectedIndex() == 2){
-                            new CadastraNovoMotorista(dbm);
-                        }
-                        else{
-                            JOptionPane.showMessageDialog(
-                                    null,
-                                    "Escolha o tipo de funcionário",
-                                    "Aviso",
-                                    JOptionPane.INFORMATION_MESSAGE
-                            );
-                        }
-                        
-                    }
-                }
-         );
+         
     }
 
 }

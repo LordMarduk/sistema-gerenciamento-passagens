@@ -5,11 +5,11 @@ import administracao.funcionario.Funcionario;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
 import java.text.ParseException;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,9 +17,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
-import util.Auxiliares;
 import util.JNumericField;
-import util.Date;
 
 /**
  *
@@ -33,11 +31,6 @@ public class CadastraNovoAgente extends JFrame {
     private JRadioButton masculinoRB = new JRadioButton("Masculino", false);
     private JRadioButton femininoRB = new JRadioButton("Feminino", false);
     private ButtonGroup  sexoAgente     = new ButtonGroup();
-
-    private JLabel dataNascimento = new JLabel("Data de Nascimento:");
-    private JComboBox     diaNascimentoAgente = new JComboBox(Auxiliares.DIAS);
-    private JComboBox     mesNascimentoAgente = new JComboBox(Auxiliares.MESES);
-    private JNumericField anoNascimentoAgente = new JNumericField(4);
 
     private JNumericField cpfAgente = new JNumericField(11);
 
@@ -175,7 +168,21 @@ public class CadastraNovoAgente extends JFrame {
         add(senhaAgente2);
 
         cadastrar.setBounds(110,250,130,50);
-        cadastrar.addActionListener(new ButtonHandlerCadastra());
+        cadastrar.addActionListener(
+                new ActionListener() {
+                    // passa consulta para modelo de tabela
+
+                    public void actionPerformed(ActionEvent event) {
+                        try {
+                            Funcionario fun = setarEmObjetos();
+                            dbm.insertAgente(fun);
+
+                        } catch (Exception e) {
+                        }
+                        dispose();
+                    }
+                }
+        );
         add(cadastrar);
 
         atualizar.setBounds(245,250,130,50);
@@ -185,28 +192,24 @@ public class CadastraNovoAgente extends JFrame {
         add(apagar);
 
         sair.setBounds(245,305,130,50);
+        sair.addActionListener(
+                new ActionListener() {
+                    // passa consulta para modelo de tabela
+
+                    public void actionPerformed(ActionEvent event) {
+                        dispose();
+                    }
+                }
+        );
         add(sair);
 
     }
-
-    private class ButtonHandlerCadastra implements ActionListener {
-
-        public void actionPerformed(ActionEvent action) {
-            try {
-                Funcionario fun = setarEmObjetos();
-                dbm.insertAgente(fun);
-
-            } catch (Exception e) {
-            }
-            dispose();
-        }//fim de ActionPerformed
-    }//fim da classe interna ButtonHandler
 
     public Funcionario setarEmObjetos() throws Exception {
 
         Funcionario novo = new Funcionario();
 
-            char sex = masculinoRB.isSelected() ? 'M' : 'F';            
+            char sex = masculinoRB.isSelected() ? 'M' : 'F';
             
             novo.setNome(nomeAgente.getText());
             novo.setCpf(Long.parseLong(cpfAgente.getText()));

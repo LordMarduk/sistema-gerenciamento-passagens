@@ -1,6 +1,7 @@
 package administracao.database;
 
 
+import administracao.carro.Carro;
 import administracao.funcionario.Funcionario;
 import cliente.Cliente;
 import java.rmi.RemoteException;
@@ -11,13 +12,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import util.DataBaseManager;
 import administracao.viagens.InstanciaDeViagem;
 import administracao.viagens.TipoDeViagem;
+import java.text.ParseException;
 import util.Date;
 
 /**
@@ -327,7 +326,8 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
         }
     }
-    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    
 
 //    FUNCOES VALIDACAO DE ACESSO
     public boolean validaEntradaAgente(String nome, String senha) throws RemoteException {
@@ -356,9 +356,10 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
 
     }
 
-    //////////////////////////////////////////////////////////////////
-    public void insertAgente(Funcionario novoAgente) throws RemoteException {
+    ///////////FUNÇÕES DE AGENTE///////////////////
+    public void insertAgente(Funcionario novoAgente) throws RemoteException, ParseException {
 
+        /*
         System.out.println(novoAgente.getNome());
         System.out.println(novoAgente.getSexo());
         System.out.println(novoAgente.getDatanascimento());
@@ -367,7 +368,8 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         System.out.println(novoAgente.getEndereco());
         System.out.println(novoAgente.getUsuario());
         System.out.println(novoAgente.getSenha());
-
+        */
+        
         Statement stat = null;
         PreparedStatement pst = null;
         PreparedStatement pst2 = null;
@@ -377,7 +379,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
 
             String sqlFunc = "INSERT INTO funcionario(nome,sexo," +
                     "datanascimento,cpf,endereco," +
-                    "telefone) VALUES(?,?,'1990-11-01',?,?,?) ";
+                    "telefone) VALUES(?,?,to_date(?,'DD/MM/YYYY'),?,?,?) ";
 
             String sqlFunCon = "select * from funcionario where cpf = " + novoAgente.getCpf();
 
@@ -387,11 +389,11 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             //INSERINDO EM FUNCIONARIO....
             pst = connection.prepareStatement(sqlFunc);
             pst.setString(1, novoAgente.getNome());
-            //pst.setString(2,novoAgente.getDatanascimento());
             pst.setString(2, novoAgente.getSexo());
-            pst.setLong(3, novoAgente.getCpf());
-            pst.setString(4, novoAgente.getEndereco());
-            pst.setLong(5, novoAgente.getTelefone());
+            pst.setString(3,novoAgente.getDatanascimento());
+            pst.setLong(4, novoAgente.getCpf());
+            pst.setString(5, novoAgente.getEndereco());
+            pst.setLong(6, novoAgente.getTelefone());
             
             //insere em funcionario...
             pst.executeUpdate();
@@ -403,13 +405,13 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             stat = connection.createStatement();
             rs = stat.executeQuery(sqlFunCon);
 
+            //posicionar consulta
             rs.next();
-            fun.setIdSeqFuncionario(rs.getInt("id_seq_funcionario"));
             
             //INSERINDO EM AGENTE
             pst2 = connection.prepareStatement(sqlAgen);
-
-            pst2.setInt(1, novoAgente.getIdSeqFuncionario());
+            
+            pst2.setInt(1, rs.getInt("id_seq_funcionario"));
             pst2.setString(2,novoAgente.getUsuario());
             pst2.setString(3, novoAgente.getSenha());
 
@@ -426,7 +428,104 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
         }
     }
+    ///////////////////////////////////////////////////////////////////////////
+
+    /////////////////////FUNÇOES DE MOTORISTA//////////////////////////////////
+    public void insertMotorista(Funcionario novoMotorista) throws RemoteException, ParseException {
+        /*
+        System.out.println(novoMotorista.getNome());
+        System.out.println(novoMotorista.getSexo());
+        System.out.println(novoMotorista.getDatanascimento());
+        System.out.println(novoMotorista.getCpf());
+        System.out.println(novoMotorista.getTelefone());
+        System.out.println(novoMotorista.getEndereco());
+        System.out.println(novoMotorista.getCnh());
+        */
+
+        Statement stat = null;
+        PreparedStatement pst = null;
+        PreparedStatement pst2 = null;
+        ResultSet rs = null;
+
+        try {
+
+            
+            String sqlFunc = "INSERT INTO funcionario(nome,sexo," +
+                    "datanascimento,cpf,endereco," +
+                    "telefone) VALUES(?,?,to_date(?,'DD/MM/YYYY'),?,?,?) ";
+
+            String sqlFunCon = "select * from funcionario where cpf = " + novoMotorista.getCpf();
+
+            String sqlMot = "INSERT INTO motorista (id_seq_motorista,cnh)"+
+                             "VALUES(?,?);";
+
+            //INSERINDO EM FUNCIONARIO....
+            pst = connection.prepareStatement(sqlFunc);
+            pst.setString(1, novoMotorista.getNome());
+            pst.setString(2, novoMotorista.getSexo());            
+            pst.setString(3,novoMotorista.getDatanascimento());
+            pst.setLong(4, novoMotorista.getCpf());
+            pst.setString(5, novoMotorista.getEndereco());
+            pst.setLong(6, novoMotorista.getTelefone());
+
+            //insere em funcionario...
+            pst.executeUpdate();
+            pst.close();
+
+            //CAPTURANDO id_seq_funcionario EM FUNCIONARIO PARA RELACIONAR COM MOTORISTA
+            Funcionario fun = new Funcionario();
+
+            stat = connection.createStatement();
+            rs = stat.executeQuery(sqlFunCon);
+
+            //posicionando consulta
+            rs.next();
+
+            //INSERINDO EM MOTORISTA
+            pst2 = connection.prepareStatement(sqlMot);
+
+            pst2.setInt(1, rs.getInt("id_seq_funcionario"));
+            pst2.setLong(2,novoMotorista.getCnh());
+
+            //inserindo agente....
+            pst2.executeUpdate();
+            pst2.close();
+            //fechando consulta...
+            rs.close();
+            stat.close();
+
+
+        } catch (SQLException e) {
+            // se houve algum erro, uma exceção é gerada para informar o erro
+            e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
+        }
+    }
     /////////////////////////////////////////////////////////////////
+
+    //////////////////////FUNÇÕES DE CARRO//////////////////////////////////////
+    public void insertCarro(Carro car) throws RemoteException{
+        try {
+            PreparedStatement pst = null;
+            //ResultSet rs = null;
+
+            String sql = "INSERT INTO carro(placa,chassis,arcondicionado)"+
+                         "VALUES(?,?,?) ";
+
+            pst = connection.prepareStatement(sql);
+
+            pst.setString(1, car.getPlaca());
+            pst.setString(2, car.getChassis());
+            pst.setString(3, car.getArCondicionado());
+
+            pst.executeUpdate();
+            pst.close();
+
+        } catch (SQLException e) {
+            // se houve algum erro, uma exceção é gerada para informar o erro
+            e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////
 
 //    FECHAR CONEXAO
     public boolean closeConnection() throws RemoteException {

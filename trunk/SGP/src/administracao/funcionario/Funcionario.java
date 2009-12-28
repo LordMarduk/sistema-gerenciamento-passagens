@@ -22,6 +22,8 @@ public class Funcionario implements Serializable{
 
         protected String senha;
 
+        protected long cnh;
+
        
         public Funcionario(){}
 
@@ -65,6 +67,12 @@ public class Funcionario implements Serializable{
         public String getSenha() {
             return senha;
         }
+
+        public long getCnh() {
+            return cnh;
+        }
+
+
 
         /*
          * Fim do get's
@@ -110,6 +118,12 @@ public class Funcionario implements Serializable{
         public void setSenha(String senha) {
             this.senha = senha;
         }
+
+        public void setCnh(long cnh) {
+            this.cnh = cnh;
+        }
+
+
         /*
          * Fim dos set's
          */
@@ -118,11 +132,15 @@ public class Funcionario implements Serializable{
         public String toString() {
 
             StringBuffer ret = new StringBuffer();
-            ret.append( "com.mycompany.myapp.dto.funcionario: " );
+            ret.append( "com.mycompany.myapp.dto.Funcionario: " );
             ret.append("nome=" + nome );
+            ret.append( ", datanascimento=" + datanascimento );
             ret.append( ", cpf=" + cpf );
             ret.append( ", endereco=" + endereco );
             ret.append( ", telefone=" + telefone );
+            ret.append( ", usuario=" + usuario );
+            ret.append( ", senha=" + senha );
+            ret.append( ", cnh=" + cnh );
             return ret.toString();
         }
 

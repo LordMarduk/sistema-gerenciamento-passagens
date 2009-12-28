@@ -1,16 +1,20 @@
 package administracao.gui.funcionario;
 
 import administracao.database.DataBaseManagerImpl;
+import administracao.funcionario.Funcionario;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.ParseException;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import util.Auxiliares;
+import javax.swing.text.MaskFormatter;
 import util.JNumericField;
 
 /**
@@ -26,10 +30,7 @@ public class CadastraNovoMotorista extends JFrame {
     private JRadioButton femininoRB = new JRadioButton("Feminino", false);
     private ButtonGroup  sexoMotorista     = new ButtonGroup();
 
-    private JLabel dataNascimento = new JLabel("Data de Nascimento:");
-    private JComboBox     diaNascimentoMotorista = new JComboBox(Auxiliares.DIAS);
-    private JComboBox     mesNascimentoMotorista = new JComboBox(Auxiliares.MESES);
-    private JNumericField anoNascimentoMotorista = new JNumericField(4);
+    private JFormattedTextField data_nascimento;
 
     private JNumericField cpfMotorista = new JNumericField(11);
 
@@ -45,6 +46,8 @@ public class CadastraNovoMotorista extends JFrame {
     private JButton sair = new JButton("Sair");
 
     public final DataBaseManagerImpl dbm;
+    MaskFormatter formatter;
+
 
     public CadastraNovoMotorista (final DataBaseManagerImpl dbm) {
 
@@ -79,20 +82,21 @@ public class CadastraNovoMotorista extends JFrame {
         add(masculinoRB);
         add(femininoRB);
 
-        dataNascimento.setBounds(5,50,100,15);
-        add(dataNascimento);
+        try {
+            formatter = new MaskFormatter("##/##/####");
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
 
-        diaNascimentoMotorista.setBounds(5,65,40,40);
-        mesNascimentoMotorista.setBounds(50,65,100,40);
-        anoNascimentoMotorista.setBounds(155,65,60,40);
-        anoNascimentoMotorista.setBorder(
+        data_nascimento = new javax.swing.JFormattedTextField(formatter);
+
+        data_nascimento.setBounds(5,65,200,40);
+        data_nascimento.setBorder(
                 BorderFactory.createTitledBorder(
-                    null, "Ano", 0, 0, new Font("Tahoma", 0, 10)
+                    null, "Data Nascimento", 0, 0, new Font("Tahoma", 0, 10)
                 )
         );
-        add(diaNascimentoMotorista);
-        add(mesNascimentoMotorista);
-        add(anoNascimentoMotorista);
+        add(data_nascimento);
 
         cpfMotorista.setBounds(220,65,255,40);
         cpfMotorista.setBorder(
@@ -127,6 +131,7 @@ public class CadastraNovoMotorista extends JFrame {
         add(cnhMotorista);
 
         cadastrar.setBounds(110,250,130,50);
+        cadastrar.addActionListener(new ButtonHandlerCadastra());
         add(cadastrar);
 
         atualizar.setBounds(245,250,130,50);
@@ -138,6 +143,36 @@ public class CadastraNovoMotorista extends JFrame {
         sair.setBounds(245,305,130,50);
         add(sair);
 
+    }
+
+    private class ButtonHandlerCadastra implements ActionListener {
+
+        public void actionPerformed(ActionEvent action) {
+            try {
+                Funcionario fun = setarEmObjetos();
+                dbm.insertMotorista(fun);
+
+            } catch (Exception e) {
+            }
+            dispose();
+        }//fim de ActionPerformed
+    }//fim da classe interna ButtonHandler
+
+    public Funcionario setarEmObjetos() throws Exception {
+
+        Funcionario novo = new Funcionario();
+
+            char sex = masculinoRB.isSelected() ? 'M' : 'F';
+
+            novo.setNome(nomeMotorista.getText());
+            novo.setCpf(Long.parseLong(cpfMotorista.getText()));
+            novo.setEndereco(enderecoMotorista.getText());
+            novo.setTelefone(Long.parseLong(telefoneMotorista.getText()));
+            novo.setSexo(Character.toString(sex));
+            novo.setDatanascimento(data_nascimento.getText());
+            novo.setCnh(Long.parseLong(cnhMotorista.getText()));
+
+        return novo;
     }
 
 

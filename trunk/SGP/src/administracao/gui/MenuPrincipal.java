@@ -3,6 +3,7 @@ package administracao.gui;
 //puta que pariu...funciona misera!!!
 
 import administracao.database.DataBaseManagerImpl;
+import administracao.gui.carro.JanelaAdministraCarro;
 import administracao.gui.funcionario.JanelaAdministraFuncionario;
 import administracao.gui.viagens.GerenciaViagens;
 import javax.swing.Icon;
@@ -132,6 +133,7 @@ public class MenuPrincipal extends JFrame
 
         tipoDeViagemButton.addActionListener(but);
         funcionarioButton.addActionListener(but);
+        onibusButton.addActionListener(but);
 
         sair.addActionListener(list);
 
@@ -149,12 +151,17 @@ public class MenuPrincipal extends JFrame
     }
 
     public void chamarAdministraFuncionario()
-    {
-        //System.out.println("tdv chamada");
+    {        
         JanelaAdministraFuncionario jaf = new JanelaAdministraFuncionario(dbm);
         jaf.setDefaultCloseOperation(
                 JFrame.DISPOSE_ON_CLOSE);
+    }
 
+    public void chamarAdministraCarro()
+    {
+        JanelaAdministraCarro jac = new JanelaAdministraCarro(dbm);
+        jac.setDefaultCloseOperation(
+                JFrame.DISPOSE_ON_CLOSE);
     }
 
 
@@ -178,6 +185,9 @@ public class MenuPrincipal extends JFrame
             }
             else if (event.getSource() == funcionarioButton) {
                 chamarAdministraFuncionario();
+            }
+            else if(event.getSource() == onibusButton){
+                chamarAdministraCarro();
             }
         }
     }

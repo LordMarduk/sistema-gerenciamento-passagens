@@ -7,10 +7,10 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import rodoviaria.gui.NovoCliente;
+import rodoviaria.gui.cliente.NovoCliente;
 import util.DataBaseManager;
 import javax.swing.UIManager;
-import rodoviaria.gui.GerenciamentoDeClientes;
+import rodoviaria.gui.cliente.GerenciamentoDeClientes;
 import rodoviaria.gui.Login;
 import util.Date;
 

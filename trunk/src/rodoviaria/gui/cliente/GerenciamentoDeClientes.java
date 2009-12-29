@@ -1,4 +1,4 @@
-package rodoviaria.gui;
+package rodoviaria.gui.cliente;
 
 import java.awt.Dialog.ModalExclusionType;
 import java.awt.event.ActionEvent;

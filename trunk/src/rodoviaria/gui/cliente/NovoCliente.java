@@ -1,4 +1,4 @@
-package rodoviaria.gui;
+package rodoviaria.gui.cliente;
 
 import util.JNumericField;
 import java.awt.event.ActionEvent;

@@ -67,7 +67,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
                 "(id_seq_cliente, nome, sexo, data_nascimento, cpf, endereco," +
                 " telefone, e_estudante)" +
             "VALUES(" +
-                novoCliente.getCodigo_cli() + ", '" +
+                novoCliente.getId() + ", '" +
                 novoCliente.getNome() + "' , '" +
                 novoCliente.getSexo() + "' , " +
                 "to_date('" + novoCliente.getData_nascimento() + "', 'DD/MM/YYYY'), '" +

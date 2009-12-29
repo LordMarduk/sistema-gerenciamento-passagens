@@ -1,27 +1,24 @@
 package rodoviaria;
 
-import rodoviaria.cliente.Cliente;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import rodoviaria.gui.cliente.NovoCliente;
 import util.DataBaseManager;
 import javax.swing.UIManager;
-import rodoviaria.gui.cliente.GerenciamentoDeClientes;
 import rodoviaria.gui.Login;
-import util.Date;
+import util.QueryManager;
 
 public class Main {
 
     public static DataBaseManager dbm;
+    public static QueryManager qm;
 
     public static void main(String args[]){
 
         try {
             dbm = (DataBaseManager) Naming.lookup("rmi://localhost/DataBaseManagerService");
+            qm = (QueryManager) Naming.lookup("rmi://localhost/QueryManagerService");
         }
         catch (NotBoundException ex) {
             ex.printStackTrace();
@@ -39,7 +36,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        Login loginframe = new Login(dbm);
+        Login loginframe = new Login(dbm, qm);
         //NovoCliente ncframe = new NovoCliente(dbm);
         //GerenciamentoDeClientes gcframe = new GerenciamentoDeClientes(dbm);
 

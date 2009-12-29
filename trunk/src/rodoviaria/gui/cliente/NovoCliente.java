@@ -11,10 +11,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import rodoviaria.cliente.Cliente;
 import java.rmi.RemoteException;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
+import rodoviaria.cliente.Cliente;
 import util.Auxiliares;
 import util.DataBaseManager;
 
@@ -44,7 +44,7 @@ public class NovoCliente extends JFrame {
 
     private JNumericField dddNF      = new JNumericField(2);
     private JNumericField telefoneNF = new JNumericField(8);
-    
+
     private JCheckBox     estudanteChB = new JCheckBox("estudante");
 
     private JButton       concluirB = new JButton("Concluir");
@@ -308,8 +308,6 @@ public class NovoCliente extends JFrame {
                             return;
                     }
 
-//                    DataBaseManager dbm = new DataBaseManager();
-
                     try{
 
                         int cod = Auxiliares.gerarId( dbm.maximunValueCliente() );
@@ -320,7 +318,7 @@ public class NovoCliente extends JFrame {
                         novo = new Cliente(cod, nom, sex, dat, cpf, end, tel, est);
 
                         dbm.insertCliente(novo);
-                    
+
                         dbm.closeConnection();
 
                     }
@@ -329,7 +327,7 @@ public class NovoCliente extends JFrame {
                     }
 
                     dispose();
-                    
+
                 }
             }
         );

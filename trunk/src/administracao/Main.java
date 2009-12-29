@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import administracao.database.DataBaseManagerImpl;
+import administracao.database.QueryManagerImpl;
 import administracao.gui.MenuPrincipal;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -19,6 +20,7 @@ C:\Users\Jader\Documents\NetBeansProjects\SGP\build\classes>rmiregistry
 public class Main {
 
     public static DataBaseManagerImpl dbm;
+    public static QueryManagerImpl qm;
 
     public static void main(String args[]) {
 
@@ -27,8 +29,10 @@ public class Main {
             System.out.println("Ligando Servidor...");
 
             dbm = new DataBaseManagerImpl();
+            qm = new QueryManagerImpl();
 
             Naming.rebind("rmi://localhost:1099/DataBaseManagerService", dbm);
+            Naming.rebind("rmi://localhost:1099/QueryManagerService", qm);
 
             System.out.println("... Servidor Ligado!");
 

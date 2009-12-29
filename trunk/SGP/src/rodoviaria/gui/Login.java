@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import util.DataBaseManager;
+import util.QueryManager;
 
 /*
  * @author Marcello Passos
@@ -26,9 +27,11 @@ public class Login extends JFrame {
     private JTextField password = new JPasswordField();
     private JButton confirmar = new JButton("Confirmar");
     private JButton cancelar = new JButton("Cancelar");
-    public final DataBaseManager dbm;
 
-    public Login(final DataBaseManager dbm) {
+    public final DataBaseManager dbm;
+    public final QueryManager qm;
+
+    public Login(final DataBaseManager dbm, final QueryManager qm) {
 
         super("Login");
         setBounds(450, 300, 400, 200);
@@ -38,6 +41,7 @@ public class Login extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.dbm = dbm;
+        this.qm = qm;
 
         user.setBounds(20, 25, 360, 25);
         password.setBounds(20, 75, 360, 25);
@@ -89,7 +93,7 @@ public class Login extends JFrame {
                     /*
                      * to change
                      */
-                      GerenciamentoDeClientes gcframe = new GerenciamentoDeClientes(dbm);
+                      GerenciamentoDeClientes gcframe = new GerenciamentoDeClientes(dbm, qm);
                     /*
                      * 
                      */

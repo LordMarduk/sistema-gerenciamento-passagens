@@ -308,8 +308,6 @@ public class NovoCliente extends JFrame {
                             return;
                     }
 
-//                    DataBaseManager dbm = new DataBaseManager();
-
                     try{
 
                         int cod = Auxiliares.gerarId( dbm.maximunValueCliente() );

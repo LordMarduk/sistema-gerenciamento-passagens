@@ -5,6 +5,9 @@ import administracao.funcionario.Funcionario;
 import java.awt.Font;
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -142,8 +145,8 @@ public class JanelaAdministraFuncionario extends JFrame {
                         try {
                             if(tipoFuncionario.getSelectedIndex() == 1){
                                 tableModel.setQuery(
-                                        "SELECT * FROM funcionario "+
-                                        "INNER JOIN agente ON funcionario.id_seq_funcionario = agente.id_seq_agente"+
+                                        "SELECT * FROM funcionario INNER JOIN agente"+
+                                        " ON funcionario.id_seq_funcionario = agente.id_seq_agente"+
                                         " WHERE '%"+ filtroBusca.getText() +
                                         "%' LIKE '%" + dadoBusca.getText() + "%' ORDER BY nome");
                             }
@@ -243,7 +246,7 @@ public class JanelaAdministraFuncionario extends JFrame {
 
         }
 
-        public CadastraNovoAgente inserirAgenteEmObjetos(Funcionario fun) {
+        public CadastraNovoAgente inserirAgenteEmObjetos(Funcionario fun) throws ParseException {
 
             CadastraNovoAgente cna = new CadastraNovoAgente(dbm, 1);
 
@@ -256,10 +259,12 @@ public class JanelaAdministraFuncionario extends JFrame {
                 else
                     cna.femininoRB.setSelected(true);
 
-                //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                //String myDate = sdf.format(fun.getDatanascimento());
 
-                cna.data_nascimento.setText(fun.getDatanascimento());
+                     //Recebe a data do BD da forma yyyy-mm-dd
+                     Date dt = new SimpleDateFormat("yyyy-mm-dd").parse(fun.getDatanascimento());        
+
+                                            //passa a data formatada dd/MM/yyyy
+                cna.data_nascimento.setText(new SimpleDateFormat("dd/MM/yyyy").format(dt));
 
                 cna.cpfAgente.setText(String.valueOf(fun.getCpf()));
 
@@ -276,7 +281,7 @@ public class JanelaAdministraFuncionario extends JFrame {
 
         }
 
-        public CadastraNovoMotorista inserirMotoristaEmObjetos(Funcionario fun) {
+        public CadastraNovoMotorista inserirMotoristaEmObjetos(Funcionario fun) throws ParseException {
 
             CadastraNovoMotorista cnm = new CadastraNovoMotorista(dbm, 1);
 
@@ -289,10 +294,10 @@ public class JanelaAdministraFuncionario extends JFrame {
                 else
                     cnm.femininoRB.setSelected(true);
 
-                //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                //String myDate = sdf.format(fun.getDatanascimento());
+                    //Recebe a data do BD da forma yyyy-mm-dd
+                    Date dt = new SimpleDateFormat("yyyy-mm-dd").parse(fun.getDatanascimento());
 
-                cnm.data_nascimento.setText(fun.getDatanascimento());
+                cnm.data_nascimento.setText(new SimpleDateFormat("dd/MM/yyyy").format(dt));
 
                 cnm.cpfMotorista.setText(String.valueOf(fun.getCpf()));
 

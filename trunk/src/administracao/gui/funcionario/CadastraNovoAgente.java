@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -28,7 +29,7 @@ public class CadastraNovoAgente extends JFrame {
 
     protected JTextField identificadorIdSeq = new JTextField(3);
 
-    protected JLabel sexo = new JLabel("sexo:");
+    protected JLabel sexo = new JLabel("sexo* :");
     protected JRadioButton masculinoRB = new JRadioButton("Masculino", false);
     protected JRadioButton femininoRB = new JRadioButton("Feminino", false);
     protected ButtonGroup  sexoAgente     = new ButtonGroup();
@@ -103,7 +104,7 @@ public class CadastraNovoAgente extends JFrame {
         data_nascimento.setBounds(5,65,200,40);
         data_nascimento.setBorder(
                 BorderFactory.createTitledBorder(
-                    null, "Data Nascimento", 0, 0, new Font("Tahoma", 0, 10)
+                    null, "Data Nascimento *", 0, 0, new Font("Tahoma", 0, 10)
                 )
         );
         add(data_nascimento);
@@ -164,7 +165,54 @@ public class CadastraNovoAgente extends JFrame {
                     // passa consulta para modelo de tabela
 
                     public void actionPerformed(ActionEvent event) {
+
+                        //tratamento campo nome
+                        if(nomeAgente.getText().length() < 1){
+                            JOptionPane.showMessageDialog(
+                                  null,
+                                  "Campo Nome Obrigatório",
+                                  "Erro",
+                                  JOptionPane.ERROR_MESSAGE
+                            );
+                            return;
+                        }
+
+                        //tratamento campo cpf
+                        if(cpfAgente.getText().length() != 11){
+                            JOptionPane.showMessageDialog(
+                                  null,
+                                  "CPF Inválido",
+                                  "Erro",
+                                  JOptionPane.ERROR_MESSAGE
+                            );
+                            return;
+                        }
+
+                        //Tratamento Sexo
+                        if((!masculinoRB.isSelected())&&(!femininoRB.isSelected())){
+                            JOptionPane.showMessageDialog
+                                (null, "Um sexo deve ser escolhido!", "Erro",
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+                        //tratamento campo telefone
+                        if(data_nascimento.getText().length() < 10){
+                            JOptionPane.showMessageDialog
+                                (null, "Data Inválida!", "Erro",
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+                        if(senhaAgente.getPassword().equals(senhaAgente2.getPassword())){
+                            JOptionPane.showMessageDialog
+                                (null, "Senha Invalida!", "Erro",
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
                         try {
+
                             Funcionario fun = setarEmObjetos();
                             dbm.insertAgente(fun);
 
@@ -183,7 +231,8 @@ public class CadastraNovoAgente extends JFrame {
                 new ActionListener() {
                     // passa consulta para modelo de tabela
 
-                    public void actionPerformed(ActionEvent event) {
+                    public void actionPerformed(ActionEvent event) {                        
+
                         try {
                             Funcionario fun = setarEmObjetos();
                             dbm.updateAgente(fun.getIdSeqFuncionario(), fun);
@@ -233,6 +282,7 @@ public class CadastraNovoAgente extends JFrame {
     public Funcionario setarEmObjetos() throws Exception {
 
         Funcionario novo = new Funcionario();
+
 
             char sex = masculinoRB.isSelected() ? 'M' : 'F';
             

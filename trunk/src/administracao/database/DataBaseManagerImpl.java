@@ -495,7 +495,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
 
         String sql2 = "UPDATE funcionario" +
                      " set nome = ?,sexo = ?," +
-                     "datanascimento = to_date(?,DD/MM/YYYY),cpf = ?,endereco = ?," +
+                     "datanascimento = to_date(?,'DD/MM/YYYY'),cpf = ?,endereco = ?," +
                      "telefone = ? WHERE id_seq_funcionario="+id_seq_funcionario;
 
         try {
@@ -663,7 +663,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
 
         String sql2 = "UPDATE funcionario" +
                      " set nome = ?,sexo = ?," +
-                     "datanascimento = to_date(?,DD/MM/YYYY),cpf = ?,endereco = ?," +
+                     "datanascimento = to_date(?,'DD/MM/YYYY'),cpf = ?,endereco = ?," +
                      "telefone = ? WHERE id_seq_funcionario="+id_seq_funcionario;
 
         try {

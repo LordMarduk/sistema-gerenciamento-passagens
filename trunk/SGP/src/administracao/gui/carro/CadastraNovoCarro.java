@@ -13,7 +13,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
 
@@ -39,6 +38,7 @@ public class CadastraNovoCarro extends JFrame {
 
     public final DataBaseManagerImpl dbm;
     private String respAr;
+    int flagEnableButton = 0;
 
 
     public CadastraNovoCarro(final DataBaseManagerImpl dbm) {
@@ -110,9 +110,13 @@ public class CadastraNovoCarro extends JFrame {
         add(cadastrar);
 
         atualizar.setBounds(245,250,130,50);
+            if(flagEnableButton == 0)
+                atualizar.setEnabled(false);
         add(atualizar);
 
         apagar.setBounds(110,305,130,50);
+            if(flagEnableButton == 0)
+                apagar.setEnabled(false);
         add(apagar);
 
         sair.setBounds(245,305,130,50);

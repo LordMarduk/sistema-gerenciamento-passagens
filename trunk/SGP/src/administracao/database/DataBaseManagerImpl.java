@@ -399,9 +399,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             pst.executeUpdate();
             pst.close();
 
-            //CAPTURANDO id_seq_funcionario EM FUNCIONARIO PARA RELACIONAR COM AGENTE
-            Funcionario fun = new Funcionario();
-
+            //Abrir consulta
             stat = connection.createStatement();
             rs = stat.executeQuery(sqlFunCon);
 
@@ -423,6 +421,103 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             stat.close();
             
             
+        } catch (SQLException e) {
+            // se houve algum erro, uma exceção é gerada para informar o erro
+            e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
+        }
+    }
+
+    public Funcionario selectAgente(int id_seq_funcionario) throws RemoteException {
+
+        Statement st = null;
+        ResultSet rs = null;
+        
+        String sql = "SELECT * FROM funcionario INNER JOIN agente ON funcionario.id_seq_funcionario=agente.id_seq_agente " +
+                     "WHERE id_seq_funcionario="+id_seq_funcionario;
+        Funcionario fun = new Funcionario();
+
+        try {
+            st = connection.createStatement();
+            rs = st.executeQuery(sql);
+
+            rs.next();
+            fun.setIdSeqFuncionario(rs.getInt("id_seq_funcionario"));
+            fun.setNome(rs.getString("nome"));
+            fun.setSexo(rs.getString("sexo"));
+            fun.setDatanascimento(rs.getString("datanascimento"));
+            fun.setCpf(rs.getLong("cpf"));
+            fun.setEndereco(rs.getString("endereco"));
+            fun.setTelefone(rs.getLong("telefone"));
+            fun.setUsuario(rs.getString("usuario"));
+            fun.setSenha(rs.getString("senha"));
+
+            rs.close();
+            st.close();
+
+            return fun;
+            
+        } catch (SQLException e) {
+            // se houve algum erro, uma exceção é gerada para informar o erro
+            e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
+        }
+        return null;
+    }
+
+    public void deleteAgente(int id_seq_funcionario) throws RemoteException {
+        Statement st = null;
+
+        String sql = "DELETE FROM agente WHERE id_seq_agente="+id_seq_funcionario;
+        String sql2 = "DELETE FROM funcionario WHERE id_seq_funcionario="+id_seq_funcionario;
+
+        try {
+
+            st = connection.createStatement();
+            //System.out.println("executando: " + sql);
+            st.executeUpdate(sql);
+            st.executeUpdate(sql2);
+            st.close();
+        } catch (SQLException e) {
+            // se houve algum erro, uma exceção é gerada para informar o erro
+            e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
+        }
+
+
+    }
+
+    public void updateAgente(int id_seq_funcionario, Funcionario upFun) throws RemoteException {
+
+        PreparedStatement pst = null;
+        PreparedStatement pst2 = null;
+
+        String sql = "UPDATE agente" +
+                     " set usuario = ?,senha = ?" +
+                     " WHERE id_seq_agente="+id_seq_funcionario;
+
+        String sql2 = "UPDATE funcionario" +
+                     " set nome = ?,sexo = ?," +
+                     "datanascimento = ?,cpf = ?,endereco = ?," +
+                     "telefone = ? WHERE id_seq_funcionario="+id_seq_funcionario;
+
+        try {
+
+            pst = connection.prepareStatement(sql);
+
+            pst.setString(1, upFun.getUsuario());
+            pst.setString(2, upFun.getSenha());
+
+            pst2 = connection.prepareStatement(sql2);
+
+            pst2.setString(1, upFun.getNome());
+            pst2.setString(2, upFun.getSexo());
+            pst2.setString(3, upFun.getDatanascimento());
+            pst2.setLong(4, upFun.getCpf());
+            pst2.setString(5, upFun.getEndereco());
+            pst2.setLong(6, upFun.getTelefone());
+
+            pst.executeUpdate();
+            pst.close();
+            pst2.executeUpdate();
+            pst2.close();
         } catch (SQLException e) {
             // se houve algum erro, uma exceção é gerada para informar o erro
             e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
@@ -500,6 +595,102 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
         }
     }
+
+    public Funcionario selectMotorista(int id_seq_funcionario) throws RemoteException {
+
+        Statement st = null;
+        ResultSet rs = null;
+
+        String sql = "SELECT * FROM funcionario INNER JOIN motorista ON funcionario.id_seq_funcionario=motorista.id_seq_motorista " +
+                     "WHERE id_seq_funcionario="+id_seq_funcionario;
+        Funcionario fun = new Funcionario();
+
+        try {
+            st = connection.createStatement();
+            rs = st.executeQuery(sql);
+
+            rs.next();
+            fun.setIdSeqFuncionario(rs.getInt("id_seq_funcionario"));
+            fun.setNome(rs.getString("nome"));
+            fun.setSexo(rs.getString("sexo"));
+            fun.setDatanascimento(rs.getString("datanascimento"));
+            fun.setCpf(rs.getLong("cpf"));
+            fun.setEndereco(rs.getString("endereco"));
+            fun.setTelefone(rs.getLong("telefone"));
+            fun.setCnh(rs.getLong("cnh"));
+
+            rs.close();
+            st.close();
+
+            return fun;
+
+        } catch (SQLException e) {
+            // se houve algum erro, uma exceção é gerada para informar o erro
+            e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
+        }
+        return null;
+    }
+
+    public void deleteMotorista(int id_seq_funcionario) throws RemoteException {
+        Statement st = null;
+
+        String sql = "DELETE FROM motorista WHERE id_seq_motorista="+id_seq_funcionario;
+        String sql2 = "DELETE FROM funcionario WHERE id_seq_funcionario="+id_seq_funcionario;
+
+        try {
+
+            st = connection.createStatement();
+            //System.out.println("executando: " + sql);
+            st.executeUpdate(sql);
+            st.executeUpdate(sql2);
+            st.close();
+        } catch (SQLException e) {
+            // se houve algum erro, uma exceção é gerada para informar o erro
+            e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
+        }
+
+
+    }
+
+    public void updateMotorista(int id_seq_funcionario, Funcionario upFun) throws RemoteException {
+
+        PreparedStatement pst = null;
+        PreparedStatement pst2 = null;
+
+        String sql = "UPDATE motorista" +
+                     " set cnh = ?" +
+                     " WHERE id_seq_motorista="+id_seq_funcionario;
+
+        String sql2 = "UPDATE funcionario" +
+                     " set nome = ?,sexo = ?," +
+                     "datanascimento = ?,cpf = ?,endereco = ?," +
+                     "telefone = ? WHERE id_seq_funcionario="+id_seq_funcionario;
+
+        try {
+
+            pst = connection.prepareStatement(sql);
+
+            pst.setLong(1, upFun.getCnh());
+
+
+            pst2 = connection.prepareStatement(sql2);
+
+            pst2.setString(1, upFun.getNome());
+            pst2.setString(2, upFun.getSexo());
+            pst2.setString(3, upFun.getDatanascimento());
+            pst2.setLong(4, upFun.getCpf());
+            pst2.setString(5, upFun.getEndereco());
+            pst2.setLong(6, upFun.getTelefone());
+
+            pst.executeUpdate();
+            pst.close();
+            pst2.executeUpdate();
+            pst2.close();
+        } catch (SQLException e) {
+            // se houve algum erro, uma exceção é gerada para informar o erro
+            e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
+        }
+    }
     /////////////////////////////////////////////////////////////////
 
     //////////////////////FUNÇÕES DE CARRO//////////////////////////////////////
@@ -516,6 +707,83 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             pst.setString(1, car.getPlaca());
             pst.setString(2, car.getChassis());
             pst.setString(3, car.getArCondicionado());
+
+            pst.executeUpdate();
+            pst.close();
+
+        } catch (SQLException e) {
+            // se houve algum erro, uma exceção é gerada para informar o erro
+            e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
+        }
+    }
+
+    public Carro selectCarro(int id_seq_carro) throws RemoteException {
+
+        Statement st = null;
+        ResultSet rs = null;
+
+        String sql = "SELECT * FROM carro " +
+                     "WHERE id_seq_carro="+id_seq_carro;
+
+        Carro car = new Carro();
+
+        try {
+            st = connection.createStatement();
+            rs = st.executeQuery(sql);
+
+            rs.next();
+            car.setId_seq_carro(rs.getInt("id_seq_carro"));
+            car.setPlaca(rs.getString("placa"));
+            car.setChassis(rs.getString("chassis"));
+            car.setArCondicionado(rs.getString("arcondicionado"));
+
+
+            rs.close();
+            st.close();
+
+            return car;
+
+        } catch (SQLException e) {
+            // se houve algum erro, uma exceção é gerada para informar o erro
+            e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
+        }
+        return null;
+    }
+
+    public void deleteCarro(int id_seq_carro) throws RemoteException {
+        Statement st = null;
+
+        String sql = "DELETE FROM carro WHERE id_seq_carro="+id_seq_carro;
+
+        try {
+            st = connection.createStatement();
+            //System.out.println("executando: " + sql);
+            st.executeUpdate(sql);
+            st.close();
+        } catch (SQLException e) {
+            // se houve algum erro, uma exceção é gerada para informar o erro
+            e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
+        }
+
+
+    }
+
+    public void updateCarro(int id_seq_carro, Carro upCar) throws RemoteException {
+
+        PreparedStatement pst = null;
+
+        String sql = "UPDATE carro" +
+                     " set placa = ?,chassis = ?,arcondicionado = ?" +
+                     " WHERE id_seq_carro="+id_seq_carro;
+
+
+        try {
+
+            pst = connection.prepareStatement(sql);
+
+            pst.setString(1, upCar.getPlaca());
+            pst.setString(2, upCar.getChassis());
+            pst.setString(2, upCar.getArCondicionado());
 
             pst.executeUpdate();
             pst.close();

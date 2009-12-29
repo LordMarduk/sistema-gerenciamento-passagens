@@ -1,7 +1,6 @@
 package administracao.gui.funcionario;
 
 import administracao.database.DataBaseManagerImpl;
-import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.*;
 import java.sql.SQLException;
@@ -24,8 +23,8 @@ public class JanelaAdministraFuncionario extends JFrame {
     private JLabel tipoFuncionarioJLabel = new JLabel("Tipo Funcionário *");
     private JComboBox tipoFuncionario = new JComboBox(Auxiliares.TIPO_FUNCIONARIO);
     private TableModel tableModel;
-    private JTextField nomeFuncionarioBusca = new JTextField(40);
-    private JTextField cpfAgenteBusca = new JNumericField(11);
+    private JTextField dadoBusca = new JTextField(40);
+    private JTextField filtroBusca = new JTextField(40);
     private JTable resultTable;
     private JButton cadastraNovo = new JButton("Cadastrar Novo");
     private JButton retorna = new JButton("Retornar Todos");   
@@ -62,21 +61,21 @@ public class JanelaAdministraFuncionario extends JFrame {
         tipoFuncionario.setBounds(5,15,100,35);
         add(tipoFuncionario);
 
-        nomeFuncionarioBusca.setBounds(110,10,200,40);
-        nomeFuncionarioBusca.setBorder(
+        filtroBusca.setBounds(110,10,175,40);
+        filtroBusca.setBorder(
                 BorderFactory.createTitledBorder(
-                    null, "Nome *", 0, 0, new Font("Tahoma", 0, 10)
+                    null, "Filtro *", 0, 0, new Font("Tahoma", 0, 10)
                 )
         );
-        add(nomeFuncionarioBusca);
+        add(filtroBusca);
 
-        cpfAgenteBusca.setBounds(315, 10, 175, 40);
-        cpfAgenteBusca.setBorder(
+        dadoBusca.setBounds(290, 10, 200, 40);
+        dadoBusca.setBorder(
                 BorderFactory.createTitledBorder(
-                    null, "CPF *", 0, 0, new Font("Tahoma", 0, 10)
+                    null, "Dado", 0, 0, new Font("Tahoma", 0, 10)
                 )
         );
-        add(cpfAgenteBusca);
+        add(dadoBusca);
 
         JButton submitButton = new JButton("Buscar");
         submitButton.setBounds(5,55,300,30);
@@ -140,10 +139,20 @@ public class JanelaAdministraFuncionario extends JFrame {
 
                         // realiza uma nova consulta
                         try {
-                            if(tipoFuncionario.getSelectedIndex() == 1)
-                                tableModel.setQuery("SELECT * FROM funcionario INNER JOIN agente ON funcionario.id_seq_funcionario = agente.id_seq_agente WHERE nome LIKE '%" + nomeFuncionarioBusca.getText() + "%'");
-                            else if(tipoFuncionario.getSelectedIndex() == 2)
-                                tableModel.setQuery("SELECT * FROM funcionario INNER JOIN motorista ON funcionario.id_seq_funcionario = motorista.id_seq_motorista WHERE nome LIKE '%" + nomeFuncionarioBusca.getText() + "%'");
+                            if(tipoFuncionario.getSelectedIndex() == 1){
+                                tableModel.setQuery(
+                                        "SELECT * FROM funcionario "+
+                                        "INNER JOIN agente ON funcionario.id_seq_funcionario = agente.id_seq_agente"+
+                                        " WHERE "+ filtroBusca.getText() +
+                                        " LIKE '%" + dadoBusca.getText() + "%'");
+                            }
+                            else if(tipoFuncionario.getSelectedIndex() == 2){
+                                tableModel.setQuery(
+                                        "SELECT * FROM funcionario "+
+                                        "INNER JOIN agente ON funcionario.id_seq_funcionario = motorista.id_seq_agente"+
+                                        " WHERE "+ filtroBusca.getText() +
+                                        " LIKE '%" + dadoBusca.getText() + "%'");
+                            }
                             else{
                                 JOptionPane.showMessageDialog(
                                     null,

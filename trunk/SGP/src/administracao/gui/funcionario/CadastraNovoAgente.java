@@ -5,7 +5,6 @@ import administracao.funcionario.Funcionario;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
 import java.text.ParseException;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -51,6 +50,7 @@ public class CadastraNovoAgente extends JFrame {
     private JButton sair = new JButton("Sair");
 
     MaskFormatter formatter = null;
+    int flagEnableButton = 0;
 
     public final DataBaseManagerImpl dbm;
 
@@ -102,22 +102,6 @@ public class CadastraNovoAgente extends JFrame {
                 )
         );
         add(data_nascimento);
-        /*
-        dataNascimento.setBounds(5,50,100,15);
-        add(dataNascimento);
-
-        diaNascimentoAgente.setBounds(5,65,40,40);
-        mesNascimentoAgente.setBounds(50,65,100,40);
-        anoNascimentoAgente.setBounds(155,65,60,40);
-        anoNascimentoAgente.setBorder(
-                BorderFactory.createTitledBorder(
-                    null, "Ano", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
-        add(diaNascimentoAgente);
-        add(mesNascimentoAgente);
-        add(anoNascimentoAgente);
-        */
         
         cpfAgente.setBounds(220,65,255,40);
         cpfAgente.setBorder(
@@ -186,9 +170,13 @@ public class CadastraNovoAgente extends JFrame {
         add(cadastrar);
 
         atualizar.setBounds(245,250,130,50);
+            if(flagEnableButton == 0)
+                atualizar.setEnabled(false);
         add(atualizar);
 
         apagar.setBounds(110,305,130,50);
+            if(flagEnableButton == 0)
+                apagar.setEnabled(false);
         add(apagar);
 
         sair.setBounds(245,305,130,50);

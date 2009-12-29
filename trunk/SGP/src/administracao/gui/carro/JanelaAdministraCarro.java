@@ -20,6 +20,7 @@ public class JanelaAdministraCarro extends JFrame {
     private JLabel carroJLabel = new JLabel("CARRO");
     
     private JTextField filtroBusca = new JTextField(40);
+    private JTextField dadoBusca = new JTextField(40);
     
     private TableModel tableModel;
     
@@ -58,13 +59,21 @@ public class JanelaAdministraCarro extends JFrame {
         carroJLabel.setBounds(35,20,100,20);
         add(carroJLabel);
 
-        filtroBusca.setBounds(110,10,380,40);
+        filtroBusca.setBounds(110,10,175,40);
         filtroBusca.setBorder(
                 BorderFactory.createTitledBorder(
                     null, "Filtro *", 0, 0, new Font("Tahoma", 0, 10)
                 )
         );
         add(filtroBusca);
+
+        dadoBusca.setBounds(290, 10, 200, 40);
+        dadoBusca.setBorder(
+                BorderFactory.createTitledBorder(
+                    null, "Dado", 0, 0, new Font("Tahoma", 0, 10)
+                )
+        );
+        add(dadoBusca);
 
         resultTable = new JTable(tableModel);
         JScrollPane resultScroll = new JScrollPane(resultTable);
@@ -111,7 +120,10 @@ public class JanelaAdministraCarro extends JFrame {
 
                     public void actionPerformed(ActionEvent event) {
                         try {
-                            tableModel.setQuery("SELECT * FROM carro WHERE placa LIKE '%" + filtroBusca.getText() + "%'");
+                            tableModel.setQuery(
+                                    "SELECT * FROM carro "+
+                                    "WHERE "+ filtroBusca.getText() +
+                                    " LIKE '%" + dadoBusca.getText() + "%'");
                         }catch (SQLException sqlException) {
                                     JOptionPane.showMessageDialog(null,
                                             sqlException.getMessage(), "Database error",

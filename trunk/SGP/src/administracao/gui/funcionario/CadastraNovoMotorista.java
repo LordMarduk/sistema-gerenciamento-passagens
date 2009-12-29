@@ -47,6 +47,7 @@ public class CadastraNovoMotorista extends JFrame {
 
     public final DataBaseManagerImpl dbm;
     MaskFormatter formatter;
+    int flagEnableButton = 0;
 
 
     public CadastraNovoMotorista (final DataBaseManagerImpl dbm) {
@@ -135,9 +136,13 @@ public class CadastraNovoMotorista extends JFrame {
         add(cadastrar);
 
         atualizar.setBounds(245,250,130,50);
+            if(flagEnableButton == 0)
+                atualizar.setEnabled(false);
         add(atualizar);
 
         apagar.setBounds(110,305,130,50);
+            if(flagEnableButton == 0)
+                apagar.setEnabled(false);
         add(apagar);
 
         sair.setBounds(245,305,130,50);

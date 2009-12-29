@@ -4,10 +4,13 @@ package util;
 //Um TableModel que fornece dados ResultSet a uma JTable.
 import administracao.gui.viagens.*;
 import administracao.database.DataBaseManagerImpl;
+import java.rmi.RemoteException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.AbstractTableModel;
 
 //jtable indice começa do 0/ resultset começa do 1
@@ -27,11 +30,12 @@ public class TableModel extends AbstractTableModel {
     {
 
         this.dbm = dbm;
-
-        // cria Statement para consultar banco de dados
-        statement = dbm.connection.createStatement(
-                ResultSet.TYPE_SCROLL_INSENSITIVE,
-                ResultSet.CONCUR_READ_ONLY);
+        try {
+            // cria Statement para consultar banco de dados
+            statement = dbm.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
 
         // atualiza status de conex�o de banco de dados
         connectedToDatabase = true;

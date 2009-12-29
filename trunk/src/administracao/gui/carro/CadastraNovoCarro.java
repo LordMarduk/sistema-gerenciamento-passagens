@@ -13,10 +13,13 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
 
 public class CadastraNovoCarro extends JFrame {
+
+    protected JTextField identificadorIdSeq = new JTextField(3);
 
     JLabel arCondicionadoLabel = new JLabel("Ar Condicionado:");
 
@@ -58,6 +61,8 @@ public class CadastraNovoCarro extends JFrame {
 
         //-----
 
+        identificadorIdSeq.setVisible(false);
+
         arCondicionadoLabel.setBounds(5,5,350,40);
         add(arCondicionadoLabel);
 
@@ -95,6 +100,8 @@ public class CadastraNovoCarro extends JFrame {
         add(chassis_carro);
 
         cadastrar.setBounds(110,250,130,50);
+            if(flagEnableButton == 1)
+                cadastrar.setEnabled(false);
         cadastrar.addActionListener(
                 new ActionListener() {
                     // passa consulta para modelo de tabela
@@ -169,6 +176,9 @@ public class CadastraNovoCarro extends JFrame {
     public Carro setarEmObjetos() throws Exception {
 
         Carro novo = new Carro();
+
+        if(flagEnableButton == 1)
+                novo.setId_seq_carro(Integer.parseInt(identificadorIdSeq.getText()));
 
         char sex = simRB.isSelected() ? 'S' : 'N';
 

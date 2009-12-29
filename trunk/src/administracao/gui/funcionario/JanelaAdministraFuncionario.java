@@ -48,7 +48,7 @@ public class JanelaAdministraFuncionario extends JFrame {
 
         try {
             // cria o TableModel            
-            tableModel = new TableModel(dbm, "SELECT * FROM funcionario");
+            tableModel = new TableModel(dbm, "SELECT * FROM funcionario ORDER BY nome");
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
@@ -87,7 +87,7 @@ public class JanelaAdministraFuncionario extends JFrame {
 
                     public void actionPerformed(ActionEvent event) {
                         try {
-                            tableModel.setQuery("SELECT * FROM funcionario");
+                            tableModel.setQuery("SELECT * FROM funcionario ORDER BY nome");
                             tipoFuncionario.setSelectedIndex(0);
                         } catch (SQLException sqlException) {
                             JOptionPane.showMessageDialog(null,
@@ -247,6 +247,8 @@ public class JanelaAdministraFuncionario extends JFrame {
 
             CadastraNovoAgente cna = new CadastraNovoAgente(dbm, 1);
 
+                cna.identificadorIdSeq.setText(String.valueOf(fun.getIdSeqFuncionario()));
+
                 cna.nomeAgente.setText(fun.getNome());
 
                 if(fun.getSexo().indexOf("M") != -1)
@@ -277,6 +279,8 @@ public class JanelaAdministraFuncionario extends JFrame {
         public CadastraNovoMotorista inserirMotoristaEmObjetos(Funcionario fun) {
 
             CadastraNovoMotorista cnm = new CadastraNovoMotorista(dbm, 1);
+
+                cnm.identificadorIdSeq.setText(String.valueOf(fun.getIdSeqFuncionario()));
 
                 cnm.nomeMotorista.setText(fun.getNome());
 

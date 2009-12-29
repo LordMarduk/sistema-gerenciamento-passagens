@@ -144,6 +144,5 @@ public class Funcionario implements Serializable{
             return ret.toString();
         }
 
-
 }
 

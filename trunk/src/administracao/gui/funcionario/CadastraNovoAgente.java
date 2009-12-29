@@ -26,6 +26,8 @@ public class CadastraNovoAgente extends JFrame {
 
     protected JTextField nomeAgente = new JTextField(100);
 
+    protected JTextField identificadorIdSeq = new JTextField(3);
+
     protected JLabel sexo = new JLabel("sexo:");
     protected JRadioButton masculinoRB = new JRadioButton("Masculino", false);
     protected JRadioButton femininoRB = new JRadioButton("Feminino", false);
@@ -69,6 +71,8 @@ public class CadastraNovoAgente extends JFrame {
         this.flagEnableButton = flagEnableButton;
 
         //-----
+
+        identificadorIdSeq.setVisible(false);
 
         nomeAgente.setBounds(5,5,350,40);
         nomeAgente.setBorder(
@@ -231,6 +235,9 @@ public class CadastraNovoAgente extends JFrame {
         Funcionario novo = new Funcionario();
 
             char sex = masculinoRB.isSelected() ? 'M' : 'F';
+            
+            if(flagEnableButton == 1)
+                novo.setIdSeqFuncionario(Integer.parseInt(identificadorIdSeq.getText()));
             
             novo.setNome(nomeAgente.getText());
             novo.setCpf(Long.parseLong(cpfAgente.getText()));

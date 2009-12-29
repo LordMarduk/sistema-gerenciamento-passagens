@@ -54,7 +54,7 @@ public class JanelaAdministraCarro extends JFrame {
 
         try {
             // cria o TableModel
-            tableModel = new TableModel(dbm, "SELECT * FROM carro");
+            tableModel = new TableModel(dbm, "SELECT * FROM carro ORDER BY id_seq_carro");
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
@@ -96,7 +96,7 @@ public class JanelaAdministraCarro extends JFrame {
 
                     public void actionPerformed(ActionEvent event) {
                         try {
-                            tableModel.setQuery("SELECT * FROM carro");
+                            tableModel.setQuery("SELECT * FROM carro ORDER BY id_seq_carro");
                         } catch (SQLException sqlException) {
                             JOptionPane.showMessageDialog(null,
                                     sqlException.getMessage(), "Erro de Database",
@@ -128,7 +128,7 @@ public class JanelaAdministraCarro extends JFrame {
                             tableModel.setQuery(
                                     "SELECT * FROM carro "+
                                     "WHERE "+ filtroBusca.getText() +
-                                    " LIKE '%" + dadoBusca.getText() + "%'");
+                                    " LIKE '%" + dadoBusca.getText() + "%' ORDER BY id_seq_carro");
                         }catch (SQLException sqlException) {
                                     JOptionPane.showMessageDialog(null,
                                             sqlException.getMessage(), "Database error",
@@ -193,6 +193,8 @@ public class JanelaAdministraCarro extends JFrame {
         public CadastraNovoCarro inserirAgenteEmObjetos(Carro car) {
 
             CadastraNovoCarro cnc = new CadastraNovoCarro(dbm, 1);
+
+                cnc.identificadorIdSeq.setText(String.valueOf(car.getId_seq_carro()));
 
                 if(car.getArCondicionado().indexOf("SIM") != -1)
                     cnc.simRB.setSelected(true);

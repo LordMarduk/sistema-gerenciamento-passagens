@@ -1,16 +1,22 @@
 package util;
 
 import administracao.viagens.TipoDeViagem;
-import administracao.viagens.InstanciaDeViagem;
 import cliente.Cliente;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.sql.Connection;
 
 public interface DataBaseManager extends Remote{
+
+    public Connection getConnection() throws RemoteException ;
     
     public boolean closeConnection() throws RemoteException;
 
     public boolean insertCliente(Cliente novoCliente) throws RemoteException;
+
+    public Cliente getCliente(int id) throws RemoteException;
+    
+    public boolean updateCliente(int id, Cliente mod) throws RemoteException;
 
     public int maximunValueCliente() throws RemoteException;
 

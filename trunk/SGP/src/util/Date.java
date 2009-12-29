@@ -10,6 +10,12 @@ public class Date implements Serializable {
     public int m;
     public int a;
 
+    public Date(String d){
+        this( Integer.parseInt( d.substring(8, 10) ) ,
+              Integer.parseInt( d.substring(5, 7) ) ,
+              Integer.parseInt( d.substring(0, 4) ) );
+    }
+
     public Date(int d, int m, int a) {
         this.d = d;
         this.m = m;
@@ -22,4 +28,9 @@ public class Date implements Serializable {
         String mes = m < 10 ? "0" + m : m + "";
         return dia + "/" + mes + "/" + a;
     }
+
+    public String stringToQuery() {
+        return "to_date('" + toString() + "', 'DD/MM/YYYY')";
+    }
+
 }

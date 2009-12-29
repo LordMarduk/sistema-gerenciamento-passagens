@@ -2,7 +2,7 @@ package util;
 
 import administracao.viagens.TipoDeViagem;
 import administracao.viagens.InstanciaDeViagem;
-import cliente.Cliente;
+import rodoviaria.cliente.Cliente;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 

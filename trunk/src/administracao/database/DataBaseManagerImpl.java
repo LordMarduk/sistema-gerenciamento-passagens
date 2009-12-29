@@ -3,7 +3,7 @@ package administracao.database;
 
 import administracao.carro.Carro;
 import administracao.funcionario.Funcionario;
-import cliente.Cliente;
+import rodoviaria.cliente.Cliente;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;

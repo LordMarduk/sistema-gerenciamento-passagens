@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import cliente.Cliente;
+import rodoviaria.cliente.Cliente;
 import java.rmi.RemoteException;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;

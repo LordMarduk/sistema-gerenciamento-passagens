@@ -1,4 +1,4 @@
-package cliente;
+package rodoviaria.cliente;
 
 import java.io.Serializable;
 import util.Date;

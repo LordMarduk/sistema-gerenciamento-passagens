@@ -5,7 +5,6 @@ import administracao.funcionario.Funcionario;
 import java.awt.Font;
 import java.awt.event.*;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,7 +15,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import util.Auxiliares;
-import util.JNumericField;
 import util.TableModel;
 
 
@@ -90,6 +88,7 @@ public class JanelaAdministraFuncionario extends JFrame {
                     public void actionPerformed(ActionEvent event) {
                         try {
                             tableModel.setQuery("SELECT * FROM funcionario");
+                            tipoFuncionario.setSelectedIndex(0);
                         } catch (SQLException sqlException) {
                             JOptionPane.showMessageDialog(null,
                                     sqlException.getMessage(), "Erro de Database",
@@ -216,13 +215,22 @@ public class JanelaAdministraFuncionario extends JFrame {
                         CadastraNovoAgente cna = inserirAgenteEmObjetos(fun);
                     }
 
-                    if (tipoFuncionario.getSelectedIndex() == 2) {
+                    else if (tipoFuncionario.getSelectedIndex() == 2) {
                         //quando buscar esse sera preenchido
                         Funcionario fun = new Funcionario();
                         //efetua a busca e preenche
                         fun = dbm.selectMotorista(clicado);
                         //janela que exibira os dados    mapeamento: objeto -> GUI
                         CadastraNovoMotorista cnm = inserirMotoristaEmObjetos(fun);
+                    }
+
+                    else {
+                        JOptionPane.showMessageDialog(
+                                    null,
+                                    "Escolha o tipo de funcionário",
+                                    "Aviso",
+                                    JOptionPane.INFORMATION_MESSAGE
+                        );
                     }
 
 
@@ -269,6 +277,26 @@ public class JanelaAdministraFuncionario extends JFrame {
         public CadastraNovoMotorista inserirMotoristaEmObjetos(Funcionario fun) {
 
             CadastraNovoMotorista cnm = new CadastraNovoMotorista(dbm, 1);
+
+                cnm.nomeMotorista.setText(fun.getNome());
+
+                if(fun.getSexo().indexOf("M") != -1)
+                    cnm.masculinoRB.setSelected(true);
+                else
+                    cnm.femininoRB.setSelected(true);
+
+                //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                //String myDate = sdf.format(fun.getDatanascimento());
+
+                cnm.data_nascimento.setText(fun.getDatanascimento());
+
+                cnm.cpfMotorista.setText(String.valueOf(fun.getCpf()));
+
+                cnm.enderecoMotorista.setText(fun.getEndereco());
+
+                cnm.telefoneMotorista.setText(String.valueOf(fun.getTelefone()));
+
+                cnm.cnhMotorista.setText(String.valueOf(fun.getCnh()));
 
             return cnm; 
 

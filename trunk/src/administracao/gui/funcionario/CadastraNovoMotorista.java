@@ -23,27 +23,27 @@ import util.JNumericField;
  */
 public class CadastraNovoMotorista extends JFrame {
 
-    private JTextField nomeMotorista = new JTextField(100);
+    protected JTextField nomeMotorista = new JTextField(100);
 
-    private JLabel sexo = new JLabel("sexo:");
-    private JRadioButton masculinoRB = new JRadioButton("Masculino", false);
-    private JRadioButton femininoRB = new JRadioButton("Feminino", false);
-    private ButtonGroup  sexoMotorista     = new ButtonGroup();
+    protected JLabel sexo = new JLabel("sexo:");
+    protected JRadioButton masculinoRB = new JRadioButton("Masculino", false);
+    protected JRadioButton femininoRB = new JRadioButton("Feminino", false);
+    protected ButtonGroup  sexoMotorista     = new ButtonGroup();
 
-    private JFormattedTextField data_nascimento;
+    protected JFormattedTextField data_nascimento;
 
-    private JNumericField cpfMotorista = new JNumericField(11);
+    protected JNumericField cpfMotorista = new JNumericField(11);
 
-    private JTextField enderecoMotorista = new JTextField(300);
+    protected JTextField enderecoMotorista = new JTextField(300);
 
-    private JNumericField telefoneMotorista = new JNumericField(8);
+    protected JNumericField telefoneMotorista = new JNumericField(8);
 
-    private JNumericField cnhMotorista = new JNumericField(10);
+    protected JNumericField cnhMotorista = new JNumericField(10);
 
-    private JButton atualizar = new JButton("Atualizar");
-    private JButton cadastrar = new JButton("Cadastrar");
-    private JButton apagar = new JButton("Apagar");
-    private JButton sair = new JButton("Sair");
+    protected JButton atualizar = new JButton("Atualizar");
+    protected JButton cadastrar = new JButton("Cadastrar");
+    protected JButton apagar = new JButton("Apagar");
+    protected JButton sair = new JButton("Sair");
 
     public final DataBaseManagerImpl dbm;
     MaskFormatter formatter;

@@ -1,9 +1,14 @@
 package administracao.gui.carro;
 
+import administracao.carro.Carro;
 import administracao.database.DataBaseManagerImpl;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import util.TableModel;
 import java.sql.SQLException;
 import javax.swing.BorderFactory;
@@ -107,7 +112,7 @@ public class JanelaAdministraCarro extends JFrame {
                 new ActionListener() {
 
                     public void actionPerformed(ActionEvent event) {
-                            new CadastraNovoCarro(dbm);
+                            new CadastraNovoCarro(dbm, 0);
                     }
                 }
          );
@@ -133,6 +138,77 @@ public class JanelaAdministraCarro extends JFrame {
                     }
                 }
         );    
+
+    //evento de clicar no jtable
+        resultTable.addMouseListener(new MouseClickedHandler());
+
+        addWindowListener(
+                new WindowAdapter() {
+                    // desconecta-se do banco de dados e sai quando a janela for fechada
+
+                    @Override
+                    public void windowClosed(WindowEvent event) {
+                        dispose();
+                    }
+                }
+        );
+
+         
+    }
+
+    private class MouseClickedHandler extends MouseAdapter {
+
+        //tem 2 metodos essa classe interna,e um deles chama um auxiliar mais abaixo
+        @Override
+        public void mouseClicked(MouseEvent evt) {
+            if (evt.getClickCount() > 1) {
+                apertarNoJTable();
+            }
+        }
+
+        public void apertarNoJTable() {
+            int select = resultTable.getSelectedRow();
+            if (select >= 0) {
+
+                try {
+                     //lugar especifico onde clicou
+                    Integer clicado = new Integer(resultTable.getValueAt(select, 0).toString());
+                   
+                        //quando buscar esse sera preenchido
+                        Carro car = new Carro();
+                        //efetua a busca e preenche
+                        car = dbm.selectCarro(clicado);
+                        //janela que exibira os dados    mapeamento: objeto -> GUI
+                        CadastraNovoCarro cnc = inserirAgenteEmObjetos(car);
+                    
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+            }
+
+        }
+
+        public CadastraNovoCarro inserirAgenteEmObjetos(Carro car) {
+
+            CadastraNovoCarro cnc = new CadastraNovoCarro(dbm, 1);
+
+                if(car.getArCondicionado().indexOf("SIM") != -1)
+                    cnc.simRB.setSelected(true);
+                else
+                    cnc.naoRB.setSelected(true);
+
+                //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                //String myDate = sdf.format(fun.getDatanascimento());
+
+                cnc.placa_carro.setText(car.getPlaca());
+
+                cnc.chassis_carro.setText(car.getChassis());
+
+            return cnc;
+
+        }
 
     }
 }

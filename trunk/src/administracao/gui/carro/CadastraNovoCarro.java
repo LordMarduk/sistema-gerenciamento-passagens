@@ -20,9 +20,9 @@ public class CadastraNovoCarro extends JFrame {
 
     JLabel arCondicionadoLabel = new JLabel("Ar Condicionado:");
 
-    private JRadioButton simRB = new JRadioButton("Sim", false);
-    private JRadioButton naoRB = new JRadioButton("Não", false);
-    private ButtonGroup  arCondicionado     = new ButtonGroup();
+    protected JRadioButton simRB = new JRadioButton("Sim", false);
+    protected JRadioButton naoRB = new JRadioButton("Não", false);
+    protected ButtonGroup  arCondicionado     = new ButtonGroup();
 
     JFormattedTextField placa_carro;
 
@@ -41,7 +41,7 @@ public class CadastraNovoCarro extends JFrame {
     int flagEnableButton = 0;
 
 
-    public CadastraNovoCarro(final DataBaseManagerImpl dbm) {
+    public CadastraNovoCarro(final DataBaseManagerImpl dbm, int flagEnableButton) {
 
         super("Cadastrar Carro");
 
@@ -53,6 +53,8 @@ public class CadastraNovoCarro extends JFrame {
         //-----
 
         this.dbm = dbm;
+
+        this.flagEnableButton = flagEnableButton;
 
         //-----
 

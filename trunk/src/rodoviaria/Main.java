@@ -1,6 +1,6 @@
 package rodoviaria;
 
-import cliente.Cliente;
+import rodoviaria.cliente.Cliente;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;

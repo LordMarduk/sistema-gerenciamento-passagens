@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -186,7 +188,10 @@ public class CadastraNovoAgente extends JFrame {
                         }
 
                         //tratamento data nascimento
-                        if(data_nascimento.getText().length() < 10){
+                        Pattern p = Pattern.compile("[0-2]{1}[0-9]{1}[\\/][0]{1}[0-9]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[3]{1}[1]{1}[\\/][1]{1}[0-2]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}");
+                        Matcher m = p.matcher(data_nascimento.getText());
+                        if(!(m.find())){
                             JOptionPane.showMessageDialog
                                 (null, "Data Inválida!", "Erro",
                                 JOptionPane.ERROR_MESSAGE);

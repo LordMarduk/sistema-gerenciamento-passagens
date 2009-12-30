@@ -18,14 +18,16 @@ import administracao.database.DataBaseManagerImpl;
 import javax.swing.JComboBox;
 import util.Auxiliares;
 import administracao.viagens.InstanciaDeViagem;
+import java.text.ParseException;
+import javax.swing.JFormattedTextField;
 import util.JNumericField;
 import javax.swing.JOptionPane;
+import javax.swing.text.MaskFormatter;
 
 public class CadastraInstanciaDeViagem extends JFrame {
 
     protected Font padrao = new Font("Arial", Font.PLAIN, 12);
     protected Font padraoParaRotulos = new Font("Arial", Font.BOLD, 11);
-    protected JLabel dataJL;
     public JNumericField idSeqTdvTF;
     public JTextField horaDeSaidaTF;
     public JNumericField numVagasDisponiveisTF;
@@ -37,14 +39,13 @@ public class CadastraInstanciaDeViagem extends JFrame {
     protected JButton deleteIdvButton;
     protected JButton sair;
     protected JTextArea observacaoTA;
-    protected JComboBox escolhaDeDia;
-    protected JComboBox escolhaDeMes;
-    protected JComboBox escolhaDeAno;
+    protected JFormattedTextField dataViagemFTF;
+    MaskFormatter formatter = null;
     protected int tipoOperacao = 0;
     public DataBaseManagerImpl dbm;
 
     //protected Filme filmeCriado;
-    public CadastraInstanciaDeViagem(int tipoOperacao,DataBaseManagerImpl dbm) {
+    public CadastraInstanciaDeViagem(int tipoOperacao, DataBaseManagerImpl dbm) {
 
         //--Informa��es da Janela--
         super("Cadastrar Instancia De Viagem");
@@ -64,9 +65,7 @@ public class CadastraInstanciaDeViagem extends JFrame {
         idSeqTdvTF.setBounds(10, 30, 130, 40);
         idSeqTdvTF.setBorder(
                 BorderFactory.createTitledBorder(
-                    null, "Id. Seq. Tipo De Viagem", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
+                null, "Id. Seq. Tipo De Viagem", 0, 0, new Font("Tahoma", 0, 10)));
 
         add(idSeqTdvTF);
         //--------------------
@@ -74,13 +73,12 @@ public class CadastraInstanciaDeViagem extends JFrame {
         //--Vagas Disponiveis--
         numVagasDisponiveisTF = new JNumericField(2);
         numVagasDisponiveisTF.setFont(padrao);
-        numVagasDisponiveisTF.setBounds(170, 30, 130, 40);
-        numVagasDisponiveisTF.setEditable(false);
+        numVagasDisponiveisTF.setBounds(170, 30, 150, 40);
+        //depois pegar isso de carro no banco de dados(capacidade)
+        //numVagasDisponiveisTF.setEditable(false);
         numVagasDisponiveisTF.setBorder(
                 BorderFactory.createTitledBorder(
-                    null, "Numero De Vagas Disponiveis", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
+                null, "Numero De Vagas Disponiveis", 0, 0, new Font("Tahoma", 0, 10)));
         add(numVagasDisponiveisTF);
 
         //---------------------
@@ -92,9 +90,7 @@ public class CadastraInstanciaDeViagem extends JFrame {
         add(horaDeSaidaTF);
         horaDeSaidaTF.setBorder(
                 BorderFactory.createTitledBorder(
-                    null, "Horario De Saida", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
+                null, "Horario De Saida", 0, 0, new Font("Tahoma", 0, 10)));
         add(horaDeSaidaTF);
 
         horaDeChegadaTF = new JTextField("", 5);
@@ -102,20 +98,16 @@ public class CadastraInstanciaDeViagem extends JFrame {
         horaDeChegadaTF.setBounds(170, 80, 130, 40);
         horaDeChegadaTF.setBorder(
                 BorderFactory.createTitledBorder(
-                    null, "Horario De Chegada", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
+                null, "Horario De Chegada", 0, 0, new Font("Tahoma", 0, 10)));
         add(horaDeChegadaTF);
 
         //---------------------
         //--observacoes--
-      
+
         observacaoTA = new JTextArea();
         observacaoTA.setBorder(
                 BorderFactory.createTitledBorder(
-                    null, "Observacoes:", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
+                null, "Observacoes:", 0, 0, new Font("Tahoma", 0, 10)));
 
         //observacaoTA.setText(f.retornaobservacaoTA());
         //observacaoTA.setBackground(this.getBackground());
@@ -125,55 +117,48 @@ public class CadastraInstanciaDeViagem extends JFrame {
         add(observacaoTA);
 
         //data
-        dataJL = new JLabel("Data");
-        dataJL.setBounds(10, 130, 75, 20);
-        add(dataJL);
+        //escolhaDeDia = new JComboBox(Auxiliares.DIAS);
+        //escolhaDeDia.setMaximumRowCount(4);
+        //escolhaDeDia.setFont(padrao);
+        //escolhaDeDia.setSelectedIndex(0);
+        //escolhaDeDia.setBounds(10, 160,60, 20);
+        //add(escolhaDeDia);
+        try {
+            formatter = new MaskFormatter("##/##/####");
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
 
-        escolhaDeDia = new JComboBox(Auxiliares.DIAS);
-        escolhaDeDia.setMaximumRowCount(4);
-        escolhaDeDia.setFont(padrao);
-        escolhaDeDia.setSelectedIndex(0);
-        escolhaDeDia.setBounds(10, 160,60, 20);
-        add(escolhaDeDia);
+        dataViagemFTF = new javax.swing.JFormattedTextField(formatter);
 
-        escolhaDeMes = new JComboBox(Auxiliares.MESES);
-        escolhaDeMes.setMaximumRowCount(4);
-        escolhaDeMes.setFont(padrao);
-        escolhaDeMes.setSelectedIndex(0);
-        escolhaDeMes.setBounds(10, 190,80, 20);
-        add(escolhaDeMes);
+        dataViagemFTF.setBounds(10, 170, 120, 40);
+        dataViagemFTF.setBorder(
+                BorderFactory.createTitledBorder(
+                null, "Data Da Viagem *", 0, 0, new Font("Tahoma", 0, 10)));
+        add(dataViagemFTF);
 
-        escolhaDeAno = new JComboBox(Auxiliares.ANOS);
-        escolhaDeAno.setMaximumRowCount(4);
-        escolhaDeAno.setFont(padrao);
-        escolhaDeAno.setSelectedIndex(0);
-        escolhaDeAno.setBounds(10, 220,60, 20);
-        add(escolhaDeAno);
+
         //---------------------
 
 
         //--Id. Seq. Carro--
         idSeqCarroTF = new JNumericField(2);
         idSeqCarroTF.setFont(padrao);
-        idSeqCarroTF.setBounds(10, 270, 120, 40);
+        idSeqCarroTF.setBounds(10, 220, 120, 40);
         idSeqCarroTF.setBorder(
                 BorderFactory.createTitledBorder(
-                    null, "Id. Seq. Carro", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
+                null, "Id. Seq. Carro", 0, 0, new Font("Tahoma", 0, 10)));
 
         add(idSeqCarroTF);
         //--------------------
         //--Id. Seq. Rodoviaria Partida--
-        
+
         idSeqMotoristaTF = new JNumericField(3);
         idSeqMotoristaTF.setFont(padrao);
-        idSeqMotoristaTF.setBounds(10, 310, 120, 40);
+        idSeqMotoristaTF.setBounds(10, 270, 120, 40);
         idSeqMotoristaTF.setBorder(
                 BorderFactory.createTitledBorder(
-                    null, "Id. Seq. Motorista", 0, 0, new Font("Tahoma", 0, 10)
-                )
-        );
+                null, "Id. Seq. Motorista", 0, 0, new Font("Tahoma", 0, 10)));
 
         add(idSeqMotoristaTF);
         //--------------------
@@ -239,8 +224,7 @@ public class CadastraInstanciaDeViagem extends JFrame {
         public void actionPerformed(ActionEvent action) {
             try {
                 InstanciaDeViagem idv = insereGuiEmObjeto();
-                System.out.println("teste");
-                //dbm.insertInstanciaDeViagem(idv);
+                dbm.insertInstanciaDeViagem(idv);
 
             } catch (Exception e) {
             }
@@ -253,8 +237,8 @@ public class CadastraInstanciaDeViagem extends JFrame {
         public void actionPerformed(ActionEvent action) {
             try {
                 InstanciaDeViagem idv = insereGuiEmObjeto();
-                dbm.updateInstanciaDeViagem(idv.getIdSeqTdv(),
-                		idv.getData(),idv);
+                //dbm.updateInstanciaDeViagem(idv.getIdSeqTdv(),
+                        //idv.getData(), idv);
             } catch (Exception e) {
             }
             dispose();
@@ -266,7 +250,7 @@ public class CadastraInstanciaDeViagem extends JFrame {
         public void actionPerformed(ActionEvent action) {
             try {
                 InstanciaDeViagem idv = insereGuiEmObjeto();
-                dbm.deleteInstanciaDeViagem(idv.getIdSeqTdv(),idv.getData());
+                //dbm.deleteInstanciaDeViagem(idv.getIdSeqTdv(), idv.getData());
 
             } catch (Exception e) {
             }
@@ -279,32 +263,16 @@ public class CadastraInstanciaDeViagem extends JFrame {
         InstanciaDeViagem idv = new InstanciaDeViagem();
 
         idv.setIdSeqTdv(Integer.parseInt(idSeqTdvTF.getText()));
-
-        //int dia = escolha
-                //int mes =
-                //int ano =
-
-                //DateFormat dat = new SimpleDateFormat
-
-
-        
-       // DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
-        //Date aux = (Date)formatter.parse("01/29/02");  
-        //idv.setData((Date)formatter.parse((String)escolhaDeDia.getSelectedItem()
-        		//+ String.valueOf(escolhaDeMes.getSelectedIndex() + 1)
-        		//+ (String)escolhaDeAno.getSelectedItem()));
-
-        //JOptionPane.showMessageDialog(this,idv.getData());
-        //System.out.println(idv.getData());
-        //System.out.println("pqp");
-        		
-        idv.setNumVagasDisponiveis(Integer.parseInt(numVagasDisponiveisTF.getText()));
         idv.setHoraRealSaida(horaDeSaidaTF.getText());
         idv.setHoraRealChegada(horaDeChegadaTF.getText());
         idv.setIdSeqCarro(Integer.parseInt(idSeqCarroTF.getText()));
         idv.setIdSeqMotorista(Integer.parseInt(idSeqMotoristaTF.getText()));
         idv.setObservacoes(observacaoTA.getText());
-        
+
+        idv.setData(dataViagemFTF.getText());
+
+        idv.setNumVagasDisponiveis(Integer.parseInt(numVagasDisponiveisTF.getText()));
+
         return idv;
     }
 }

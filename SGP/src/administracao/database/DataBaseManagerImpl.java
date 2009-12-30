@@ -214,12 +214,18 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
     }
 
     /////////////////////////////FUNCOES DE INSTANCIA DE VIAGEM///////////////////////////////
-    public InstanciaDeViagem selectInstanciaDeViagem(int id_seq_tdv,Date data) {
+    public InstanciaDeViagem selectInstanciaDeViagem(int id_seq_tdv,String data) {
 
         Statement st = null;
         ResultSet rs = null;
+        //String sql = "select * from instancia_de_viagem where id_seq_tdv = "
+        	//+ id_seq_tdv + " AND data = to_date('" + data + "','DD/MM/YYYY')";
         String sql = "select * from instancia_de_viagem where id_seq_tdv = "
-        	+ id_seq_tdv + " AND data = " + data;
+        	+ id_seq_tdv;
+        
+
+        //"to_date('" + novoCliente.getData_nascimento() + "', 'DD/MM/YYYY'), '"
+        
         InstanciaDeViagem idv = new InstanciaDeViagem();
 
         try {
@@ -227,11 +233,12 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             rs = st.executeQuery(sql);
 
             rs.next();
+
             idv.setIdSeqTdv(rs.getInt("id_seq_tdv"));
             idv.setNumVagasDisponiveis(rs.getInt("num_vagas_disponiveis"));
             idv.setHoraRealSaida(rs.getString("hora_real_saida"));
             idv.setHoraRealChegada(rs.getString("hora_real_chegada"));
-            idv.setData(rs.getDate("data"));//ou timstamp testar depois
+            idv.setData(rs.getString("data"));
             idv.setIdSeqCarro(rs.getInt("id_seq_carro"));
             idv.setIdSeqMotorista(rs.getInt("id_seq_motorista"));
             idv.setObservacoes(rs.getString("observacoes"));
@@ -272,11 +279,12 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
 
         String sql = "update instancia_de_viagem set id_seq_tdv = ?," +
         		"num_vagas_disponiveis = ?,hora_real_saida = ?," +
-        				"hora_real_chegada = ?,data = ?," +
+        				"hora_real_chegada = ?,data = to_date(?,'DD/MM/YYYY')," +
         				"id_seq_carro = ?,id_seq_motorista = ?," +
         				"obeservacoes = ?, " +
         				"where id_seq_idv = " + id_seq_idv
         				+ " AND data = " + data;
+        
         try {
             pst = connection.prepareStatement(sql);
 
@@ -284,7 +292,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             pst.setInt(2,novoIdv.getNumVagasDisponiveis());
             pst.setString(3,novoIdv.getHoraRealSaida());
             pst.setString(4,novoIdv.getHoraRealChegada());
-            pst.setDate(5,(java.sql.Date)novoIdv.getData());
+            pst.setString(5,novoIdv.getData());
             pst.setInt(6,novoIdv.getIdSeqCarro());
             pst.setInt(7,novoIdv.getIdSeqMotorista());
             pst.setString(8,novoIdv.getObservacoes());
@@ -305,7 +313,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             String sql = "insert into instancia_de_viagem(id_seq_tdv," +
             		"num_vagas_disponiveis,hora_real_saida," +
                     "hora_real_chegada,data,id_seq_carro," +
-                    "id_seq_motorista,observacoes) values(?,?,?,?,?,?,?,?) ";
+                    "id_seq_motorista,observacoes) values(?,?,?,?,to_date(?,'DD/MM/YYYY'),?,?,?) ";
 
             pst = connection.prepareStatement(sql);
 
@@ -313,7 +321,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             pst.setInt(2, idv.getNumVagasDisponiveis());
             pst.setString(3, idv.getHoraRealSaida());
             pst.setString(4, idv.getHoraRealChegada());
-            pst.setTimestamp(5, new java.sql.Timestamp(idv.getData().getTime()));
+            pst.setString(5, idv.getData());
             pst.setInt(6, idv.getIdSeqCarro());
             pst.setInt(7, idv.getIdSeqMotorista());
             pst.setString(8, idv.getObservacoes());

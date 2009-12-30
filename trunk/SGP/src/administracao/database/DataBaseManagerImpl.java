@@ -1,6 +1,5 @@
 package administracao.database;
 
-
 import administracao.carro.Carro;
 import administracao.funcionario.Funcionario;
 import rodoviaria.cliente.Cliente;
@@ -17,6 +16,7 @@ import util.DataBaseManager;
 import administracao.viagens.InstanciaDeViagem;
 import administracao.viagens.TipoDeViagem;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import util.Date;
 
 /**
@@ -46,14 +46,14 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
 
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "SQL Exception! hehe", "Erro", 0);
-        //System.exit(1);
+            //System.exit(1);
 
         } catch (ClassNotFoundException e) {
 
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Class Not Found Exception!", "Erro", 0);
             closeConnection();
-        //System.exit(1);
+            //System.exit(1);
 
         }
 
@@ -63,10 +63,10 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
     public boolean insertCliente(Cliente novoCliente) throws RemoteException {
 
         String sql =
-            "INSERT INTO cliente " +
+                "INSERT INTO cliente " +
                 "(id_seq_cliente, nome, sexo, data_nascimento, cpf, endereco," +
                 " telefone, e_estudante)" +
-            "VALUES(" +
+                "VALUES(" +
                 novoCliente.getId() + ", '" +
                 novoCliente.getNome() + "' , '" +
                 novoCliente.getSexo() + "' , " +
@@ -75,7 +75,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
                 novoCliente.getEndereco() + "' , '" +
                 novoCliente.getTelefone() + "' , " +
                 novoCliente.isEEstudante() +
-            ")";
+                ")";
 
         System.out.println(sql);
 
@@ -106,7 +106,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "SQL Exception!", "Erro", 0);
             return -1;
-        //System.exit(1);
+            //System.exit(1);
 
         }
 
@@ -214,18 +214,21 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
     }
 
     /////////////////////////////FUNCOES DE INSTANCIA DE VIAGEM///////////////////////////////
-    public InstanciaDeViagem selectInstanciaDeViagem(int id_seq_tdv,String data) {
+    public InstanciaDeViagem selectInstanciaDeViagem(int id_seq_tdv, String data) throws ParseException {
 
         Statement st = null;
         ResultSet rs = null;
+
+        //Recebe a data do BD da forma yyyy-mm-dd
+        java.util.Date dt = new SimpleDateFormat("yyyy-mm-dd").parse(data);
+
+        String sql = "select * from instancia_de_viagem where id_seq_tdv = " + id_seq_tdv + " AND data = to_date('" + new SimpleDateFormat("dd/MM/yyyy").format(dt) + "', 'DD/MM/YYYY')";
         //String sql = "select * from instancia_de_viagem where id_seq_tdv = "
-        	//+ id_seq_tdv + " AND data = to_date('" + data + "', 'DD/MM/YYYY')";
-        String sql = "select * from instancia_de_viagem where id_seq_tdv = "
-        	+ id_seq_tdv;
-        
+        //+ id_seq_tdv;
+
 
         //select * from instancia_de_viagem where id_seq_tdv = 23  AND data = to_date('01/11/2001' ,'DD/MM/YYYY');
-        
+
         InstanciaDeViagem idv = new InstanciaDeViagem();
 
         try {
@@ -238,7 +241,14 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             idv.setNumVagasDisponiveis(rs.getInt("num_vagas_disponiveis"));
             idv.setHoraRealSaida(rs.getString("hora_real_saida"));
             idv.setHoraRealChegada(rs.getString("hora_real_chegada"));
+
+            //Recebe a data do BD da forma yyyy-mm-dd
+            //java.util.Date dt = new SimpleDateFormat("yyyy-mm-dd").parse(rs.getString("data"));
+            //passa a data formatada dd/MM/yyyy
+            //idv.setData(new SimpleDateFormat("dd/MM/yyyy").format(dt));
             idv.setData(rs.getString("data"));
+
+
             idv.setIdSeqCarro(rs.getInt("id_seq_carro"));
             idv.setIdSeqMotorista(rs.getInt("id_seq_motorista"));
             idv.setObservacoes(rs.getString("observacoes"));
@@ -255,13 +265,12 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
 
     public void deleteInstanciaDeViagem(int id_seq_idv, Date data) {
         Statement st = null;
-        String sql = "delete from instancia_de_viagem where id_seq_idv = "
-        	+ id_seq_idv + " AND data = " + data;
+        String sql = "delete from instancia_de_viagem where id_seq_idv = " + id_seq_idv + " AND data = " + data;
 
         try {
 
             st = connection.createStatement();
-            System.out.println("executando: "+ sql);
+            System.out.println("executando: " + sql);
             st.executeUpdate(sql);
             st.close();
         } catch (SQLException e) {
@@ -272,30 +281,29 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
 
     }
 
-    public void updateInstanciaDeViagem(int id_seq_idv,Date data,
-    		InstanciaDeViagem novoIdv) {
+    public void updateInstanciaDeViagem(int id_seq_idv, Date data,
+            InstanciaDeViagem novoIdv) {
 
         PreparedStatement pst = null;
 
         String sql = "update instancia_de_viagem set id_seq_tdv = ?," +
-        		"num_vagas_disponiveis = ?,hora_real_saida = ?," +
-        				"hora_real_chegada = ?,data = to_date(?,'DD/MM/YYYY')," +
-        				"id_seq_carro = ?,id_seq_motorista = ?," +
-        				"obeservacoes = ?, " +
-        				"where id_seq_idv = " + id_seq_idv
-        				+ " AND data = " + data;
-        
+                "num_vagas_disponiveis = ?,hora_real_saida = ?," +
+                "hora_real_chegada = ?,data = to_date(?,'DD/MM/YYYY')," +
+                "id_seq_carro = ?,id_seq_motorista = ?," +
+                "obeservacoes = ?, " +
+                "where id_seq_idv = " + id_seq_idv + " AND data = " + data;
+
         try {
             pst = connection.prepareStatement(sql);
 
-            pst.setInt(1,novoIdv.getIdSeqTdv());
-            pst.setInt(2,novoIdv.getNumVagasDisponiveis());
-            pst.setString(3,novoIdv.getHoraRealSaida());
-            pst.setString(4,novoIdv.getHoraRealChegada());
-            pst.setString(5,novoIdv.getData());
-            pst.setInt(6,novoIdv.getIdSeqCarro());
-            pst.setInt(7,novoIdv.getIdSeqMotorista());
-            pst.setString(8,novoIdv.getObservacoes());
+            pst.setInt(1, novoIdv.getIdSeqTdv());
+            pst.setInt(2, novoIdv.getNumVagasDisponiveis());
+            pst.setString(3, novoIdv.getHoraRealSaida());
+            pst.setString(4, novoIdv.getHoraRealChegada());
+            pst.setString(5, novoIdv.getData());
+            pst.setInt(6, novoIdv.getIdSeqCarro());
+            pst.setInt(7, novoIdv.getIdSeqMotorista());
+            pst.setString(8, novoIdv.getObservacoes());
 
             pst.executeUpdate();
             pst.close();
@@ -311,7 +319,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             //ResultSet rs = null;
 
             String sql = "insert into instancia_de_viagem(id_seq_tdv," +
-            		"num_vagas_disponiveis,hora_real_saida," +
+                    "num_vagas_disponiveis,hora_real_saida," +
                     "hora_real_chegada,data,id_seq_carro," +
                     "id_seq_motorista,observacoes) values(?,?,?,?,to_date(?,'DD/MM/YYYY'),?,?,?) ";
 
@@ -335,7 +343,6 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         }
     }
     ////////////////////////////////////////////////////////////////////////////
-
 
 //    FUNCOES VALIDACAO DE ACESSO
     public boolean validaEntradaAgente(String nome, String senha) throws RemoteException {
@@ -376,7 +383,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         System.out.println(novoAgente.getEndereco());
         System.out.println(novoAgente.getUsuario());
         System.out.println(novoAgente.getSenha());
-        */
+         */
 
         Statement stat = null;
         PreparedStatement pst = null;
@@ -391,14 +398,14 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
 
             String sqlFunCon = "select * from funcionario where cpf = " + novoAgente.getCpf();
 
-            String sqlAgen = "INSERT INTO agente (id_seq_agente,usuario,senha)"+
-                             "VALUES(?,?,?);";
+            String sqlAgen = "INSERT INTO agente (id_seq_agente,usuario,senha)" +
+                    "VALUES(?,?,?);";
 
             //INSERINDO EM FUNCIONARIO....
             pst = connection.prepareStatement(sqlFunc);
             pst.setString(1, novoAgente.getNome());
             pst.setString(2, novoAgente.getSexo());
-            pst.setString(3,novoAgente.getDatanascimento());
+            pst.setString(3, novoAgente.getDatanascimento());
             pst.setLong(4, novoAgente.getCpf());
             pst.setString(5, novoAgente.getEndereco());
             pst.setLong(6, novoAgente.getTelefone());
@@ -418,7 +425,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             pst2 = connection.prepareStatement(sqlAgen);
 
             pst2.setInt(1, rs.getInt("id_seq_funcionario"));
-            pst2.setString(2,novoAgente.getUsuario());
+            pst2.setString(2, novoAgente.getUsuario());
             pst2.setString(3, novoAgente.getSenha());
 
             //inserindo agente....
@@ -441,7 +448,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         ResultSet rs = null;
 
         String sql = "SELECT * FROM funcionario INNER JOIN agente ON funcionario.id_seq_funcionario=agente.id_seq_agente " +
-                     "WHERE id_seq_funcionario="+id_seq_funcionario;
+                "WHERE id_seq_funcionario=" + id_seq_funcionario;
         Funcionario fun = new Funcionario();
 
         try {
@@ -474,8 +481,8 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
     public void deleteAgente(int id_seq_funcionario) throws RemoteException {
         Statement st = null;
 
-        String sql = "DELETE FROM agente WHERE id_seq_agente="+id_seq_funcionario;
-        String sql2 = "DELETE FROM funcionario WHERE id_seq_funcionario="+id_seq_funcionario;
+        String sql = "DELETE FROM agente WHERE id_seq_agente=" + id_seq_funcionario;
+        String sql2 = "DELETE FROM funcionario WHERE id_seq_funcionario=" + id_seq_funcionario;
 
         try {
 
@@ -498,13 +505,13 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         PreparedStatement pst2 = null;
 
         String sql = "UPDATE agente" +
-                     " set usuario = ?,senha = ?" +
-                     " WHERE id_seq_agente="+id_seq_funcionario;
+                " set usuario = ?,senha = ?" +
+                " WHERE id_seq_agente=" + id_seq_funcionario;
 
         String sql2 = "UPDATE funcionario" +
-                     " set nome = ?,sexo = ?," +
-                     "datanascimento = to_date(?,'DD/MM/YYYY'),cpf = ?,endereco = ?," +
-                     "telefone = ? WHERE id_seq_funcionario="+id_seq_funcionario;
+                " set nome = ?,sexo = ?," +
+                "datanascimento = to_date(?,'DD/MM/YYYY'),cpf = ?,endereco = ?," +
+                "telefone = ? WHERE id_seq_funcionario=" + id_seq_funcionario;
 
         try {
 
@@ -543,7 +550,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         System.out.println(novoMotorista.getTelefone());
         System.out.println(novoMotorista.getEndereco());
         System.out.println(novoMotorista.getCnh());
-        */
+         */
 
         Statement stat = null;
         PreparedStatement pst = null;
@@ -559,14 +566,14 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
 
             String sqlFunCon = "select * from funcionario where cpf = " + novoMotorista.getCpf();
 
-            String sqlMot = "INSERT INTO motorista (id_seq_motorista,cnh)"+
-                             "VALUES(?,?);";
+            String sqlMot = "INSERT INTO motorista (id_seq_motorista,cnh)" +
+                    "VALUES(?,?);";
 
             //INSERINDO EM FUNCIONARIO....
             pst = connection.prepareStatement(sqlFunc);
             pst.setString(1, novoMotorista.getNome());
             pst.setString(2, novoMotorista.getSexo());
-            pst.setString(3,novoMotorista.getDatanascimento());
+            pst.setString(3, novoMotorista.getDatanascimento());
             pst.setLong(4, novoMotorista.getCpf());
             pst.setString(5, novoMotorista.getEndereco());
             pst.setLong(6, novoMotorista.getTelefone());
@@ -588,7 +595,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             pst2 = connection.prepareStatement(sqlMot);
 
             pst2.setInt(1, rs.getInt("id_seq_funcionario"));
-            pst2.setLong(2,novoMotorista.getCnh());
+            pst2.setLong(2, novoMotorista.getCnh());
 
             //inserindo agente....
             pst2.executeUpdate();
@@ -610,7 +617,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         ResultSet rs = null;
 
         String sql = "SELECT * FROM funcionario INNER JOIN motorista ON funcionario.id_seq_funcionario=motorista.id_seq_motorista " +
-                     "WHERE id_seq_funcionario="+id_seq_funcionario;
+                "WHERE id_seq_funcionario=" + id_seq_funcionario;
         Funcionario fun = new Funcionario();
 
         try {
@@ -642,8 +649,8 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
     public void deleteMotorista(int id_seq_funcionario) throws RemoteException {
         Statement st = null;
 
-        String sql = "DELETE FROM motorista WHERE id_seq_motorista="+id_seq_funcionario;
-        String sql2 = "DELETE FROM funcionario WHERE id_seq_funcionario="+id_seq_funcionario;
+        String sql = "DELETE FROM motorista WHERE id_seq_motorista=" + id_seq_funcionario;
+        String sql2 = "DELETE FROM funcionario WHERE id_seq_funcionario=" + id_seq_funcionario;
 
         try {
 
@@ -666,13 +673,13 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         PreparedStatement pst2 = null;
 
         String sql = "UPDATE motorista" +
-                     " set cnh = ?" +
-                     " WHERE id_seq_motorista="+id_seq_funcionario;
+                " set cnh = ?" +
+                " WHERE id_seq_motorista=" + id_seq_funcionario;
 
         String sql2 = "UPDATE funcionario" +
-                     " set nome = ?,sexo = ?," +
-                     "datanascimento = to_date(?,'DD/MM/YYYY'),cpf = ?,endereco = ?," +
-                     "telefone = ? WHERE id_seq_funcionario="+id_seq_funcionario;
+                " set nome = ?,sexo = ?," +
+                "datanascimento = to_date(?,'DD/MM/YYYY'),cpf = ?,endereco = ?," +
+                "telefone = ? WHERE id_seq_funcionario=" + id_seq_funcionario;
 
         try {
 
@@ -702,13 +709,13 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
     /////////////////////////////////////////////////////////////////
 
     //////////////////////FUNÇÕES DE CARRO//////////////////////////////////////
-    public void insertCarro(Carro car) throws RemoteException{
+    public void insertCarro(Carro car) throws RemoteException {
         try {
             PreparedStatement pst = null;
             //ResultSet rs = null;
 
-            String sql = "INSERT INTO carro(placa,chassis,arcondicionado,capacidade)"+
-                         "VALUES(?,?,?,?) ";
+            String sql = "INSERT INTO carro(placa,chassis,arcondicionado,capacidade)" +
+                    "VALUES(?,?,?,?) ";
 
             pst = connection.prepareStatement(sql);
 
@@ -732,7 +739,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         ResultSet rs = null;
 
         String sql = "SELECT * FROM carro " +
-                     "WHERE id_seq_carro="+id_seq_carro;
+                "WHERE id_seq_carro=" + id_seq_carro;
 
         Carro car = new Carro();
 
@@ -762,7 +769,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
     public void deleteCarro(int id_seq_carro) throws RemoteException {
         Statement st = null;
 
-        String sql = "DELETE FROM carro WHERE id_seq_carro="+id_seq_carro;
+        String sql = "DELETE FROM carro WHERE id_seq_carro=" + id_seq_carro;
 
         try {
             st = connection.createStatement();
@@ -782,8 +789,8 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         PreparedStatement pst = null;
 
         String sql = "UPDATE carro" +
-                     " set placa = ?,chassis = ?,arcondicionado = ?,capacidade=?" +
-                     " WHERE id_seq_carro="+id_seq_carro;
+                " set placa = ?,chassis = ?,arcondicionado = ?,capacidade=?" +
+                " WHERE id_seq_carro=" + id_seq_carro;
 
 
         try {
@@ -793,7 +800,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             pst.setString(1, upCar.getPlaca());
             pst.setString(2, upCar.getChassis());
             pst.setString(3, upCar.getArCondicionado());
-            pst.setInt(4,upCar.getCapacidade());
+            pst.setInt(4, upCar.getCapacidade());
 
             pst.executeUpdate();
             pst.close();
@@ -832,7 +839,4 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
     public void deleteInstanciaDeViagem(int idSeqTdv, java.util.Date data) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
-
-    
-
 }

@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
@@ -104,9 +105,36 @@ public class CadastraNovoCarro extends JFrame {
                 cadastrar.setEnabled(false);
         cadastrar.addActionListener(
                 new ActionListener() {
-                    // passa consulta para modelo de tabela
-
+                   
                     public void actionPerformed(ActionEvent event) {
+
+                       //Tratamento Ar Condicionado
+                        if((!simRB.isSelected())&&(!naoRB.isSelected())){
+                            JOptionPane.showMessageDialog
+                                (null, "Defina se tem Ar Condicioando!", "Erro",
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+                        //tratamento campo placa
+                        if(placa_carro.getText().length() != 8){
+                            JOptionPane.showMessageDialog(
+                                  null,
+                                  "Placa Inválida!",
+                                  "Erro",
+                                  JOptionPane.ERROR_MESSAGE
+                            );
+                            return;
+                        }
+
+                        //tratamento campo chassis
+                        if(chassis_carro.getText().length() != 17){
+                            JOptionPane.showMessageDialog(
+                                  null,"Chassis Inválido!","Erro",
+                                  JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
                         try {
                             Carro car = setarEmObjetos();
                             dbm.insertCarro(car);

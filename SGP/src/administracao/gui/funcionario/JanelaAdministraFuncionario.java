@@ -23,7 +23,6 @@ import util.TableModel;
 
 public class JanelaAdministraFuncionario extends JFrame {
 
-    private JLabel tipoFuncionarioJLabel = new JLabel("Tipo Funcionário *");
     private JComboBox tipoFuncionario = new JComboBox(Auxiliares.TIPO_FUNCIONARIO);
     private TableModel tableModel;
     private JTextField dadoBusca = new JTextField(40);
@@ -32,6 +31,9 @@ public class JanelaAdministraFuncionario extends JFrame {
     private JButton cadastraNovo = new JButton("Cadastrar Novo");
     private JButton retorna = new JButton("Retornar Todos");   
 
+    private boolean agenteBool = false;
+    private boolean motoristaBool = false;
+    
     public final DataBaseManagerImpl dbm;
 
     public JanelaAdministraFuncionario(final DataBaseManagerImpl dbm){
@@ -58,10 +60,7 @@ public class JanelaAdministraFuncionario extends JFrame {
             ex.printStackTrace();
         }
 
-        tipoFuncionarioJLabel.setBounds(5,0,100,20);
-        add(tipoFuncionarioJLabel);
-
-        tipoFuncionario.setBounds(5,15,100,35);
+        tipoFuncionario.setBounds(5,10,100,40);
         add(tipoFuncionario);
 
         filtroBusca.setBounds(110,10,175,40);
@@ -94,19 +93,23 @@ public class JanelaAdministraFuncionario extends JFrame {
                                 tableModel.setQuery(
                                         "SELECT * FROM funcionario INNER JOIN agente"+
                                         " ON funcionario.id_seq_funcionario = agente.id_seq_agente");
+
+                                agenteBool = true;
+                                motoristaBool = false;
                             }
                             else if(tipoFuncionario.getSelectedIndex() == 2){
                                 tableModel.setQuery(
                                         "SELECT * FROM funcionario INNER JOIN motorista"+
                                         " ON funcionario.id_seq_funcionario = motorista.id_seq_motorista");
+
+                                agenteBool = false;
+                                motoristaBool = true;
                             }
                             else{
-                                JOptionPane.showMessageDialog(
-                                    null,
-                                    "Escolha o tipo de funcionário",
-                                    "Aviso",
-                                    JOptionPane.INFORMATION_MESSAGE
-                                );
+                                tableModel.setQuery("SELECT * FROM funcionario");
+
+                                agenteBool = false;
+                                motoristaBool = false;
                             }
                         } catch (SQLException sqlException) {
                             JOptionPane.showMessageDialog(null,
@@ -163,23 +166,31 @@ public class JanelaAdministraFuncionario extends JFrame {
                                 tableModel.setQuery(
                                         "SELECT * FROM funcionario INNER JOIN agente"+
                                         " ON funcionario.id_seq_funcionario = agente.id_seq_agente"+
-                                        " WHERE '%"+ filtroBusca.getText() +
-                                        "%' LIKE '%" + dadoBusca.getText() + "%' ORDER BY nome");
+                                        " WHERE "+ filtroBusca.getText() +
+                                        " LIKE '%" + dadoBusca.getText() + "%' ORDER BY nome");
+
+                                agenteBool = true;
+                                motoristaBool = false;
+
                             }
                             else if(tipoFuncionario.getSelectedIndex() == 2){
                                 tableModel.setQuery(
                                         "SELECT * FROM funcionario INNER JOIN motorista"+
                                         " ON funcionario.id_seq_funcionario = motorista.id_seq_motorista"+
-                                        " WHERE '%"+ filtroBusca.getText() +
-                                        "%' LIKE '%" + dadoBusca.getText() + "%' ORDER BY nome");
+                                        " WHERE "+ filtroBusca.getText() +
+                                        " LIKE '%" + dadoBusca.getText() + "%' ORDER BY nome");
+
+                                agenteBool = false;
+                                motoristaBool = true;
+
                             }
                             else{
-                                JOptionPane.showMessageDialog(
-                                    null,
-                                    "Escolha o tipo de funcionário",
-                                    "Aviso",
-                                    JOptionPane.INFORMATION_MESSAGE
-                                );                                
+                                tableModel.setQuery(
+                                        "SELECT * FROM funcionario WHERE "+ filtroBusca.getText() +
+                                        " LIKE '%" + dadoBusca.getText() + "%' ORDER BY nome");
+
+                                agenteBool = false;
+                                motoristaBool = false;
                             } // fim do try
                         }catch (SQLException sqlException) {
                             JOptionPane.showMessageDialog(null,
@@ -225,7 +236,7 @@ public class JanelaAdministraFuncionario extends JFrame {
                      //lugar especifico onde clicou
                     Integer clicado = new Integer(resultTable.getValueAt(select, 0).toString());
 
-                    if (tipoFuncionario.getSelectedIndex() == 1) {
+                    if (tipoFuncionario.getSelectedIndex() == 1 && agenteBool==true) {
                         //quando buscar esse sera preenchido
                         Funcionario fun = new Funcionario();
                         //efetua a busca e preenche
@@ -234,7 +245,7 @@ public class JanelaAdministraFuncionario extends JFrame {
                         CadastraNovoAgente cna = inserirAgenteEmObjetos(fun);
                     }
 
-                    else if (tipoFuncionario.getSelectedIndex() == 2) {
+                    else if (tipoFuncionario.getSelectedIndex() == 2 && motoristaBool==true) {
                         //quando buscar esse sera preenchido
                         Funcionario fun = new Funcionario();
                         //efetua a busca e preenche
@@ -246,7 +257,8 @@ public class JanelaAdministraFuncionario extends JFrame {
                     else {
                         JOptionPane.showMessageDialog(
                                     null,
-                                    "Escolha o tipo de funcionário",
+                                    "Para realizar a consulta escolha o tipo de funcionario "+
+                                    "desejado.\n Em sequida retorne todos.",
                                     "Aviso",
                                     JOptionPane.INFORMATION_MESSAGE
                         );

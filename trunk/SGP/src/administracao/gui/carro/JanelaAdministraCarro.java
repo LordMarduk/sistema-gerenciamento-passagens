@@ -201,8 +201,7 @@ public class JanelaAdministraCarro extends JFrame {
                 else
                     cnc.naoRB.setSelected(true);
 
-                //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                //String myDate = sdf.format(fun.getDatanascimento());
+                cnc.capacidadeCarro.setText(String.valueOf(car.getCapacidade()));
 
                 cnc.placa_carro.setText(car.getPlaca());
 

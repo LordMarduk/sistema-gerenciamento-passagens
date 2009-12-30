@@ -10,6 +10,8 @@ public class Carro {
 
     protected String arCondicionado;
 
+    protected int Capacidade;
+
     public Carro(){}
 
     public int getId_seq_carro() {
@@ -28,6 +30,11 @@ public class Carro {
         return arCondicionado;
     }
 
+    public int getCapacidade() {
+        return Capacidade;
+    }
+
+
     public void setId_seq_carro(int id_seq_carro) {
         this.id_seq_carro = id_seq_carro;
     }
@@ -43,6 +50,12 @@ public class Carro {
     public void setArCondicionado(String arCondicionado) {
         this.arCondicionado = arCondicionado;
     }
+
+    public void setCapacidade(int getCapacidade) {
+        this.Capacidade = getCapacidade;
+    }
+
+    
 
     @Override
     public String toString() {

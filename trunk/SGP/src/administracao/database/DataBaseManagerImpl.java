@@ -219,12 +219,12 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         Statement st = null;
         ResultSet rs = null;
         //String sql = "select * from instancia_de_viagem where id_seq_tdv = "
-        	//+ id_seq_tdv + " AND data = to_date('" + data + "','DD/MM/YYYY')";
+        	//+ id_seq_tdv + " AND data = to_date('" + data + "', 'DD/MM/YYYY')";
         String sql = "select * from instancia_de_viagem where id_seq_tdv = "
         	+ id_seq_tdv;
         
 
-        //"to_date('" + novoCliente.getData_nascimento() + "', 'DD/MM/YYYY'), '"
+        //select * from instancia_de_viagem where id_seq_tdv = 23  AND data = to_date('01/11/2001' ,'DD/MM/YYYY');
         
         InstanciaDeViagem idv = new InstanciaDeViagem();
 

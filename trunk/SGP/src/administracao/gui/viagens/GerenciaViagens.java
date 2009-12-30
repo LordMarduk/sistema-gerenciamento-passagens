@@ -24,13 +24,14 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import java.util.Date;
 
 public class GerenciaViagens extends JFrame {
 
     private TableModel tableModel;
     private JTextField filtroTF;
     private JTextField consultaTF;
-    private JButton retornarBuscaButton;
+    private JButton retornarTodosButton;
     private JButton pesquisarButton;
     private JButton cadastroButton;
     private JTable resultTable;
@@ -53,7 +54,7 @@ public class GerenciaViagens extends JFrame {
         p3.setLayout(new FlowLayout(FlowLayout.RIGHT));
         p4.setLayout(new BorderLayout());
 
-        setLocation(300,200);
+        setLocation(300, 200);
         setSize(650, 400);
         setResizable(false);
         setVisible(true);
@@ -88,15 +89,15 @@ public class GerenciaViagens extends JFrame {
         pesquisarButton = new JButton("Buscar");
         pesquisarButton.setFont(new Font("Verdana", 0, 12));
 
-        retornarBuscaButton = new JButton("Retornar Todos");
-        retornarBuscaButton.setFont(new Font("Verdana", 0, 12));
+        retornarTodosButton = new JButton("Retornar Todos");
+        retornarTodosButton.setFont(new Font("Verdana", 0, 12));
 
         p2.add(flagViagens);
         p2.add(filtroTF);
         p2.add(consultaTF);
 
         p3.add(pesquisarButton);
-        p3.add(retornarBuscaButton);
+        p3.add(retornarTodosButton);
 
         // cria o delegado JTable para tableModel
         resultTable = new JTable(tableModel);
@@ -172,7 +173,7 @@ public class GerenciaViagens extends JFrame {
                     }
                 });
 
-        retornarBuscaButton.addActionListener(
+        retornarTodosButton.addActionListener(
                 new ActionListener() {
 
                     public void actionPerformed(ActionEvent event) {
@@ -221,16 +222,27 @@ public class GerenciaViagens extends JFrame {
         public void apertarNoJTable() {
             int select = resultTable.getSelectedRow();
             if (select >= 0) {
-                
+
                 try {
-                     //lugar especifico onde clicou
-                    Integer clicado = new Integer(resultTable.getValueAt(select, 0).toString());
+                    //lugar especifico onde clicou
+                    //Integer pegarIdSeqTdvNoJTable = new Integer(resultTable.getValueAt(select, 0).toString());
+                    Integer pegarIdSeqTdvNoJTable = null;
+                    String pegarDataNoJTable = null;
 
                     if (flagViagens.getSelectedIndex() == 0) {
                         //quando buscar esse sera preenchido
                         InstanciaDeViagem idv = new InstanciaDeViagem();
+
+                        //pegar id seq tdv, está no indice 3 de acordo com a definicao do BD
+                        //pegarIdSeqTdvNoJTable = new Integer(resultTable.getValueAt(select, 3).toString());
+
+                        //aqui tambem preciso da data: que está no indice 0 para tipo de viagem
+                        pegarDataNoJTable = new String(resultTable.getValueAt(select,0).toString());
+                        //pegar id seq tdv, está no indice 3 de acordo com a definicao do BD
+                        pegarIdSeqTdvNoJTable = new Integer(resultTable.getValueAt(select, 3).toString());
+
                         //efetua a busca e preenche
-                        idv = dbm.selectInstanciaDeViagem(clicado, null);
+                        idv = dbm.selectInstanciaDeViagem(pegarIdSeqTdvNoJTable, pegarDataNoJTable);
                         //janela que exibira os dados    mapeamento: objeto -> GUI
                         CadastraInstanciaDeViagem cidv = inserirInstanciaDeViagemEmGui(idv);
                     }
@@ -238,8 +250,12 @@ public class GerenciaViagens extends JFrame {
                     if (flagViagens.getSelectedIndex() == 1) {
                         //quando buscar esse sera preenchido
                         TipoDeViagem tdv = new TipoDeViagem();
+
+                        //pegar id seq tdv, está no indice 0 de acordo com a definicao do BD
+                        pegarIdSeqTdvNoJTable = new Integer(resultTable.getValueAt(select, 0).toString());
+
                         //efetua a busca e preenche
-                        tdv = dbm.selectTipoDeViagem(clicado);
+                        tdv = dbm.selectTipoDeViagem(pegarIdSeqTdvNoJTable);
                         //janela que exibira os dados    mapeamento: objeto -> GUI
                         CadastraTipoDeViagem ctdv = inserirTipoDeViagemEmGui(tdv);
                     }
@@ -293,31 +309,22 @@ public class GerenciaViagens extends JFrame {
     }
 
     public CadastraInstanciaDeViagem inserirInstanciaDeViagemEmGui(InstanciaDeViagem idv)
-    {
-        CadastraInstanciaDeViagem cidv = new CadastraInstanciaDeViagem(1,null);
+    throws ParseException {
+        CadastraInstanciaDeViagem cidv = new CadastraInstanciaDeViagem(1, null);
 
         cidv.idSeqTdvTF.setText(String.valueOf(idv.getIdSeqTdv()));
+
         cidv.numVagasDisponiveisTF.setText(String.valueOf(idv.getNumVagasDisponiveis()));
+
         cidv.horaDeSaidaTF.setText(idv.getHoraRealSaida());
         cidv.horaDeChegadaTF.setText(idv.getHoraRealChegada());
         cidv.observacaoTA.setText(idv.getObservacoes());
 
-        SimpleDateFormat in= new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy");
-        String result = "";
-		try {
-			result = out.format(in.parse(idv.getData().toString()));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        //Date aux = (Date)formatter.parse("01/29/02");
-        //String dataParaString = formatter.format(in.parse(date.toString()));
-        //String dataParaString = idv.getData()
+        //Recebe a data do BD da forma yyyy-mm-dd
+        Date dt = new SimpleDateFormat("yyyy-mm-dd").parse(idv.getData());
 
-        cidv.escolhaDeDia.setSelectedItem(result.substring(0,1));
-        cidv.escolhaDeMes.setSelectedItem(result.substring(3,4));
-        cidv.escolhaDeAno.setSelectedItem(result.substring(6,7));
+        //passa a data formatada dd/MM/yyyy
+        cidv.dataViagemFTF.setText(new SimpleDateFormat("dd/MM/yyyy").format(dt));
 
         cidv.idSeqCarroTF.setText(String.valueOf(idv.getIdSeqCarro()));
         cidv.idSeqMotoristaTF.setText(String.valueOf(idv.getIdSeqMotorista()));

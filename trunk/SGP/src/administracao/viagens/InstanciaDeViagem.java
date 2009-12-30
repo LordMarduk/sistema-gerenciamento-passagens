@@ -11,7 +11,7 @@ public class InstanciaDeViagem implements Serializable
 	/** 
 	 * This attribute maps to the column data in the instancia_de_viagem table.
 	 */
-	protected Date data;
+	protected String data;
 
 	/** 
 	 * This attribute maps to the column num_vagas_disponiveis in the instancia_de_viagem table.
@@ -61,7 +61,7 @@ public class InstanciaDeViagem implements Serializable
 	 * 
 	 * @return Date
 	 */
-	public Date getData()
+	public String getData()
 	{
 		return data;
 	}
@@ -71,7 +71,7 @@ public class InstanciaDeViagem implements Serializable
 	 * 
 	 * @param data
 	 */
-	public void setData(Date data)
+	public void setData(String data)
 	{
 		this.data = data;
 	}

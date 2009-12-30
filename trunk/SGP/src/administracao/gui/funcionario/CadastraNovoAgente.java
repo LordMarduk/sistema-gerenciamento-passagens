@@ -175,18 +175,7 @@ public class CadastraNovoAgente extends JFrame {
                                   JOptionPane.ERROR_MESSAGE
                             );
                             return;
-                        }
-
-                        //tratamento campo cpf
-                        if(cpfAgente.getText().length() != 11){
-                            JOptionPane.showMessageDialog(
-                                  null,
-                                  "CPF Inválido",
-                                  "Erro",
-                                  JOptionPane.ERROR_MESSAGE
-                            );
-                            return;
-                        }
+                        }                        
 
                         //Tratamento Sexo
                         if((!masculinoRB.isSelected())&&(!femininoRB.isSelected())){
@@ -203,19 +192,16 @@ public class CadastraNovoAgente extends JFrame {
                                 JOptionPane.ERROR_MESSAGE);
                             return;
                         }
-                        
-                        //tratamento telefone
-                        if(telefoneAgente.getText().length() < 1){
-                                                        
-                            telefoneAgente.setText("00000000");
-                            
-                        }
-                        
-                        //tratamento endereco
-                        if(enderecoAgente.getText().length() < 1){
-                                                      
-                            enderecoAgente.setText("não especificado");
-                            
+
+                        //tratamento campo cpf
+                        if(cpfAgente.getText().length() != 11){
+                            JOptionPane.showMessageDialog(
+                                  null,
+                                  "CPF Inválido",
+                                  "Erro",
+                                  JOptionPane.ERROR_MESSAGE
+                            );
+                            return;
                         }
 
                         //tratamento usuario
@@ -232,6 +218,20 @@ public class CadastraNovoAgente extends JFrame {
                                 JOptionPane.ERROR_MESSAGE);
                             return;
                         }
+                        
+                        //tratamento telefone
+                        if(telefoneAgente.getText().length() < 1){
+                                                        
+                            telefoneAgente.setText("00000000");
+                            
+                        }
+                        
+                        //tratamento endereco
+                        if(enderecoAgente.getText().length() < 1){
+                                                      
+                            enderecoAgente.setText("não especificado");
+                            
+                        }                       
                         
                         try {
 

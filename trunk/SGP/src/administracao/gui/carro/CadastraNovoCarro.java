@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -117,7 +119,9 @@ public class CadastraNovoCarro extends JFrame {
                         }
 
                         //tratamento campo placa
-                        if(placa_carro.getText().length() != 8){
+                        Pattern placaPattern = Pattern.compile("[A-Z]{3}[\\-][0-9]{4}");
+                        Matcher placaMatcher = placaPattern.matcher(placa_carro.getText());
+                        if(!(placaMatcher.find())){
                             JOptionPane.showMessageDialog(
                                   null,
                                   "Placa Inválida!",
@@ -128,7 +132,9 @@ public class CadastraNovoCarro extends JFrame {
                         }
 
                         //tratamento campo chassis
-                        if(chassis_carro.getText().length() != 17){
+                        Pattern chassisPattern = Pattern.compile("[A-Za-z0-9]{17}");
+                        Matcher chassisMatcher = chassisPattern.matcher(chassis_carro.getText());
+                        if(!(chassisMatcher.find())){
                             JOptionPane.showMessageDialog(
                                   null,"Chassis Inválido!","Erro",
                                   JOptionPane.ERROR_MESSAGE);

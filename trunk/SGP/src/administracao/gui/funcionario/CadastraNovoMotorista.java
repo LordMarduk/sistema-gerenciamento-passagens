@@ -166,8 +166,7 @@ public class CadastraNovoMotorista extends JFrame {
                                 JOptionPane.ERROR_MESSAGE);
                             return;
                         }
-
-                        //tratamento data nascimento
+                        
                         //tratamento data nascimento
                         Pattern p = Pattern.compile("[0]{1}[1-9]{1}[\\/][0]{1}[1-9]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}|"+
                                                     "[0]{1}[1-9]{1}[\\/][1]{1}[0-2]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}|"+

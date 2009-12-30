@@ -51,7 +51,7 @@ public class JanelaAdministraFuncionario extends JFrame {
 
         try {
             // cria o TableModel            
-            tableModel = new TableModel(dbm, "SELECT * FROM funcionario ORDER BY nome");
+            tableModel = new TableModel(dbm, "SELECT * FROM funcionario");
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
@@ -90,8 +90,24 @@ public class JanelaAdministraFuncionario extends JFrame {
 
                     public void actionPerformed(ActionEvent event) {
                         try {
-                            tableModel.setQuery("SELECT * FROM funcionario ORDER BY nome");
-                            tipoFuncionario.setSelectedIndex(0);
+                            if(tipoFuncionario.getSelectedIndex() == 1){
+                                tableModel.setQuery(
+                                        "SELECT * FROM funcionario INNER JOIN agente"+
+                                        " ON funcionario.id_seq_funcionario = agente.id_seq_agente");
+                            }
+                            else if(tipoFuncionario.getSelectedIndex() == 2){
+                                tableModel.setQuery(
+                                        "SELECT * FROM funcionario INNER JOIN motorista"+
+                                        " ON funcionario.id_seq_funcionario = motorista.id_seq_motorista");
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(
+                                    null,
+                                    "Escolha o tipo de funcionário",
+                                    "Aviso",
+                                    JOptionPane.INFORMATION_MESSAGE
+                                );
+                            }
                         } catch (SQLException sqlException) {
                             JOptionPane.showMessageDialog(null,
                                     sqlException.getMessage(), "Erro de Database",

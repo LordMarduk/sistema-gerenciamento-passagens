@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
+import util.JNumericField;
 
 
 public class CadastraNovoCarro extends JFrame {
@@ -36,6 +37,8 @@ public class CadastraNovoCarro extends JFrame {
 
     MaskFormatter formatter = null;
     MaskFormatter formatter2 = null;
+
+    protected JNumericField capacidadeCarro = new JNumericField(3);
 
     private JButton atualizar = new JButton("Atualizar");
     private JButton cadastrar = new JButton("Cadastrar");
@@ -66,11 +69,19 @@ public class CadastraNovoCarro extends JFrame {
 
         identificadorIdSeq.setVisible(false);
 
-        arCondicionadoLabel.setBounds(5,5,350,40);
+        arCondicionadoLabel.setBounds(10,5,150,20);
         add(arCondicionadoLabel);
+        simRB.setBounds(10,25,140,15);
+        naoRB.setBounds(10,40,140,15);
 
-        simRB.setBounds(365,15,140,15);
-        naoRB.setBounds(365,30,140,15);
+        capacidadeCarro.setBounds(180,10,295,40);
+        capacidadeCarro.setBorder(
+                BorderFactory.createTitledBorder(
+                    null, "Capacidade Carro *", 0, 0, new Font("Tahoma", 0, 10)
+                )
+        );
+        add(capacidadeCarro);
+        
         arCondicionado.add(simRB);
         arCondicionado.add(naoRB);
         add(simRB);
@@ -114,6 +125,13 @@ public class CadastraNovoCarro extends JFrame {
                         if((!simRB.isSelected())&&(!naoRB.isSelected())){
                             JOptionPane.showMessageDialog
                                 (null, "Defina se tem Ar Condicioando!", "Erro",
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+                        if(capacidadeCarro.getText().length() < 1){
+                            JOptionPane.showMessageDialog
+                                (null, "Capacidade do Carro é Obrigatório!", "Erro",
                                 JOptionPane.ERROR_MESSAGE);
                             return;
                         }
@@ -214,13 +232,14 @@ public class CadastraNovoCarro extends JFrame {
         if(flagEnableButton == 1)
                 novo.setId_seq_carro(Integer.parseInt(identificadorIdSeq.getText()));
 
-        char sex = simRB.isSelected() ? 'S' : 'N';
+        char arCond = simRB.isSelected() ? 'S' : 'N';
 
-        if(sex == 'S')
+        if(arCond == 'S')
             respAr = "SIM";
         else
             respAr = "NAO";
 
+        novo.setCapacidade(Integer.parseInt(capacidadeCarro.getText()));
         novo.setArCondicionado(respAr);
         novo.setPlaca(placa_carro.getText());
         novo.setChassis(chassis_carro.getText());

@@ -707,14 +707,15 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             PreparedStatement pst = null;
             //ResultSet rs = null;
 
-            String sql = "INSERT INTO carro(placa,chassis,arcondicionado)"+
-                         "VALUES(?,?,?) ";
+            String sql = "INSERT INTO carro(placa,chassis,arcondicionado,capacidade)"+
+                         "VALUES(?,?,?,?) ";
 
             pst = connection.prepareStatement(sql);
 
             pst.setString(1, car.getPlaca());
             pst.setString(2, car.getChassis());
             pst.setString(3, car.getArCondicionado());
+            pst.setInt(4, car.getCapacidade());
 
             pst.executeUpdate();
             pst.close();
@@ -744,7 +745,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             car.setPlaca(rs.getString("placa"));
             car.setChassis(rs.getString("chassis"));
             car.setArCondicionado(rs.getString("arcondicionado"));
-
+            car.setCapacidade(rs.getInt("capacidade"));
 
             rs.close();
             st.close();
@@ -781,7 +782,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         PreparedStatement pst = null;
 
         String sql = "UPDATE carro" +
-                     " set placa = ?,chassis = ?,arcondicionado = ?" +
+                     " set placa = ?,chassis = ?,arcondicionado = ?,capacidade=?" +
                      " WHERE id_seq_carro="+id_seq_carro;
 
 
@@ -792,6 +793,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             pst.setString(1, upCar.getPlaca());
             pst.setString(2, upCar.getChassis());
             pst.setString(3, upCar.getArCondicionado());
+            pst.setInt(4,upCar.getCapacidade());
 
             pst.executeUpdate();
             pst.close();

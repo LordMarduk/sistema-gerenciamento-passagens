@@ -12,7 +12,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -289,7 +288,7 @@ public class JanelaAdministraFuncionario extends JFrame {
 
 
                      //Recebe a data do BD da forma yyyy-mm-dd
-                     Date dt = new SimpleDateFormat("yyyy-mm-dd").parse(fun.getDatanascimento());        
+                     Date dt = new SimpleDateFormat("yyyy-MM-dd").parse(fun.getDatanascimento());
 
                                             //passa a data formatada dd/MM/yyyy
                 cna.data_nascimento.setText(new SimpleDateFormat("dd/MM/yyyy").format(dt));
@@ -323,7 +322,9 @@ public class JanelaAdministraFuncionario extends JFrame {
                     cnm.femininoRB.setSelected(true);
 
                     //Recebe a data do BD da forma yyyy-mm-dd
-                    Date dt = new SimpleDateFormat("yyyy-mm-dd").parse(fun.getDatanascimento());
+                    Date dt = new SimpleDateFormat("yyyy-MM-dd").parse(fun.getDatanascimento());
+
+                    System.out.println(fun.getDatanascimento());
 
                 cnm.data_nascimento.setText(new SimpleDateFormat("dd/MM/yyyy").format(dt));
 

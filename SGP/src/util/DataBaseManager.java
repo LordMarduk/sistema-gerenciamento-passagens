@@ -12,6 +12,12 @@ public interface DataBaseManager extends Remote{
 
     public boolean insertCliente(Cliente novoCliente) throws RemoteException;
 
+    public Cliente getCliente(int id) throws RemoteException;
+
+    public boolean updateCliente(int id, Cliente mod) throws RemoteException;
+
+    public boolean deleteCliente(int id) throws RemoteException;
+
     public int maximunValueCliente() throws RemoteException;
 
     public TipoDeViagem selectTipoDeViagem(int id_seq_tdv)  throws RemoteException;

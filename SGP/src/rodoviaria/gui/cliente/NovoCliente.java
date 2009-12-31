@@ -197,9 +197,6 @@ public class NovoCliente extends JFrame {
                 LARGURA - MEIO - MARGEM_HORIZONTAL - 75, COMPONENT_HEIGHT + 2);
         add(telefoneNF);
 
-        concluirB.setBounds(50, 400, 195, 50);
-        add(concluirB);
-
         sairB.setBounds(255, 400, 195, 50);
         sairB.addActionListener(
 

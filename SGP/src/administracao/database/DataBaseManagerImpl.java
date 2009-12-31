@@ -60,13 +60,12 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
     }
 
 //     FUNCOES DE CLIENTE
-    public boolean insertCliente(Cliente novoCliente) throws RemoteException {
-
+    public synchronized boolean insertCliente(Cliente novoCliente) throws RemoteException {
         String sql =
-                "INSERT INTO cliente " +
+            "INSERT INTO cliente " +
                 "(id_seq_cliente, nome, sexo, data_nascimento, cpf, endereco," +
                 " telefone, e_estudante)" +
-                "VALUES(" +
+            "VALUES(" +
                 novoCliente.getId() + ", '" +
                 novoCliente.getNome() + "' , '" +
                 novoCliente.getSexo() + "' , " +
@@ -75,41 +74,91 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
                 novoCliente.getEndereco() + "' , '" +
                 novoCliente.getTelefone() + "' , " +
                 novoCliente.isEEstudante() +
-                ")";
-
-        System.out.println(sql);
-
+            ")";
         try {
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
             Statement stm = connection.createStatement();
             stm.executeUpdate(sql);
             stm.close();
+            connection.close();
             return true;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return false;
+    }
 
+    public synchronized Cliente getCliente(int id) throws RemoteException {
+        try {
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT * FROM cliente WHERE id_seq_cliente = " + id);
+            rs.next();
+            if( !rs.wasNull() ){
+                System.out.println(rs.getString(4));
+                Cliente sel = new Cliente(id, rs.getString(2), rs.getString(3).charAt(0),
+                        new Date( rs.getString(4) ), rs.getString(5), rs.getString(6),
+                        rs.getString(7), rs.getBoolean(8));
+                connection.close();
+                return sel;
+            }
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public synchronized boolean updateCliente(int id, Cliente mod) throws RemoteException{
+        try {
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
+            Statement stm = connection.createStatement();
+            String sql =
+                "UPDATE cliente SET " +
+                    "nome = '" + mod.getNome() + "', " +
+                    "sexo = '" + mod.getSexo() + "', " +
+                    "data_nascimento = " + mod.getData_nascimento().stringToQuery() + ", " +
+                    "cpf = '" + mod.getCpf() + "', " +
+                    "endereco = '" + mod.getEndereco() + "', " +
+                    "telefone = '" + mod.getTelefone() + "', " +
+                    "e_estudante = " + mod.isEEstudante() + " " +
+                "WHERE id_seq_cliente = " + mod.getId();
+            stm.executeUpdate(sql);
+            stm.close();
+            connection.close();
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public synchronized boolean deleteCliente(int id) throws RemoteException{
+        try{
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
+            Statement stm = connection.createStatement();
+            stm.executeUpdate("DELETE FROM cliente WHERE id_seq_cliente = " + id);
+            stm.close();
+            connection.close();
+            return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public int maximunValueCliente() throws RemoteException {
-
         Statement stm = null;
         try {
-
             stm = connection.createStatement();
             ResultSet rs = stm.executeQuery("SELECT max(id_seq_cliente) FROM cliente");
             rs.next();
             return rs.getInt(1);
-
         } catch (SQLException e) {
-
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "SQL Exception!", "Erro", 0);
-            return -1;
-            //System.exit(1);
-
         }
-
+        return -1;
     }
 
 //    FUNCOES DE TIPO DE VIAGEM
@@ -346,29 +395,20 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
 
 //    FUNCOES VALIDACAO DE ACESSO
     public boolean validaEntradaAgente(String nome, String senha) throws RemoteException {
-
-        Statement stmt;
         try {
-            stmt = connection.createStatement();
-
-            ResultSet resultSet = stmt.executeQuery("select senha from agente WHERE usuario = '" + nome + "' ORDER BY usuario");
-
-            if (!resultSet.next()) {
-                return false;
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
+            Statement stmt = connection.createStatement();
+            ResultSet resultSet =
+                    stmt.executeQuery("select senha from agente WHERE usuario = '" + nome + "' ORDER BY usuario");
+            if (resultSet.next()){
+                String senhaBanco = resultSet.getString("senha");
+                connection.close();
+                return senhaBanco.equals(senha);
             }
-
-            String senhaBanco = resultSet.getString("senha");
-
-            if (senhaBanco.compareTo(senha) == 0) {
-                return true;
-            }
-
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-
         return false;
-
     }
 
     ///////////FUNÇÕES DE AGENTE///////////////////

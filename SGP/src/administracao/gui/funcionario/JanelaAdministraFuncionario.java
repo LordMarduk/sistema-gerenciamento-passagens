@@ -52,7 +52,7 @@ public class JanelaAdministraFuncionario extends JFrame {
 
         try {
             // cria o TableModel            
-            tableModel = new TableModel(dbm, "SELECT * FROM funcionario");
+            tableModel = new TableModel(dbm, "SELECT * FROM funcionario ORDER BY nome");
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
@@ -91,7 +91,7 @@ public class JanelaAdministraFuncionario extends JFrame {
                             if(tipoFuncionario.getSelectedIndex() == 1){
                                 tableModel.setQuery(
                                         "SELECT * FROM funcionario INNER JOIN agente"+
-                                        " ON funcionario.id_seq_funcionario = agente.id_seq_agente");
+                                        " ON funcionario.id_seq_funcionario = agente.id_seq_agente ORDER BY nome");
 
                                 agenteBool = true;
                                 motoristaBool = false;
@@ -99,13 +99,13 @@ public class JanelaAdministraFuncionario extends JFrame {
                             else if(tipoFuncionario.getSelectedIndex() == 2){
                                 tableModel.setQuery(
                                         "SELECT * FROM funcionario INNER JOIN motorista"+
-                                        " ON funcionario.id_seq_funcionario = motorista.id_seq_motorista");
+                                        " ON funcionario.id_seq_funcionario = motorista.id_seq_motorista ORDER BY nome");
 
                                 agenteBool = false;
                                 motoristaBool = true;
                             }
                             else{
-                                tableModel.setQuery("SELECT * FROM funcionario");
+                                tableModel.setQuery("SELECT * FROM funcionario ORDER BY nome");
 
                                 agenteBool = false;
                                 motoristaBool = false;

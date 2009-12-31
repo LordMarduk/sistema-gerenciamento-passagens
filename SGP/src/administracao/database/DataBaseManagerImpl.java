@@ -268,10 +268,15 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         Statement st = null;
         ResultSet rs = null;
 
-        //Recebe a data do BD da forma yyyy-mm-dd
-        java.util.Date dt = new SimpleDateFormat("yyyy-mm-dd").parse(data);
+        String dtaa = data;
 
-        String sql = "select * from instancia_de_viagem where id_seq_tdv = " + id_seq_tdv + " AND data = to_date('" + new SimpleDateFormat("dd/MM/yyyy").format(dt) + "', 'DD/MM/YYYY')";
+        //Recebe a data do BD da forma yyyy-mm-dd
+        //java.util.Date dt = new SimpleDateFormat("yyyy-mm-dd").parse(data);
+
+        //String sql = "select * from instancia_de_viagem where id_seq_tdv = " + id_seq_tdv + " AND data = to_date('" + new SimpleDateFormat("dd/MM/yyyy").format(dt) + "', 'DD/MM/YYYY')";
+
+        String sql = "select * from instancia_de_viagem where id_seq_tdv = " + id_seq_tdv + " AND data = '" + data + "'";
+
         //String sql = "select * from instancia_de_viagem where id_seq_tdv = "
         //+ id_seq_tdv;
 
@@ -312,9 +317,10 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         return null;
     }
 
-    public void deleteInstanciaDeViagem(int id_seq_idv, Date data) {
+    public void deleteInstanciaDeViagem(int id_seq_idv, String data) {
         Statement st = null;
-        String sql = "delete from instancia_de_viagem where id_seq_idv = " + id_seq_idv + " AND data = " + data;
+
+        String sql = "delete from instancia_de_viagem where id_seq_idv = " + id_seq_idv + " AND data = '" + data + "'";
 
         try {
 
@@ -330,7 +336,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
 
     }
 
-    public void updateInstanciaDeViagem(int id_seq_idv, Date data,
+    public void updateInstanciaDeViagem(int id_seq_idv, String data,
             InstanciaDeViagem novoIdv) {
 
         PreparedStatement pst = null;
@@ -340,7 +346,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
                 "hora_real_chegada = ?,data = to_date(?,'DD/MM/YYYY')," +
                 "id_seq_carro = ?,id_seq_motorista = ?," +
                 "obeservacoes = ?, " +
-                "where id_seq_idv = " + id_seq_idv + " AND data = " + data;
+                "where id_seq_idv = " + id_seq_idv + " AND data = '" + data + "'";
 
         try {
             pst = connection.prepareStatement(sql);
@@ -867,16 +873,5 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             return false;
 
         }
-
-
-    }
-
-    //tirar erro do fdp do jader
-    public void updateInstanciaDeViagem(int idSeqTdv, java.util.Date data, InstanciaDeViagem idv) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    public void deleteInstanciaDeViagem(int idSeqTdv, java.util.Date data) {
-        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

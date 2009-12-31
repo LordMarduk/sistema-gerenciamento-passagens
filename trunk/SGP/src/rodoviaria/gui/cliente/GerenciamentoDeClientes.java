@@ -5,15 +5,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
+import rodoviaria.cliente.Cliente;
 import util.DataBaseManager;
 import util.JNumericField;
 import util.QueryManager;
@@ -34,10 +40,10 @@ public class GerenciamentoDeClientes extends JFrame {
     private JTextField endereco = new JTextField();
     private JTextField cpf = new JNumericField(11);
 
-    private String est[] = {"Indiferente", "Estudante", "Não-Estudante"};
+    private String est[] = {"Indiferente", "Estudante", "NÃ£o-Estudante"};
     private String sex[] = {"Indiferente", "Homem", "Mulher"};
 
-    private String query = "SELECT * FROM cliente ORDER BY nome";
+    private String query = "SELECT * FROM cliente ORDER BY id_seq_cliente";
 
     private JComboBox estudante = new JComboBox(est);
     private JComboBox sexo = new JComboBox(sex);
@@ -46,9 +52,18 @@ public class GerenciamentoDeClientes extends JFrame {
     private JButton cadastrar = new JButton("Cadastrar Novo");
     private JButton sair = new JButton("Sair");
 
+    private JPopupMenu popupMenu;
+    private JButton itens[] = {
+        new JButton("Editar"), new JButton("Deletar"), new JButton("Vender Passagem")
+    };
+
+    Cliente gotten = null;
+
+    AtualizarHandler ah = new AtualizarHandler();
+
     public GerenciamentoDeClientes(final DataBaseManager dbm, final QueryManager qm) {
 
-        super("Clientes");
+        super("Gerenciamento de Clientes");
         setDefaultCloseOperation(2); //dispose on close
         setVisible(true);
         setResizable(false);
@@ -72,7 +87,7 @@ public class GerenciamentoDeClientes extends JFrame {
         nome.setBounds(100, 25, 300, 25);
         filtersPanel.add(nome);
 
-        JLabel enderecoLabel = new JLabel("Endereço");
+        JLabel enderecoLabel = new JLabel("EndereÃ§o");
         enderecoLabel.setBounds(100, 50, 100, 20);
         filtersPanel.add(enderecoLabel);
         endereco.setBounds(100, 70, 300, 25);
@@ -100,7 +115,7 @@ public class GerenciamentoDeClientes extends JFrame {
         cadastrar.setBounds(700, 60, 200, 30);
         sair.setBounds(700, 100, 200, 30);
 
-        atualizar.addActionListener( new AtualizarHandler() );
+        atualizar.addActionListener( ah );
 
         cadastrar.addActionListener(
             new ActionListener() {
@@ -133,6 +148,15 @@ public class GerenciamentoDeClientes extends JFrame {
 
         queryResultPanel.add(tableScroolPane);
 
+        popupMenu = new JPopupMenu();
+        ItensPopupMenuHandler ipmh = new ItensPopupMenuHandler();
+        itens[0].addActionListener(ipmh);
+        itens[1].addActionListener(ipmh);
+        itens[2].addActionListener(ipmh);
+        popupMenu.add(itens[0]);
+        popupMenu.add(itens[1]);
+        popupMenu.add(itens[2]);
+
         add(filtersPanel);
         add(queryResultPanel);
 
@@ -142,86 +166,99 @@ public class GerenciamentoDeClientes extends JFrame {
 
     }
 
+    public int getSelectedID(){
+        return Integer.parseInt(
+            queryResultTable.getValueAt(
+                queryResultTable.getSelectedRow(), 0
+            ).toString()
+        );
+    }
+
     public class TableRowsEventHandler implements MouseListener{
-
         public void mouseClicked(MouseEvent e) {
-            int row = queryResultTable.getSelectedRow();
+            if( (e.getClickCount() <= 1)||(e.getButton() != e.BUTTON1) )
+                return;
+            int id = getSelectedID();
+            try {
+                gotten = dbm.getCliente(id);
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+            popupMenu.show(queryResultTable, e.getX(), e.getY());
         }
+        public void mousePressed(MouseEvent e) {}
+        public void mouseReleased(MouseEvent e) {}
+        public void mouseEntered(MouseEvent e) {}
+        public void mouseExited(MouseEvent e) {}
+    }
 
-        public void mousePressed(MouseEvent e) {
-            //throw new UnsupportedOperationException("Not supported yet.");
+    public class ItensPopupMenuHandler implements ActionListener{
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource().equals(itens[0])){
+                EditarCliente ec = new EditarCliente(gotten, dbm);
+            }
+            if(e.getSource().equals(itens[1])){
+                int id = getSelectedID();
+                int input = JOptionPane.showConfirmDialog
+                        (null, "Tem certeza que quer deletar : " + gotten.getNome() + "?", "Aviso!", 0);
+                if(input == 1)
+                    return;
+                try {
+                    dbm.deleteCliente(id);
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+                popupMenu.setVisible(false);
+                ah.actionPerformed(new ActionEvent(atualizar, 1, ""));
+            }
+            if(e.getSource().equals(itens[2])){
+                //vender passagem para esse cliente
+            }
         }
-
-        public void mouseReleased(MouseEvent e) {
-            //throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        public void mouseEntered(MouseEvent e) {
-            //throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        public void mouseExited(MouseEvent e) {
-            //throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-
-
     }
 
     public class AtualizarHandler implements ActionListener{
-
         public void actionPerformed(ActionEvent e) {
-
             boolean changed = true;
             String newQuery = "SELECT * FROM cliente";
-
-            if( ( nome.getText() == null )&&( endereco.getText() == null )&&
-                    ( cpf.getText() == null )&&( estudante.getSelectedIndex() == 0 )&&
-                    ( sexo.getSelectedIndex() == 0 ) )
+            if(
+                ( nome.getText() == null )&&( endereco.getText() == null )&&
+                ( cpf.getText() == null )&&( estudante.getSelectedIndex() == 0 )&&
+                ( sexo.getSelectedIndex() == 0 )
+            )
                 changed = false;
-
             if(changed){
-
                 newQuery += " WHERE ";
                 boolean already = false;
-
                 if(nome.getText() != null){
                     already = true;
                     newQuery += "(nome LIKE '%" + nome.getText() + "%')";
                 }
-
                 if(endereco.getText() != null){
                     if(already) newQuery += " AND ";
                     already = true;
                     newQuery += "(endereco LIKE '%" + endereco.getText() + "%')";
                 }
-
                 if(cpf.getText() != null){
                     if(already) newQuery += " AND ";
                     already = true;
                     newQuery += "(cpf LIKE '%" + cpf.getText() + "%')";
                 }
-
                 if(estudante.getSelectedIndex() != 0){
                     if(already) newQuery += " AND ";
                     already = true;
                     newQuery += "(e_estudante = " + (estudante.getSelectedIndex() == 1 ? "true" : "false") + ")";
                 }
-
                 if(sexo.getSelectedIndex() != 0){
                     if(already) newQuery += " AND ";
                     already = true;
                     newQuery += "(sexo = " + (sexo.getSelectedIndex() == 1 ? "'M'" : "'F'") + ")";
                 }
-
-                query = newQuery;
+                query = newQuery += "ORDER BY id_seq_cliente";
                 tmc.setQuery(query);
                 repaint();
-
             }
-
         }
-
     }
 
 }

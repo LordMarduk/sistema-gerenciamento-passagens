@@ -321,11 +321,12 @@ public class GerenciaViagens extends JFrame {
         cidv.observacaoTA.setText(idv.getObservacoes());
 
         //Recebe a data do BD da forma yyyy-mm-dd
-        //Date dt = new SimpleDateFormat("yyyy-mm-dd").parse(idv.getData());
+        Date dt = new SimpleDateFormat("yyyy-MM-dd").parse(idv.getData());
 
         //passa a data formatada dd/MM/yyyy
-        //cidv.dataViagemFTF.setText(new SimpleDateFormat("dd/MM/yyyy").format(dt));
-        cidv.dataViagemFTF.setText(idv.getData());
+       cidv.dataViagemFTF.setText(new SimpleDateFormat("dd/MM/yyyy").format(dt));
+        //cidv.dataViagemFTF.setText(new SimpleDateFormat("dd/MM/yyyy").format(idv.getData()));
+        //cidv.dataViagemFTF.setText(idv.getData());
 
         cidv.idSeqCarroTF.setText(String.valueOf(idv.getIdSeqCarro()));
         cidv.idSeqMotoristaTF.setText(String.valueOf(idv.getIdSeqMotorista()));

@@ -237,8 +237,7 @@ public class CadastraInstanciaDeViagem extends JFrame {
         public void actionPerformed(ActionEvent action) {
             try {
                 InstanciaDeViagem idv = insereGuiEmObjeto();
-                //dbm.updateInstanciaDeViagem(idv.getIdSeqTdv(),
-                        //idv.getData(), idv);
+                dbm.updateInstanciaDeViagem(idv.getIdSeqTdv(),idv.getData(), idv);
             } catch (Exception e) {
             }
             dispose();
@@ -250,7 +249,8 @@ public class CadastraInstanciaDeViagem extends JFrame {
         public void actionPerformed(ActionEvent action) {
             try {
                 InstanciaDeViagem idv = insereGuiEmObjeto();
-                //dbm.deleteInstanciaDeViagem(idv.getIdSeqTdv(), idv.getData());
+                dbm.deleteInstanciaDeViagem(idv.getIdSeqTdv(),idv.getData());
+                
 
             } catch (Exception e) {
             }

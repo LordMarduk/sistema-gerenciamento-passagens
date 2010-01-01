@@ -16,7 +16,6 @@ import util.DataBaseManager;
 import administracao.viagens.InstanciaDeViagem;
 import administracao.viagens.TipoDeViagem;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import util.Date;
 
 /**
@@ -320,7 +319,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
     public void deleteInstanciaDeViagem(int id_seq_idv, String data) {
         Statement st = null;
 
-        String sql = "delete from instancia_de_viagem where id_seq_idv = " + id_seq_idv + " AND data = '" + data + "'";
+        String sql = "delete from instancia_de_viagem where id_seq_tdv = " + id_seq_idv + " AND data = '" + data + "'";
 
         try {
 
@@ -345,8 +344,8 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
                 "num_vagas_disponiveis = ?,hora_real_saida = ?," +
                 "hora_real_chegada = ?,data = to_date(?,'DD/MM/YYYY')," +
                 "id_seq_carro = ?,id_seq_motorista = ?," +
-                "obeservacoes = ?, " +
-                "where id_seq_idv = " + id_seq_idv + " AND data = '" + data + "'";
+                "observacoes = ? " +
+                "where id_seq_tdv = " + id_seq_idv + " AND data = '" + data + "'";
 
         try {
             pst = connection.prepareStatement(sql);
@@ -874,4 +873,5 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
 
         }
     }
+   
 }

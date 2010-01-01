@@ -1,9 +1,7 @@
 package administracao.gui.viagens;
 
-import java.text.FieldPosition;
-import java.text.ParsePosition;
+
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
@@ -11,18 +9,14 @@ import javax.swing.BorderFactory;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import administracao.database.DataBaseManagerImpl;
-import javax.swing.JComboBox;
-import util.Auxiliares;
 import administracao.viagens.InstanciaDeViagem;
 import java.text.ParseException;
 import javax.swing.JFormattedTextField;
-import util.JNumericField;
 import javax.swing.JOptionPane;
+import util.JNumericField;
 import javax.swing.text.MaskFormatter;
+import util.Auxiliares;
 
 public class CadastraInstanciaDeViagem extends JFrame {
 
@@ -44,7 +38,6 @@ public class CadastraInstanciaDeViagem extends JFrame {
     protected int tipoOperacao = 0;
     public DataBaseManagerImpl dbm;
 
-    //protected Filme filmeCriado;
     public CadastraInstanciaDeViagem(int tipoOperacao, DataBaseManagerImpl dbm) {
 
         //--Informa��es da Janela--
@@ -108,21 +101,11 @@ public class CadastraInstanciaDeViagem extends JFrame {
         observacaoTA.setBorder(
                 BorderFactory.createTitledBorder(
                 null, "Observacoes:", 0, 0, new Font("Tahoma", 0, 10)));
-
-        //observacaoTA.setText(f.retornaobservacaoTA());
-        //observacaoTA.setBackground(this.getBackground());
-        observacaoTA.setBounds(200, 170, 200, 100);
-        //observacaoTA.setEditable(false);
-        //observacaoTA.setEnabled(false);
+ 
+        observacaoTA.setBounds(200, 170, 200, 100); 
         add(observacaoTA);
 
         //data
-        //escolhaDeDia = new JComboBox(Auxiliares.DIAS);
-        //escolhaDeDia.setMaximumRowCount(4);
-        //escolhaDeDia.setFont(padrao);
-        //escolhaDeDia.setSelectedIndex(0);
-        //escolhaDeDia.setBounds(10, 160,60, 20);
-        //add(escolhaDeDia);
         try {
             formatter = new MaskFormatter("##/##/####");
         } catch (ParseException ex) {
@@ -130,7 +113,6 @@ public class CadastraInstanciaDeViagem extends JFrame {
         }
 
         dataViagemFTF = new javax.swing.JFormattedTextField(formatter);
-
         dataViagemFTF.setBounds(10, 170, 120, 40);
         dataViagemFTF.setBorder(
                 BorderFactory.createTitledBorder(
@@ -150,8 +132,6 @@ public class CadastraInstanciaDeViagem extends JFrame {
                 null, "Id. Seq. Carro", 0, 0, new Font("Tahoma", 0, 10)));
 
         add(idSeqCarroTF);
-        //--------------------
-        //--Id. Seq. Rodoviaria Partida--
 
         idSeqMotoristaTF = new JNumericField(3);
         idSeqMotoristaTF.setFont(padrao);
@@ -176,7 +156,7 @@ public class CadastraInstanciaDeViagem extends JFrame {
         cadastrarIdvButton = new JButton("Cadastrar");
         cadastrarIdvButton.setFont(padraoParaRotulos);
         cadastrarIdvButton.setBounds(300, 285, 100, 20);
-        if (tipoOperacao == 1) {
+        if (tipoOperacao == Auxiliares.ALTERAR) {
             cadastrarIdvButton.setEnabled(false);
         }
         add(cadastrarIdvButton);
@@ -188,7 +168,7 @@ public class CadastraInstanciaDeViagem extends JFrame {
         updateIdvButton = new JButton("Atualizar");
         updateIdvButton.setFont(padraoParaRotulos);
         updateIdvButton.setBounds(200, 285, 100, 20);
-        if (tipoOperacao == 0) {
+        if (tipoOperacao == Auxiliares.CADASTRAR) {
             updateIdvButton.setEnabled(false);
         }
         add(updateIdvButton);
@@ -208,7 +188,7 @@ public class CadastraInstanciaDeViagem extends JFrame {
         deleteIdvButton.addActionListener(new ButtonHandlerApaga());
         //--------------------
 
-        getGraphicsConfiguration();
+        //getGraphicsConfiguration();
 
     }
 
@@ -227,6 +207,9 @@ public class CadastraInstanciaDeViagem extends JFrame {
                 dbm.insertInstanciaDeViagem(idv);
 
             } catch (Exception e) {
+                JOptionPane.showMessageDialog(null,
+                                    e.getMessage(), "erro",
+                                    JOptionPane.ERROR_MESSAGE);
             }
             dispose();
         }//fim de ActionPerformed
@@ -238,7 +221,15 @@ public class CadastraInstanciaDeViagem extends JFrame {
             try {
                 InstanciaDeViagem idv = insereGuiEmObjeto();
                 dbm.updateInstanciaDeViagem(idv.getIdSeqTdv(),idv.getData(), idv);
+                //dbm.updateInstanciaDeViagem(0,"", null);
+                
             } catch (Exception e) {
+
+                String e1 = e.getMessage();
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null,
+                                    e.getMessage(), "erro",
+                                    JOptionPane.ERROR_MESSAGE);
             }
             dispose();
         }//fim de ActionPerformed
@@ -250,9 +241,13 @@ public class CadastraInstanciaDeViagem extends JFrame {
             try {
                 InstanciaDeViagem idv = insereGuiEmObjeto();
                 dbm.deleteInstanciaDeViagem(idv.getIdSeqTdv(),idv.getData());
+                //dbm.deleteInstanciaDeViagem(0,"");
                 
 
             } catch (Exception e) {
+                JOptionPane.showMessageDialog(null,
+                                    e.getMessage(), "erro",
+                                    JOptionPane.ERROR_MESSAGE);
             }
             dispose();
         }//fim de ActionPerformed

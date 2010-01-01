@@ -101,6 +101,7 @@ public class GerenciaViagens extends JFrame {
 
         // cria o delegado JTable para tableModel
         resultTable = new JTable(tableModel);
+        resultTable.setAutoCreateRowSorter(true);
 
 
         //botao de cadastro:

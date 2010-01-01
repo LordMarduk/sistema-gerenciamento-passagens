@@ -10,18 +10,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.ParseException;
+import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.text.MaskFormatter;
 import util.Auxiliares;
+import util.JNumericField;
 
 public class NovaPassagem extends JFrame {
 
     protected Font padrao = new Font("Arial", Font.PLAIN, 12);
     protected Font padraoParaRotulos = new Font("Arial", Font.BOLD, 11);
     protected JLabel[] rotulos = new JLabel[20];
-    public JTextField idSeqTdvTF;
+    public JNumericField idSeqTdvTF;
     public JTextField valorTotalTF;
-    public JTextField idSeqAgenteTF;
-    public JTextField idSeqClienteTF;
+    public JNumericField idSeqAgenteTF;
+    public JNumericField idSeqClienteTF;
     
     protected JButton cadastrarNpButton;
     protected JButton updateNpButton;
@@ -29,11 +34,10 @@ public class NovaPassagem extends JFrame {
     protected JButton sair;
     
     protected JCheckBox estudanteCB;
-    
-    protected JComboBox escolhaDeDia;
-    protected JComboBox escolhaDeMes;
-    protected JComboBox escolhaDeAno;
     protected JComboBox escolhaDePoltrona;
+
+    protected JFormattedTextField dataViagemFTF;
+    MaskFormatter formatter = null;
     
     protected int tipoOperacao = 0;
 
@@ -51,103 +55,86 @@ public class NovaPassagem extends JFrame {
         this.tipoOperacao = tipoOperacao;
 
         //--Identificador Sequencial--
-        rotulos[0] = new JLabel("Id. Seq. Tipo De Viagem");
-        rotulos[0].setFont(padraoParaRotulos);
-        rotulos[0].setBounds(10, 10, 150, 20);
-        add(rotulos[0]);
 
-        idSeqTdvTF = new JTextField("");
+        idSeqTdvTF = new JNumericField(2);
         idSeqTdvTF.setFont(padrao);
-        idSeqTdvTF.setBounds(10, 30, 20, 20);
+        idSeqTdvTF.setBounds(10, 140, 120, 40);
+        idSeqTdvTF.setEditable(false);
+        idSeqTdvTF.setBorder(
+                BorderFactory.createTitledBorder(
+                null, "Id. Seq. Tipo De Viagem", 0, 0, new Font("Tahoma", 0, 10)));
         add(idSeqTdvTF);
         //--------------------
 
         //--Valor Total--
-        rotulos[1] = new JLabel("Valor Total");
-        rotulos[1].setFont(padraoParaRotulos);
-        rotulos[1].setBounds(10, 60, 120, 20);
-        add(rotulos[1]);
-
         valorTotalTF = new JTextField("");
         valorTotalTF.setFont(padrao);
-        valorTotalTF.setBounds(10, 80, 50, 20);
+        valorTotalTF.setBounds(10, 60, 90, 40);
         valorTotalTF.setEditable(false);
+        valorTotalTF.setBorder(
+                BorderFactory.createTitledBorder(
+                null, "Valor Total", 0, 0, new Font("Tahoma", 0, 10)));
         add(valorTotalTF);
         //---------------------
 
-        //--Estudante-//
-        
+        //--Estudante-// 
         estudanteCB = new JCheckBox("Estudante",null,false);
-        estudanteCB.setBounds(190, 150, 100, 20);
+        estudanteCB.setBounds(200, 230,100, 20);
         add(estudanteCB);
         
-        //---------------------
-
+        //--------------------
         //--Poltrona--
         rotulos[3] = new JLabel("Poltrona");
         rotulos[3].setFont(padraoParaRotulos);
-        rotulos[3].setBounds(190, 60, 75, 20);
+        rotulos[3].setBounds(200, 60, 75, 20);
         add(rotulos[3]);
         
         escolhaDePoltrona = new JComboBox(Auxiliares.NUMERO_POLTRONA);
         escolhaDePoltrona.setMaximumRowCount(4);
         escolhaDePoltrona.setFont(padrao);
         escolhaDePoltrona.setSelectedIndex(0);
-        escolhaDePoltrona.setBounds(190, 80,60, 20);
+        escolhaDePoltrona.setBounds(200, 80,60, 20);
         add(escolhaDePoltrona);
        
         //---------------------
 
         //data
-        rotulos[4] = new JLabel("Data");
-        rotulos[4].setFont(padraoParaRotulos);
-        rotulos[4].setBounds(10, 110, 75, 20);
-        add(rotulos[4]);
+        try {
+            formatter = new MaskFormatter("##/##/####");
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
 
-        escolhaDeDia = new JComboBox(Auxiliares.DIAS);
-        escolhaDeDia.setMaximumRowCount(4);
-        escolhaDeDia.setFont(padrao);
-        escolhaDeDia.setSelectedIndex(0);
-        escolhaDeDia.setBounds(10, 130,60, 20);
-        add(escolhaDeDia);
-
-        escolhaDeMes = new JComboBox(Auxiliares.MESES);
-        escolhaDeMes.setMaximumRowCount(4);
-        escolhaDeMes.setFont(padrao);
-        escolhaDeMes.setSelectedIndex(0);
-        escolhaDeMes.setBounds(10, 160,80, 20);
-        add(escolhaDeMes);
-
-        escolhaDeAno = new JComboBox(Auxiliares.ANOS);
-        escolhaDeAno.setMaximumRowCount(4);
-        escolhaDeAno.setFont(padrao);
-        escolhaDeAno.setSelectedIndex(0);
-        escolhaDeAno.setBounds(10, 190,60, 20);
-        add(escolhaDeAno);
+        dataViagemFTF = new javax.swing.JFormattedTextField(formatter);
+        dataViagemFTF.setBounds(200, 140, 100, 40);
+        dataViagemFTF.setBorder(
+                BorderFactory.createTitledBorder(
+                null, "Data Da Viagem *", 0, 0, new Font("Tahoma", 0, 10)));
+        dataViagemFTF.setEditable(false);
+        add(dataViagemFTF);
         //---------------------
 
 
         //--Id. Seq. Agente--
-        rotulos[5] = new JLabel("Id. Seq. Agente");
-        rotulos[5].setFont(padraoParaRotulos);
-        rotulos[5].setBounds(10, 250, 150, 20);
-        add(rotulos[5]);
-
-        idSeqAgenteTF = new JTextField("");
+        idSeqAgenteTF = new JNumericField(2);
         idSeqAgenteTF.setFont(padrao);
-        idSeqAgenteTF.setBounds(10, 270, 20, 20);
+        idSeqAgenteTF.setBounds(10, 230, 100, 40);
+        idSeqAgenteTF.setBorder(
+                BorderFactory.createTitledBorder(
+                null, "Id. Seq. Agente", 0, 0, new Font("Tahoma", 0, 10)));
+
         add(idSeqAgenteTF);
         //--------------------
 
         //--Id. Seq. Cliente--
-        rotulos[6] = new JLabel("Id. Seq. Cliente");
-        rotulos[6].setFont(padraoParaRotulos);
-        rotulos[6].setBounds(10, 290, 155, 20);
-        add(rotulos[6]);
+        
 
-        idSeqClienteTF = new JTextField("");
+        idSeqClienteTF = new JNumericField(5);
         idSeqClienteTF.setFont(padrao);
-        idSeqClienteTF.setBounds(10, 310, 30, 20);
+        idSeqClienteTF.setBounds(10, 300, 100, 40);
+        idSeqClienteTF.setBorder(
+                BorderFactory.createTitledBorder(
+                null, "Id. Seq. Cliente", 0, 0, new Font("Tahoma", 0, 10)));
         add(idSeqClienteTF);
         //--------------------
 

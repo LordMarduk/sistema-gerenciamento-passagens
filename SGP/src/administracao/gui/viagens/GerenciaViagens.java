@@ -155,12 +155,15 @@ public class GerenciaViagens extends JFrame {
                         try {
                             if (flagViagens.getSelectedIndex() == 0) {
                                 //devo usar um order by pela data depois******************************************
-                                tableModel.setQuery("SELECT * FROM instancia_de_viagem  WHERE " +
-                                        filtroTF.getText() + " LIKE '%" + consultaTF.getText() + "%'");
+                                tableModel.setQuery("SELECT * FROM instancia_de_viagem  WHERE " 
+                                        + "CAST(" + filtroTF.getText() + " AS VARCHAR)"
+                                        + " LIKE '%" + consultaTF.getText() +
+                                        "%' ORDER BY data");
                             }
                             if (flagViagens.getSelectedIndex() == 1) {
-                                tableModel.setQuery("SELECT * FROM tipo_de_viagem  WHERE " +
-                                        filtroTF.getText() + " LIKE '%" + consultaTF.getText() +
+                                tableModel.setQuery("SELECT * FROM tipo_de_viagem  WHERE " 
+                                        + "CAST(" + filtroTF.getText() + " AS VARCHAR)"
+                                        + " LIKE '%" + consultaTF.getText() +
                                         "%' ORDER BY id_seq_tdv");
                             }
 
@@ -180,7 +183,7 @@ public class GerenciaViagens extends JFrame {
                         try {
                             if (flagViagens.getSelectedIndex() == 0) {
                                 //aqui devo ordenar pela data***********************************************
-                                tableModel.setQuery("SELECT * FROM instancia_de_viagem");
+                                tableModel.setQuery("SELECT * FROM instancia_de_viagem ORDER BY data");
                             }
 
                             if (flagViagens.getSelectedIndex() == 1) {
@@ -272,7 +275,7 @@ public class GerenciaViagens extends JFrame {
     }
 
     public CadastraTipoDeViagem inserirTipoDeViagemEmGui(TipoDeViagem tdv) {
-        CadastraTipoDeViagem ctdv = new CadastraTipoDeViagem(1, dbm);
+        CadastraTipoDeViagem ctdv = new CadastraTipoDeViagem(Auxiliares.ALTERAR, dbm);
 
         ctdv.identificadorSequencialTF.setText(String.valueOf(tdv.getIdSeqTdv()));
         ctdv.valorViagemTF.setText(String.valueOf(tdv.getValorViagem()));
@@ -310,7 +313,7 @@ public class GerenciaViagens extends JFrame {
 
     public CadastraInstanciaDeViagem inserirInstanciaDeViagemEmGui(InstanciaDeViagem idv)
     throws ParseException {
-        CadastraInstanciaDeViagem cidv = new CadastraInstanciaDeViagem(1, null);
+        CadastraInstanciaDeViagem cidv = new CadastraInstanciaDeViagem(Auxiliares.ALTERAR, dbm);
 
         cidv.idSeqTdvTF.setText(String.valueOf(idv.getIdSeqTdv()));
 

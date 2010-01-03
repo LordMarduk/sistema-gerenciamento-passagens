@@ -64,7 +64,7 @@ public class GerenciaViagens extends JFrame {
         try {
             // cria o TableModel
             //aqui deve ser ordenado pela data*************************************************
-            tableModel = new TableModel(dbm, "select * from instancia_de_viagem");
+            tableModel = new TableModel(dbm, "select * from instancia_de_viagem ORDER BY data");
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {

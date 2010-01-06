@@ -2,19 +2,18 @@ package util;
 
 import java.rmi.RemoteException;
 import javax.swing.table.AbstractTableModel;
-
-public class TableModelCliente extends AbstractTableModel {
+public class TableModelII extends AbstractTableModel {
 
     private final QueryManager qm;
 
     private String query;
 
-    public static final String[] CLIENTE_COLUMNS_NAMES = {"ID", "Nome", "Sexo", "Data de Nascimento",
-        "CPF", "Endereço", "Telefone", "Estudante"};
+    public String[] columnsNames;
 
-    public TableModelCliente(final QueryManager qm, String query){
+    public TableModelII(final QueryManager qm, String query, String[] columnsNames){
         this.qm = qm;
         this.query = query;
+        this.columnsNames = columnsNames;
     }
 
     public int getRowCount() {
@@ -27,7 +26,7 @@ public class TableModelCliente extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        return 8;
+        return columnsNames.length;
         /*
          try {
             return dbm.queryColumnCount(query);
@@ -62,7 +61,7 @@ public class TableModelCliente extends AbstractTableModel {
 
     @Override
     public String getColumnName(int column) {
-        return CLIENTE_COLUMNS_NAMES[column];
+        return columnsNames[column];
     }
 
     public void setQuery(String newQuery) {

@@ -50,7 +50,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        MenuPrincipal mp = new MenuPrincipal(dbm);
+        MenuPrincipal mp = new MenuPrincipal(dbm, qm);
         mp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }

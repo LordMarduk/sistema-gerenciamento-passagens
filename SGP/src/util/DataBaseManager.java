@@ -5,9 +5,10 @@ import administracao.viagens.InstanciaDeViagem;
 import rodoviaria.cliente.Cliente;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import rodoviaria.rodoviaria.Rodoviaria;
 
 public interface DataBaseManager extends Remote{
-    
+
     public boolean closeConnection() throws RemoteException;
 
     public boolean insertCliente(Cliente novoCliente) throws RemoteException;
@@ -19,6 +20,8 @@ public interface DataBaseManager extends Remote{
     public boolean deleteCliente(int id) throws RemoteException;
 
     public int maximunValueCliente() throws RemoteException;
+
+    public Rodoviaria getRodoviaria(int id) throws RemoteException;
 
     public TipoDeViagem selectTipoDeViagem(int id_seq_tdv)  throws RemoteException;
 

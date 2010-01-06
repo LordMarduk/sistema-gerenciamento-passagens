@@ -39,7 +39,7 @@ public class Login extends JFrame {
         setVisible(true);
         setResizable(false);
         setLayout(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
 
         this.dbm = dbm;
         this.qm = qm;
@@ -94,7 +94,8 @@ public class Login extends JFrame {
                     /*
                      * to change
                      */
-                      GerenciamentoDeClientes gcframe = new GerenciamentoDeClientes(dbm, qm);
+                      MenuPrincipal main = new MenuPrincipal(dbm,qm);
+                      main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     /*
                      *
                      */

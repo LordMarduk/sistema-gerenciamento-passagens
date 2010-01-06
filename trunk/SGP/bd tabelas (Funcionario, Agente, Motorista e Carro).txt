@@ -1,0 +1,88 @@
+-- Table: funcionario
+
+-- DROP TABLE funcionario;
+
+CREATE TABLE funcionario
+(
+  id_seq_funcionario numeric(3) NOT NULL DEFAULT nextval('funcionario_codigofun_seq'::regclass),
+  nome character varying(100) NOT NULL,
+  sexo character(1),
+  datanascimento date,
+  cpf numeric(11),
+  endereco character varying(300),
+  telefone numeric(8),
+  CONSTRAINT funcionario_pk PRIMARY KEY (id_seq_funcionario),
+  CONSTRAINT funcionario_cpf_uq UNIQUE (cpf),
+  CONSTRAINT funcionario_sexo_check CHECK (sexo = ANY (ARRAY['M'::bpchar, 'F'::bpchar]))
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE funcionario OWNER TO postgres;
+
+
+-- Table: agente
+
+-- DROP TABLE agente;
+
+CREATE TABLE agente
+(
+  id_seq_agente numeric(3) NOT NULL,
+  usuario character varying(20) NOT NULL,
+  senha character varying(20) NOT NULL,
+  CONSTRAINT agente_pk PRIMARY KEY (id_seq_agente),
+  CONSTRAINT funcionario_agente_fk FOREIGN KEY (id_seq_agente)
+      REFERENCES funcionario (id_seq_funcionario) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT agente_usuario_uq UNIQUE (usuario)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agente OWNER TO postgres;
+
+
+
+-- Table: motorista
+
+-- DROP TABLE motorista;
+
+CREATE TABLE motorista
+(
+  id_seq_motorista numeric(3) NOT NULL,
+  cnh numeric(10) NOT NULL,
+  CONSTRAINT motorista_pk PRIMARY KEY (id_seq_motorista),
+  CONSTRAINT funcionario_motorista_fk FOREIGN KEY (id_seq_motorista)
+      REFERENCES funcionario (id_seq_funcionario) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT motorista_cnh_uq UNIQUE (cnh)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE motorista OWNER TO postgres;
+
+
+
+-- Table: carro
+
+-- DROP TABLE carro;
+
+CREATE TABLE carro
+(
+  id_seq_carro numeric(2) NOT NULL DEFAULT nextval('carro_codigocar_seq'::regclass),
+  placa character(8) NOT NULL,
+  chassis character(17) NOT NULL,
+  arcondicionado character(3),
+  capacidade numeric(3),
+  CONSTRAINT carro_pk PRIMARY KEY (id_seq_carro),
+  CONSTRAINT carro_chassis_uq UNIQUE (chassis),
+  CONSTRAINT carro_placa_uq UNIQUE (placa),
+  CONSTRAINT carro_arcondicionado_check CHECK (arcondicionado = ANY (ARRAY['SIM'::bpchar, 'NAO'::bpchar]))
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE carro OWNER TO postgres;
+
+

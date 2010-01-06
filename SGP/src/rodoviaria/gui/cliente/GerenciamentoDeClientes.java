@@ -6,8 +6,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -23,7 +21,7 @@ import rodoviaria.cliente.Cliente;
 import util.DataBaseManager;
 import util.JNumericField;
 import util.QueryManager;
-import util.TableModelCliente;
+import util.TableModelII;
 
 public class GerenciamentoDeClientes extends JFrame {
 
@@ -33,7 +31,7 @@ public class GerenciamentoDeClientes extends JFrame {
     private JPanel filtersPanel = new JPanel();
     private JPanel queryResultPanel = new JPanel();
 
-    private TableModelCliente tmc;
+    private TableModelII tableModel;
     private JTable queryResultTable;
 
     private JTextField nome = new JTextField();
@@ -54,12 +52,17 @@ public class GerenciamentoDeClientes extends JFrame {
 
     private JPopupMenu popupMenu;
     private JButton itens[] = {
-        new JButton("Editar"), new JButton("Deletar"), new JButton("Vender Passagem")
+        new JButton("Editar                        "),
+        new JButton("Deletar                     "),
+        new JButton("Vender Passagem")
     };
 
     Cliente gotten = null;
 
     AtualizarHandler ah = new AtualizarHandler();
+
+    private String[] clienteColumnsNames = {"ID", "Nome", "Sexo", "Data de Nascimento",
+        "CPF", "Endereço", "Telefone", "Estudante"};
 
     public GerenciamentoDeClientes(final DataBaseManager dbm, final QueryManager qm) {
 
@@ -138,8 +141,8 @@ public class GerenciamentoDeClientes extends JFrame {
         filtersPanel.add(cadastrar);
         filtersPanel.add(sair);
 
-        tmc = new TableModelCliente(qm, this.query);
-        queryResultTable = new JTable(tmc);
+        tableModel = new TableModelII(qm, this.query, clienteColumnsNames);
+        queryResultTable = new JTable(tableModel);
         JScrollPane tableScroolPane = new JScrollPane(queryResultTable);
         tableScroolPane.setBounds(5, 5, 975, 555);
 
@@ -255,7 +258,7 @@ public class GerenciamentoDeClientes extends JFrame {
                     newQuery += "(sexo = " + (sexo.getSelectedIndex() == 1 ? "'M'" : "'F'") + ")";
                 }
                 query = newQuery += "ORDER BY id_seq_cliente";
-                tmc.setQuery(query);
+                tableModel.setQuery(query);
                 repaint();
             }
         }

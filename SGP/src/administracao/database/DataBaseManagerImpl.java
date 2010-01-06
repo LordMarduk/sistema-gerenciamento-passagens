@@ -16,6 +16,7 @@ import util.DataBaseManager;
 import administracao.viagens.InstanciaDeViagem;
 import administracao.viagens.TipoDeViagem;
 import java.text.ParseException;
+import rodoviaria.rodoviaria.Rodoviaria;
 import util.Date;
 
 /**
@@ -94,7 +95,6 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             ResultSet rs = stm.executeQuery("SELECT * FROM cliente WHERE id_seq_cliente = " + id);
             rs.next();
             if( !rs.wasNull() ){
-                System.out.println(rs.getString(4));
                 Cliente sel = new Cliente(id, rs.getString(2), rs.getString(3).charAt(0),
                         new Date( rs.getString(4) ), rs.getString(5), rs.getString(6),
                         rs.getString(7), rs.getBoolean(8));
@@ -147,18 +147,115 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         return false;
     }
 
-    public int maximunValueCliente() throws RemoteException {
-        Statement stm = null;
+    public synchronized int maximunValueCliente() throws RemoteException {
         try {
-            stm = connection.createStatement();
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
+            Statement stm = connection.createStatement();
             ResultSet rs = stm.executeQuery("SELECT max(id_seq_cliente) FROM cliente");
             rs.next();
-            return rs.getInt(1);
+            int m = rs.getInt(1);
+            stm.close();
+            connection.close();
+            return m;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return -1;
     }
+
+//    FUNCOES DE TIPO DE RODOVIARIA
+    public synchronized int maximunValueRodoviaria() {
+        try {
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT max(id_seq_rodov) FROM rodoviaria");
+            rs.next();
+            int m = rs.getInt(1);
+            stm.close();
+            connection.close();
+            return m;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public synchronized boolean insertRodoviaria(Rodoviaria novaRodoviaria) {
+        String sql =
+            "INSERT INTO rodoviaria " +
+                "(id_seq_rodov, cidade, estado, telefone)" +
+            "VALUES(" +
+                novaRodoviaria.getId() + ", '" +
+                novaRodoviaria.getCidade() + "' , '" +
+                novaRodoviaria.getEstado() + "' , " +
+                novaRodoviaria.getTelefone() +
+            ")";
+        try {
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
+            Statement stm = connection.createStatement();
+            stm.executeUpdate(sql);
+            stm.close();
+            connection.close();
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public synchronized Rodoviaria getRodoviaria(int id) throws RemoteException{
+        try {
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT * FROM rodoviaria WHERE id_seq_rodov = " + id);
+            rs.next();
+            if( !rs.wasNull() ){
+                Rodoviaria sel = new Rodoviaria( id, rs.getString(2), rs.getString(3), rs.getString(4) );
+                connection.close();
+                return sel;
+            }
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+        public synchronized boolean updateRodoviaria(int id, Rodoviaria mod) {
+        try {
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
+            Statement stm = connection.createStatement();
+            String sql =
+                "UPDATE rodoviaria SET " +
+                    "cidade = '" + mod.getCidade() + "', " +
+                    "estado = '" + mod.getEstado() + "', " +
+                    "telefone = '" + mod.getTelefone() + "' " +
+                "WHERE id_seq_rodov = " + mod.getId();
+            stm.executeUpdate(sql);
+            stm.close();
+            connection.close();
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public synchronized boolean deleteRodoviaria(int id){
+        try{
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
+            Statement stm = connection.createStatement();
+            stm.executeUpdate("DELETE FROM rodoviaria WHERE id_seq_rodov = " + id);
+            stm.close();
+            connection.close();
+            return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 //    FUNCOES DE TIPO DE VIAGEM
     public TipoDeViagem selectTipoDeViagem(int id_seq_tdv) throws RemoteException {

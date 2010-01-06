@@ -4,11 +4,10 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import javax.swing.JFrame;
 import util.DataBaseManager;
 import javax.swing.UIManager;
-import rodoviaria.cliente.Cliente;
 import rodoviaria.gui.Login;
-import rodoviaria.gui.cliente.EditarCliente;
 import util.QueryManager;
 
 public class Main {
@@ -36,6 +35,7 @@ public class Main {
         }
 
         Login loginframe = new Login(dbm, qm);
+        loginframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     //NovoCliente ncframe = new NovoCliente(dbm);
     //GerenciamentoDeClientes gcframe = new GerenciamentoDeClientes(dbm);
 

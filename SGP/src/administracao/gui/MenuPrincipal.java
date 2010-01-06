@@ -3,6 +3,7 @@ package administracao.gui;
 //puta que pariu...funciona misera!!!
 
 import administracao.database.DataBaseManagerImpl;
+import administracao.database.QueryManagerImpl;
 import administracao.gui.carro.JanelaAdministraCarro;
 import administracao.gui.funcionario.JanelaAdministraFuncionario;
 import administracao.gui.viagens.GerenciaViagens;
@@ -22,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import rodoviaria.gui.rodoviaria.GerenciamentoDeRodoviarias;
 
 //import javax.swing.JRootPane;
 public class MenuPrincipal extends JFrame
@@ -40,8 +42,9 @@ public class MenuPrincipal extends JFrame
     JPanel painel;
 
     public final DataBaseManagerImpl dbm;
+    public final QueryManagerImpl qm;
 
-    public MenuPrincipal(DataBaseManagerImpl dbm) {
+    public MenuPrincipal(final DataBaseManagerImpl dbm, final QueryManagerImpl qm) {
         super("Sistema de Gerenciamento de Passagens Intermunicipais/Interestaduais (Beta) - Módulo Administrador");
 
         setSize(800, 600);
@@ -51,6 +54,7 @@ public class MenuPrincipal extends JFrame
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         this.dbm = dbm;
+        this.qm = qm;
 
         layout = new FlowLayout();
         border = new BorderLayout();
@@ -87,6 +91,13 @@ public class MenuPrincipal extends JFrame
         onibusButton.setIcon(onibusIcon);
 
         rodoviariaButton = new JButton("Administrar Rodoviaria ");
+        rodoviariaButton.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    GerenciamentoDeRodoviarias gr = new GerenciamentoDeRodoviarias(dbm, qm);
+                }
+            }
+        );
         rodoviariaButton.setIcon(rodovIcon);
         //Fim dos Botoes
 

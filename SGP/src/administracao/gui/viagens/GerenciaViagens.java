@@ -37,6 +37,7 @@ public class GerenciaViagens extends JFrame {
     private JTable resultTable;
     public final DataBaseManagerImpl dbm;
     private JComboBox flagViagens;
+    private boolean instBool = true, tipBool = false;
 
     public GerenciaViagens(final DataBaseManagerImpl dbm) {
 
@@ -160,12 +161,16 @@ public class GerenciaViagens extends JFrame {
                                         + "CAST(" + filtroTF.getText() + " AS VARCHAR)"
                                         + " LIKE '%" + consultaTF.getText() +
                                         "%' ORDER BY data");
+                                instBool = true;
+                                tipBool = false;
                             }
                             if (flagViagens.getSelectedIndex() == 1) {
                                 tableModel.setQuery("SELECT * FROM tipo_de_viagem  WHERE " 
                                         + "CAST(" + filtroTF.getText() + " AS VARCHAR)"
                                         + " LIKE '%" + consultaTF.getText() +
                                         "%' ORDER BY id_seq_tdv");
+                                instBool = false;
+                                tipBool = true;
                             }
 
                         } // fim do try
@@ -185,10 +190,14 @@ public class GerenciaViagens extends JFrame {
                             if (flagViagens.getSelectedIndex() == 0) {
                                 //aqui devo ordenar pela data***********************************************
                                 tableModel.setQuery("SELECT * FROM instancia_de_viagem ORDER BY data");
+                                instBool = true;
+                                tipBool = false;
                             }
 
                             if (flagViagens.getSelectedIndex() == 1) {
                                 tableModel.setQuery("SELECT * FROM tipo_de_viagem ORDER BY id_seq_tdv");
+                                instBool = false;
+                                tipBool = true;
                             }
 
                         } catch (SQLException sqlException) {
@@ -233,7 +242,7 @@ public class GerenciaViagens extends JFrame {
                     Integer pegarIdSeqTdvNoJTable = null;
                     String pegarDataNoJTable = null;
 
-                    if (flagViagens.getSelectedIndex() == 0) {
+                    if (flagViagens.getSelectedIndex() == 0 && instBool == true) {
                         //quando buscar esse sera preenchido
                         InstanciaDeViagem idv = new InstanciaDeViagem();
 
@@ -251,7 +260,7 @@ public class GerenciaViagens extends JFrame {
                         CadastraInstanciaDeViagem cidv = inserirInstanciaDeViagemEmGui(idv);
                     }
 
-                    if (flagViagens.getSelectedIndex() == 1) {
+                    else if (flagViagens.getSelectedIndex() == 1 && tipBool == true) {
                         //quando buscar esse sera preenchido
                         TipoDeViagem tdv = new TipoDeViagem();
 
@@ -264,7 +273,15 @@ public class GerenciaViagens extends JFrame {
                         CadastraTipoDeViagem ctdv = inserirTipoDeViagemEmGui(tdv);
                     }
 
-
+                    else{
+                        JOptionPane.showMessageDialog(
+                                    null,
+                                    "Para realizar a consulta escolha o tipo "+
+                                    "desejado.\n Em sequida retorne todos.",
+                                    "Aviso",
+                                    JOptionPane.INFORMATION_MESSAGE
+                        );
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();

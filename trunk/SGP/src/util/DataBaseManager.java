@@ -1,11 +1,13 @@
 package util;
 
+import administracao.rodoviaria.Rodoviaria;
 import administracao.viagens.TipoDeViagem;
 import administracao.viagens.InstanciaDeViagem;
 import rodoviaria.cliente.Cliente;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import rodoviaria.rodoviaria.Rodoviaria;
+import rodoviaria.passagem.Passagem;
+
 
 public interface DataBaseManager extends Remote{
 
@@ -32,5 +34,15 @@ public interface DataBaseManager extends Remote{
     public void insertTipoDeViagem(TipoDeViagem tdv)  throws RemoteException;
 
     public boolean validaEntradaAgente(String nome, String senha) throws RemoteException;
+
+    public boolean insertPassagem(Passagem novaPassagem) throws RemoteException;
+
+    public Passagem getPassagem(int idTdv, Date data, int np) throws RemoteException;
+
+    public int[] getPoltronasVagas(InstanciaDeViagem idv) throws RemoteException;
+
+    public boolean deletePassagem(int idTdv, Date data, int np) throws RemoteException;
+
+    public InstanciaDeViagem selectInstanciaDeViagem(int id_seq_tdv, String data) throws RemoteException;
 
 }

@@ -16,7 +16,9 @@ import util.DataBaseManager;
 import administracao.viagens.InstanciaDeViagem;
 import administracao.viagens.TipoDeViagem;
 import java.text.ParseException;
-import rodoviaria.rodoviaria.Rodoviaria;
+import administracao.rodoviaria.Rodoviaria;
+import java.util.ArrayList;
+import rodoviaria.passagem.Passagem;
 import util.Date;
 
 /**
@@ -359,7 +361,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
     }
 
     /////////////////////////////FUNCOES DE INSTANCIA DE VIAGEM///////////////////////////////
-    public InstanciaDeViagem selectInstanciaDeViagem(int id_seq_tdv, String data) throws ParseException {
+    public InstanciaDeViagem selectInstanciaDeViagem(int id_seq_tdv, String data){
 
         Statement st = null;
         ResultSet rs = null;
@@ -953,6 +955,102 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
         }
     }
     ////////////////////////////////////////////////////////////////////////////
+
+    //     FUNCOES DE PASSAGEM
+
+    public synchronized boolean insertPassagem(Passagem novaPassagem) throws RemoteException{
+        String sql =
+            "INSERT INTO passagem " +
+                "(num_poltrona, seguro, estudante, valor_total, id_seq_tdv, data, id_seq_cliente)" +
+            "VALUES(" +
+                novaPassagem.getNumPoltrona() + ", " +
+                novaPassagem.isSeguro() + " , " +
+                novaPassagem.isEstudante() + " , " +
+                novaPassagem.getValorTotal() + " , " +
+                novaPassagem.getTipoDeViagem().getIdSeqTdv() + " , " +
+                novaPassagem.getData().stringToQuery() + " , " +
+                novaPassagem.getIdCliente() +
+            ")";
+        try {
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
+            Statement stm = connection.createStatement();
+            stm.executeUpdate(sql);
+            stm.close();
+            connection.close();
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public synchronized Passagem getPassagem(int idTdv, Date data, int np) throws RemoteException{
+        try {
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery
+                    ("SELECT * FROM passagem WHERE id_seq_tdv = " + idTdv + " AND " +
+                    "data = " + data.stringToQuery() + " AND  + num_poltrona = " + np);
+            rs.next();
+            if( !rs.wasNull() ){
+                Passagem sel = new Passagem(
+                    np, rs.getBoolean(2), rs.getBoolean(3), selectTipoDeViagem(idTdv), data, rs.getInt(7)
+                );
+                connection.close();
+                return sel;
+            }
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public synchronized int[] getPoltronasVagas(InstanciaDeViagem idv) throws RemoteException{
+        ArrayList<Integer> poltronas = new ArrayList<Integer>();
+        for (int i = 1; i < idv.getNumVagasDisponiveis(); i++)
+            poltronas.add(i);
+
+        String sql = "SELECT num_poltrona FROM passagem WHERE id_seq_tdv = " +
+                idv.getIdSeqTdv() + " AND data = '" + idv.getData() + "'";
+
+        try{
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while( rs.next() )
+                poltronas.remove(new Integer(rs.getInt(1)));
+
+            int[] vagas = new int[ poltronas.size() ];
+            for (int i = 0; i < vagas.length; i++)
+                vagas[i] = poltronas.get(i);
+
+            connection.close();
+            return vagas;
+        }
+        catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public synchronized boolean deletePassagem(int idTdv, Date data, int np) throws RemoteException{
+        try{
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
+            Statement stm = connection.createStatement();
+            String sql = "DELETE FROM passagem WHERE id_seq_tdv = " + idTdv + " AND " +
+                    "data = " + data.stringToQuery() + " AND num_poltrona = " + np;
+            System.out.println(sql);
+            stm.executeUpdate(sql);
+            stm.close();
+            connection.close();
+            return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 //    FECHAR CONEXAO
     public boolean closeConnection() throws RemoteException {

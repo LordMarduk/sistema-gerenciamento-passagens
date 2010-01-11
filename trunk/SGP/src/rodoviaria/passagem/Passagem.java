@@ -1,217 +1,97 @@
-
 package rodoviaria.passagem;
 
-
+import administracao.viagens.TipoDeViagem;
 import java.io.Serializable;
+import util.Date;
 
-public class Passagem implements Serializable
-{
-	/** 
-	 * This attribute maps to the column num_poltrona in the passagem table.
-	 */
-	protected int numPoltrona;
+public class Passagem implements Serializable {
 
-	/** 
-	 * This attribute maps to the column seguro in the passagem table.
-	 */
-	protected short seguro;
+	private int numPoltrona;
 
-	/** 
-	 * This attribute maps to the column estudante in the passagem table.
-	 */
-	protected short estudante;
+	private boolean seguro;
+	private boolean estudante;
 
-	/** 
-	 * This attribute maps to the column valor_total in the passagem table.
-	 */
-	protected float valorTotal;
+	private float valorTotal;
 
-	/** 
-	 * This attribute maps to the column id_seq_tdv in the passagem table.
-	 */
-	protected int idSeqTdv;
+	private TipoDeViagem tipoDeViagem;
 
-	/** 
-	 * This attribute maps to the column data in the passagem table.
-	 */
-	protected String data;
+	private Date data;
 
-	/** 
-	 * This attribute maps to the column id_seq_agente in the passagem table.
-	 */
-	protected int idSeqAgente;
+	private int idCliente;
 
-	/** 
-	 * This attribute maps to the column id_seq_cliente in the passagem table.
-	 */
-	protected int idSeqCliente;
+    public Passagem(int numPoltrona, boolean seguro, boolean estudante, TipoDeViagem TipoDeViagem, Date data, int idCliente) {
 
-	/**
-	 * Method 'Passagem'
-	 * 
-	 */
-	public Passagem()
-	{
-	}
+        this.numPoltrona = numPoltrona;
 
-	/**
-	 * Method 'getNumPoltrona'
-	 * 
-	 * @return int
-	 */
-	public int getNumPoltrona()
-	{
-		return numPoltrona;
-	}
+        this.seguro = seguro;
+        this.estudante = estudante;
 
-	/**
-	 * Method 'setNumPoltrona'
-	 * 
-	 * @param numPoltrona
-	 */
-	public void setNumPoltrona(int numPoltrona)
-	{
-		this.numPoltrona = numPoltrona;
-	}
+//        this.valorTotal = tipoDeViagem.getValorEmbarque() + tipoDeViagem.getValorViagem();
+//        if(seguro)
+//            valorTotal += tipoDeViagem.getValorSeguro();
+//        if(estudante)
+//            valorTotal /= 2;
 
-	/**
-	 * Method 'getSeguro'
-	 * 
-	 * @return short
-	 */
-	public short getSeguro()
-	{
-		return seguro;
-	}
+        this.tipoDeViagem = TipoDeViagem;
+        this.data = data;
+        this.idCliente = idCliente;
 
-	/**
-	 * Method 'setSeguro'
-	 * 
-	 * @param seguro
-	 */
-	public void setSeguro(short seguro)
-	{
-		this.seguro = seguro;
-	}
+    }
 
-	/**
-	 * Method 'getEstudante'
-	 * 
-	 * @return short
-	 */
-	public short getEstudante()
-	{
-		return estudante;
-	}
+    public TipoDeViagem getTipoDeViagem() {
+        return tipoDeViagem;
+    }
 
-	/**
-	 * Method 'setEstudante'
-	 * 
-	 * @param estudante
-	 */
-	public void setEstudante(short estudante)
-	{
-		this.estudante = estudante;
-	}
+    public void setTipoDeViagem(TipoDeViagem TipoDeViagem) {
+        this.tipoDeViagem = TipoDeViagem;
+    }
 
-	/**
-	 * Method 'getValorTotal'
-	 * 
-	 * @return float
-	 */
-	public float getValorTotal()
-	{
-		return valorTotal;
-	}
+    public Date getData() {
+        return data;
+    }
 
-	/**
-	 * Method 'setValorTotal'
-	 * 
-	 * @param valorTotal
-	 */
-	public void setValorTotal(float valorTotal)
-	{
-		this.valorTotal = valorTotal;
-	}
+    public void setData(Date data) {
+        this.data = data;
+    }
 
-	/**
-	 * Method 'getIdSeqTdv'
-	 * 
-	 * @return int
-	 */
-	public int getIdSeqTdv()
-	{
-		return idSeqTdv;
-	}
+    public boolean isEstudante() {
+        return estudante;
+    }
 
-	/**
-	 * Method 'setIdSeqTdv'
-	 * 
-	 * @param idSeqTdv
-	 */
-	public void setIdSeqTdv(int idSeqTdv)
-	{
-		this.idSeqTdv = idSeqTdv;
-	}
+    public void setEstudante(boolean estudante) {
+        this.estudante = estudante;
+    }
 
-	/**
-	 * Method 'getData'
-	 * 
-	 * @return Date
-	 */
-	public String getData()
-	{
-		return data;
-	}
+    public int getIdCliente() {
+        return idCliente;
+    }
 
-	/**
-	 * Method 'setData'
-	 * 
-	 * @param data
-	 */
-	public void setData(String data)
-	{
-		this.data = data;
-	}
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
+    }
 
-	/**
-	 * Method 'getIdSeqAgente'
-	 * 
-	 * @return int
-	 */
-	public int getIdSeqAgente()
-	{
-		return idSeqAgente;
-	}
+    public int getNumPoltrona() {
+        return numPoltrona;
+    }
 
-	/**
-	 * Method 'setIdSeqAgente'
-	 * 
-	 * @param idSeqAgente
-	 */
-	public void setIdSeqAgente(int idSeqAgente)
-	{
-		this.idSeqAgente = idSeqAgente;
-	}
+    public void setNumPoltrona(int numPoltrona) {
+        this.numPoltrona = numPoltrona;
+    }
 
-	/**
-	 * Method 'getIdSeqCliente'
-	 * 
-	 * @return int
-	 */
-	public int getIdSeqCliente()
-	{
-		return idSeqCliente;
-	}
+    public boolean isSeguro() {
+        return seguro;
+    }
 
-	/**
-	 * Method 'setIdSeqCliente'
-	 * 
-	 * @param idSeqCliente
-	 */
-	public void setIdSeqCliente(int idSeqCliente)
-	{
-		this.idSeqCliente = idSeqCliente;
-        }
+    public void setSeguro(boolean seguro) {
+        this.seguro = seguro;
+    }
+
+    public float getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(float valorTotal) {
+        this.valorTotal = valorTotal;
+    }
 
 }

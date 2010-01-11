@@ -1,20 +1,18 @@
 package administracao.gui.viagens;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import javax.swing.BorderFactory;
 import administracao.database.DataBaseManagerImpl;
 import administracao.viagens.TipoDeViagem;
 import util.Auxiliares;
 import util.JNumericField;
+
 
 public class CadastraTipoDeViagem extends JFrame {
 
@@ -37,14 +35,18 @@ public class CadastraTipoDeViagem extends JFrame {
     protected JButton cadastrarTdvButton;
     protected JButton updateTdvButton;
     protected JButton deleteTdvButton;
+    protected JButton pegarIdSeqRodovPartida;
+    protected JButton pegarIdSeqRodovChegada;
     protected JButton sair;
     protected String diasDaSemana = "";
     protected int tipoOperacao = 0;
+    private CadastraTipoDeViagem ctv = this;
+    private CadastraInstanciaDeViagem civ;
 
     public DataBaseManagerImpl dbm;
 
     //protected Filme filmeCriado;
-    public CadastraTipoDeViagem(int tipoOperacao, DataBaseManagerImpl dbm) {
+    public CadastraTipoDeViagem(int tipoOperacao, final DataBaseManagerImpl dbm) {
 
         //--Informa��es da Janela--
         super("Cadastrar Tipo De Viagem");
@@ -182,6 +184,18 @@ public class CadastraTipoDeViagem extends JFrame {
         );
 
         add(idSeqRodovPartida);
+        
+        pegarIdSeqRodovPartida = new JButton("...");
+        pegarIdSeqRodovPartida.setBounds(180, 260, 20, 20);
+        pegarIdSeqRodovPartida.addActionListener(
+                new ActionListener() {
+
+                    public void actionPerformed(ActionEvent event) {
+                        new SelecionarIds(dbm,2, null,ctv);
+                    }
+                }
+        );
+        add(pegarIdSeqRodovPartida);
         //--------------------
 
         //--Id. Seq. Rodoviaria Chegada--
@@ -196,6 +210,18 @@ public class CadastraTipoDeViagem extends JFrame {
         );
 
         add(idSeqRodovChegada);
+
+        pegarIdSeqRodovChegada = new JButton("...");
+        pegarIdSeqRodovChegada.setBounds(180, 320, 20, 20);
+        pegarIdSeqRodovChegada.addActionListener(
+                new ActionListener() {
+
+                    public void actionPerformed(ActionEvent event) {
+                        new SelecionarIds(dbm,3, null,ctv);
+                    }
+                }
+        );
+        add(pegarIdSeqRodovChegada);
         //--------------------
 
         //--Bot�o sair--

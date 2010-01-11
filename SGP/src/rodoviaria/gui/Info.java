@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import rodoviaria.FileManager;
-import rodoviaria.rodoviaria.Rodoviaria;
+import administracao.rodoviaria.Rodoviaria;
 import util.DataBaseManager;
 
 public class Info extends JFrame {

@@ -1,6 +1,7 @@
 package administracao.gui.viagens;
 
 
+import administracao.carro.Carro;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -28,6 +29,8 @@ public class CadastraInstanciaDeViagem extends JFrame {
     public JTextField horaDeChegadaTF;
     public JNumericField idSeqCarroTF;
     public JNumericField idSeqMotoristaTF;
+    protected JButton pegarIdCarroButton;
+    protected JButton pegarIdMotoristaButton;
     protected JButton cadastrarIdvButton;
     protected JButton updateIdvButton;
     protected JButton deleteIdvButton;
@@ -37,8 +40,9 @@ public class CadastraInstanciaDeViagem extends JFrame {
     MaskFormatter formatter = null;
     protected int tipoOperacao = 0;
     public DataBaseManagerImpl dbm;
+    private CadastraInstanciaDeViagem civ = this;
 
-    public CadastraInstanciaDeViagem(int tipoOperacao, DataBaseManagerImpl dbm) {
+    public CadastraInstanciaDeViagem(int tipoOperacao, final DataBaseManagerImpl dbm) {
 
         //--Informa��es da Janela--
         super("Cadastrar Instancia De Viagem");
@@ -133,6 +137,18 @@ public class CadastraInstanciaDeViagem extends JFrame {
 
         add(idSeqCarroTF);
 
+        pegarIdCarroButton = new JButton("...");
+        pegarIdCarroButton.setBounds(135, 230, 20, 20);
+        pegarIdCarroButton.addActionListener(
+                new ActionListener() {
+
+                    public void actionPerformed(ActionEvent event) {
+                        new SelecionarIds(dbm,0, civ,null);
+                    }
+                }
+        );
+        add(pegarIdCarroButton);
+
         idSeqMotoristaTF = new JNumericField(3);
         idSeqMotoristaTF.setFont(padrao);
         idSeqMotoristaTF.setBounds(10, 270, 120, 40);
@@ -141,6 +157,19 @@ public class CadastraInstanciaDeViagem extends JFrame {
                 null, "Id. Seq. Motorista", 0, 0, new Font("Tahoma", 0, 10)));
 
         add(idSeqMotoristaTF);
+
+        pegarIdMotoristaButton = new JButton("...");
+        pegarIdMotoristaButton.setBounds(135, 280, 20, 20);
+        pegarIdMotoristaButton.addActionListener(
+                new ActionListener() {
+
+                    public void actionPerformed(ActionEvent event) {
+                       new SelecionarIds(dbm,1,civ,null);
+                    }
+                }
+        );
+        add(pegarIdMotoristaButton);
+
         //--------------------
 
         //--Bot�o sair--
@@ -270,4 +299,5 @@ public class CadastraInstanciaDeViagem extends JFrame {
 
         return idv;
     }
+
 }

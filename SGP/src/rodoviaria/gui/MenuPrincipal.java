@@ -55,8 +55,8 @@ public class MenuPrincipal extends JFrame
         setLayout(border);
 
         //icones
-        clienteIcon = new ImageIcon(getClass().getResource("funcionario.png"));
-        passagemIcon = new ImageIcon(getClass().getResource("cliente.png"));
+        clienteIcon = new ImageIcon(getClass().getResource("cliente.png"));
+        passagemIcon = new ImageIcon(getClass().getResource("passagem.png"));
 
         //jmenus
         arquivo = new JMenu("Arquivo");

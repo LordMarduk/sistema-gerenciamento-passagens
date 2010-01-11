@@ -34,10 +34,11 @@ public class Main {
             e.printStackTrace();
         }
 
+        //MenuPrincipal main = new MenuPrincipal(dbm,qm);
+        //main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         Login loginframe = new Login(dbm, qm);
         loginframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    //NovoCliente ncframe = new NovoCliente(dbm);
-    //GerenciamentoDeClientes gcframe = new GerenciamentoDeClientes(dbm);
 
     }
 }

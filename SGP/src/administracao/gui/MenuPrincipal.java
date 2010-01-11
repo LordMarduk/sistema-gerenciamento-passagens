@@ -23,7 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import rodoviaria.gui.rodoviaria.GerenciamentoDeRodoviarias;
+import administracao.gui.rodoviaria.GerenciamentoDeRodoviarias;
 
 //import javax.swing.JRootPane;
 public class MenuPrincipal extends JFrame

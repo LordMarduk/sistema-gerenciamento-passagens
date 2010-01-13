@@ -23,8 +23,8 @@ public class CadastraTipoDeViagem extends JFrame {
     public JTextField horaDeSaidaTF;
     public JTextField valorViagemTF;
     public JTextField horaDeChegadaTF;
-    public JTextField idSeqRodovPartida;
-    public JTextField idSeqRodovChegada;
+    public JNumericField idSeqRodovPartida;
+    public JNumericField idSeqRodovChegada;
     public JCheckBox segundaCB;
     public JCheckBox tercaCB;
     public JCheckBox quartaCB;
@@ -40,8 +40,7 @@ public class CadastraTipoDeViagem extends JFrame {
     protected JButton sair;
     protected String diasDaSemana = "";
     protected int tipoOperacao = 0;
-    private CadastraTipoDeViagem ctv = this;
-    private CadastraInstanciaDeViagem civ;
+
 
     public DataBaseManagerImpl dbm;
 
@@ -191,7 +190,7 @@ public class CadastraTipoDeViagem extends JFrame {
                 new ActionListener() {
 
                     public void actionPerformed(ActionEvent event) {
-                        new SelecionarIds(dbm,2, null,ctv);
+                        new SelecionarIds(dbm,2,idSeqRodovPartida);
                     }
                 }
         );
@@ -217,7 +216,7 @@ public class CadastraTipoDeViagem extends JFrame {
                 new ActionListener() {
 
                     public void actionPerformed(ActionEvent event) {
-                        new SelecionarIds(dbm,3, null,ctv);
+                        new SelecionarIds(dbm,3,idSeqRodovChegada);
                     }
                 }
         );

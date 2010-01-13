@@ -24,6 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import administracao.rodoviaria.Rodoviaria;
+import util.JNumericField;
 import util.TableModel;
 
 public class SelecionarIds extends JFrame {
@@ -33,12 +34,11 @@ public class SelecionarIds extends JFrame {
 
     public final DataBaseManagerImpl dbm;
 
-    private CadastraInstanciaDeViagem civ;
-    private CadastraTipoDeViagem ctv;
+    private JNumericField jnf;
 
     int operacao;
 
-    public SelecionarIds (final DataBaseManagerImpl dbm, int operacao, CadastraInstanciaDeViagem civ, CadastraTipoDeViagem ctv){
+    public SelecionarIds (final DataBaseManagerImpl dbm, int operacao, JNumericField jnf){
 
         setBounds(300,200,650,400);
         setResizable(false);
@@ -48,13 +48,7 @@ public class SelecionarIds extends JFrame {
         //-----
 
         this.dbm = dbm;
-        this.civ = civ;
-        this.ctv = ctv;
-
-        if(ctv == null)
-            civ.setEnabled(false);
-        else
-            ctv.setEnabled(false);
+        this.jnf = jnf;
 
         //-----
 
@@ -177,8 +171,8 @@ public class SelecionarIds extends JFrame {
 
         public void preencherIdCarroEmInstDeViagem(Carro car) throws ParseException {
 
-           civ.idSeqCarroTF.setText(String.valueOf(car.getId_seq_carro()));
-           civ.setEnabled(true);
+           jnf.setText(String.valueOf(car.getId_seq_carro()));
+           //jnf.setEnabled(true);
            dispose();
 
         }
@@ -186,8 +180,8 @@ public class SelecionarIds extends JFrame {
         public void preencherIdMotoristaEmInstDeViagem(Funcionario fun) throws ParseException {
 
 
-                civ.idSeqMotoristaTF.setText(String.valueOf(fun.getIdSeqFuncionario()));
-                civ.setEnabled(true);
+                jnf.setText(String.valueOf(fun.getIdSeqFuncionario()));
+                //jnf.setEnabled(true);
                 dispose();
 
         }
@@ -196,13 +190,13 @@ public class SelecionarIds extends JFrame {
 
 
                 if(operacao == 2){
-                    ctv.idSeqRodovPartida.setText(String.valueOf(rod.getId()));
-                    ctv.setEnabled(true);
+                    jnf.setText(String.valueOf(rod.getId()));
+                    //ctv.setEnabled(true);
                     dispose();
                 }
                 else if(operacao == 3){
-                    ctv.idSeqRodovChegada.setText(String.valueOf(rod.getId()));
-                    ctv.setEnabled(true);
+                    jnf.setText(String.valueOf(rod.getId()));
+                    //ctv.setEnabled(true);
                     dispose();
                 }
 

@@ -40,7 +40,6 @@ public class CadastraInstanciaDeViagem extends JFrame {
     MaskFormatter formatter = null;
     protected int tipoOperacao = 0;
     public DataBaseManagerImpl dbm;
-    private CadastraInstanciaDeViagem civ = this;
 
     public CadastraInstanciaDeViagem(int tipoOperacao, final DataBaseManagerImpl dbm) {
 
@@ -143,7 +142,7 @@ public class CadastraInstanciaDeViagem extends JFrame {
                 new ActionListener() {
 
                     public void actionPerformed(ActionEvent event) {
-                        new SelecionarIds(dbm,0, civ,null);
+                        new SelecionarIds(dbm,0,idSeqCarroTF);
                     }
                 }
         );
@@ -164,7 +163,7 @@ public class CadastraInstanciaDeViagem extends JFrame {
                 new ActionListener() {
 
                     public void actionPerformed(ActionEvent event) {
-                       new SelecionarIds(dbm,1,civ,null);
+                       new SelecionarIds(dbm,1,idSeqMotoristaTF);
                     }
                 }
         );

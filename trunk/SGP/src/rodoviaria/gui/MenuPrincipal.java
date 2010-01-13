@@ -16,18 +16,20 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JToolBar;
 import rodoviaria.gui.cliente.GerenciamentoDeClientes;
+import rodoviaria.gui.passagem.GerenciamentoDePassagens;
 import util.DataBaseManager;
 import util.QueryManager;
 
 public class MenuPrincipal extends JFrame
 {
 
-    JMenu arquivo;
+    JMenu arquivo, ajuda;
     JToolBar barra1, barra2, barra3, barra4, barra5, barra6, barra7;
     JSeparator espaco;
     JButton gerenciaClienteButton,vendePassagemButton;
     JMenuBar menuBar;
     JMenuItem sair;
+    JMenuItem info;
     Icon clienteIcon,passagemIcon;
     FlowLayout layout;
     BorderLayout border;
@@ -60,11 +62,14 @@ public class MenuPrincipal extends JFrame
 
         //jmenus
         arquivo = new JMenu("Arquivo");
+        ajuda = new JMenu("Ajuda");
 
         //jmenu itens
         sair = new JMenuItem("Sair");
+        info = new JMenuItem("Sobre a Rodoviária");
 
         arquivo.add(sair);
+        ajuda.add(info);
         //arquivo.addSeparator();
 
         menuBar = new JMenuBar();
@@ -88,6 +93,7 @@ public class MenuPrincipal extends JFrame
 
 
         menuBar.add(arquivo);
+        menuBar.add(ajuda);
 
 
         barra1.add(gerenciaClienteButton);
@@ -124,7 +130,7 @@ public class MenuPrincipal extends JFrame
         vendePassagemButton.addActionListener(but);
 
         sair.addActionListener(list);
-
+        info.addActionListener(list);
 
     }
 
@@ -136,10 +142,7 @@ public class MenuPrincipal extends JFrame
 
     public void chamarVendePassagem()
     {
-        /*
-        GerenciaPassagem gPass = new GerenciaPassagem(dbm,qm);
-        gPass.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE
-        *///comentado ate colocar o gerencia passagem em rmi e em ordem
+        GerenciamentoDePassagens gp = new GerenciamentoDePassagens(qm, dbm);
     }
 
 
@@ -149,6 +152,10 @@ public class MenuPrincipal extends JFrame
 
             if (event.getSource() == sair) {
                 System.exit(0);
+            }
+
+            if (event.getSource() == info) {
+                 Info i = new Info(dbm);
             }
 
         }

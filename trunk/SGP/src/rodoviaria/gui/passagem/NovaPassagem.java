@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import rodoviaria.passagem.Passagem;
+import util.Auxiliares;
 import util.DataBaseManager;
 import util.Date;
 import util.JNumericField;
@@ -37,6 +38,8 @@ public class NovaPassagem extends JFrame{
 
     private JButton concluir = new JButton("Concluir");
     private JButton sair = new JButton("Sair");
+
+    private String codigoPassagem;
 
     public NovaPassagem(final InstanciaDeViagem idv, final DataBaseManager dbm){
 
@@ -108,25 +111,32 @@ public class NovaPassagem extends JFrame{
                     }
 
                     int np = Integer.parseInt( poltronasVagas.getSelectedItem().toString() );
+                    int idtdv = idv.getIdSeqTdv();
                     boolean se = segurado.isSelected();
                     boolean es = estudante.isSelected();
                     TipoDeViagem tdv = null;
                     try {
-                        tdv = dbm.selectTipoDeViagem(idv.getIdSeqTdv());
+                        tdv = dbm.selectTipoDeViagem(idtdv);
                     } catch (RemoteException ex) {
                         ex.printStackTrace();
                     }
+
                     Date dt = new Date( idv.getData() );
                     int cl = Integer.parseInt( idClienteField.getText() );
 
                     nova = new Passagem(np, se, es, tdv, dt, cl);
 
+                    codigoPassagem = Auxiliares.gerarCodigoPassagem(np, idtdv, idv.getData());
+
+                    System.out.println(codigoPassagem);
+
                     int i = JOptionPane.showConfirmDialog(null, "Valor Total:\nR$ "
-                            + nova.getValorTotal(), "Pagamento", 2);
+                            + nova.getValorTotal() + "\nCodigo Passagem: " + codigoPassagem, "Pagamento", 2);
 
                     if(i == 0){
                         try {
                             dbm.insertPassagem(nova);
+                            dbm.decrementarNumeroDeVagasDisponiveis(idv.getIdSeqTdv(), idv.getData());
                         } catch (RemoteException ex) {
                             ex.printStackTrace();
                         }
@@ -150,6 +160,15 @@ public class NovaPassagem extends JFrame{
         add(sair);
 
         repaint();
+
+    }
+
+    public NovaPassagem(final InstanciaDeViagem idv, final DataBaseManager dbm, int idCliente){
+
+        this(idv, dbm);
+
+        this.idClienteField.setText(idCliente + "");
+        this.idClienteField.setEditable(false);
 
     }
 

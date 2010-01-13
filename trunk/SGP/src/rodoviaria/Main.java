@@ -37,6 +37,8 @@ public class Main {
         //MenuPrincipal main = new MenuPrincipal(dbm,qm);
         //main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        FileManager.lerId();
+
         Login loginframe = new Login(dbm, qm);
         loginframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

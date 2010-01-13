@@ -18,6 +18,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import rodoviaria.cliente.Cliente;
+import rodoviaria.gui.passagem.GerenciamentoDePassagens;
 import util.DataBaseManager;
 import util.JNumericField;
 import util.QueryManager;
@@ -215,7 +216,9 @@ public class GerenciamentoDeClientes extends JFrame {
                 ah.actionPerformed(new ActionEvent(atualizar, 1, ""));
             }
             if(e.getSource().equals(itens[2])){
-                //vender passagem para esse cliente
+                int id = getSelectedID();
+                GerenciamentoDePassagens gp = new GerenciamentoDePassagens(qm, dbm, id);
+                dispose();
             }
         }
     }

@@ -17,7 +17,7 @@ public class Auxiliares {
         "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ",
         "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"};
 
-    public static final String[] MESES = {"janeiro", "fevereiro", "março", "abril", "maio", "junho",
+    public static final String[] MESES = {"janeiro", "fevereiro", "marÃ§o", "abril", "maio", "junho",
        "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"};
 
     public static final String[] ANOS = {"2000","2001","2002","2003","2004","2005","2006","2007","2008",
@@ -39,6 +39,34 @@ public class Auxiliares {
         String ats = ant + "";
         ats.replace('3', '4');
         return Integer.parseInt(ats);
+    }
+
+    public static String gerarCodigoPassagem(int np, int idtdv, String data){
+        Date dat = new Date( data );
+        String codigoPassagem = np < 10 ? "0" + np : "" + np;
+        codigoPassagem += idtdv < 10 ? "0" + idtdv : "" + idtdv;
+        codigoPassagem += dat.a + "";
+        codigoPassagem += dat.m < 10 ? "0" + dat.m : "" + dat.m;
+        codigoPassagem += dat.d < 10 ? "0" + dat.d : "" + dat.d;
+        return codigoPassagem;
+    }
+
+    public static int getNumPoltrona(String codigoPassagem){
+        return Integer.parseInt( codigoPassagem.substring(0, 2) );
+    }
+
+    public static int getIdTdv(String codigoPassagem){
+        return Integer.parseInt( codigoPassagem.substring(2, 4) );
+    }
+
+    public static String getDataString(String codigoPassagem){
+        return codigoPassagem.substring(4, 8) + "-" +
+                codigoPassagem.substring(8, 10) + "-" +
+                codigoPassagem.substring(10, 12);
+    }
+
+    public static Date getData(String codigoPassagem){
+        return new Date( getDataString(codigoPassagem) );
     }
 
 }

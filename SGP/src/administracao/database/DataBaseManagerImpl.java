@@ -361,7 +361,7 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
     }
 
     /////////////////////////////FUNCOES DE INSTANCIA DE VIAGEM///////////////////////////////
-    public InstanciaDeViagem selectInstanciaDeViagem(int id_seq_tdv, String data){
+    public synchronized InstanciaDeViagem selectInstanciaDeViagem(int id_seq_tdv, String data) throws RemoteException{
 
         Statement st = null;
         ResultSet rs = null;
@@ -413,6 +413,23 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
             e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou
         }
         return null;
+    }
+
+    public synchronized boolean decrementarNumeroDeVagasDisponiveis(int id_seq_tdv, String data) throws RemoteException{
+        String sql = "UPDATE instancia_de_viagem SET num_vagas_disponiveis = " +
+                "(SELECT num_vagas_disponiveis WHERE id_seq_tdv = " + id_seq_tdv + " AND data = '" + data + "') - 1 " +
+                "WHERE id_seq_tdv = " + id_seq_tdv + " AND data = '" + data + "'";
+        try {
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "postgres", "123456");
+            Statement stm = connection.createStatement();
+            stm.executeUpdate(sql);
+            stm.close();
+            connection.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void deleteInstanciaDeViagem(int id_seq_idv, String data) {
@@ -1068,5 +1085,5 @@ public class DataBaseManagerImpl extends UnicastRemoteObject implements DataBase
 
         }
     }
-   
+
 }

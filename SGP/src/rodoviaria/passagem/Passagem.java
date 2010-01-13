@@ -19,20 +19,21 @@ public class Passagem implements Serializable {
 
 	private int idCliente;
 
-    public Passagem(int numPoltrona, boolean seguro, boolean estudante, TipoDeViagem TipoDeViagem, Date data, int idCliente) {
+    public Passagem(int numPoltrona, boolean seguro, boolean estudante, TipoDeViagem tipoDeViagem, Date data, int idCliente) {
 
         this.numPoltrona = numPoltrona;
 
         this.seguro = seguro;
         this.estudante = estudante;
 
-//        this.valorTotal = tipoDeViagem.getValorEmbarque() + tipoDeViagem.getValorViagem();
-//        if(seguro)
-//            valorTotal += tipoDeViagem.getValorSeguro();
-//        if(estudante)
-//            valorTotal /= 2;
+        this.tipoDeViagem = tipoDeViagem;
 
-        this.tipoDeViagem = TipoDeViagem;
+        this.valorTotal = tipoDeViagem.getValorEmbarque() + tipoDeViagem.getValorViagem();
+        if(seguro)
+            valorTotal += tipoDeViagem.getValorSeguro();
+        if(estudante)
+            valorTotal /= 2;
+
         this.data = data;
         this.idCliente = idCliente;
 

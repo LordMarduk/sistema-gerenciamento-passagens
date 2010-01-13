@@ -45,4 +45,6 @@ public interface DataBaseManager extends Remote{
 
     public InstanciaDeViagem selectInstanciaDeViagem(int id_seq_tdv, String data) throws RemoteException;
 
+    public boolean decrementarNumeroDeVagasDisponiveis(int id_seq_tdv, String data) throws RemoteException;
+
 }

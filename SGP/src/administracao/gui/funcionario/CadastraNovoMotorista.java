@@ -239,6 +239,77 @@ public class CadastraNovoMotorista extends JFrame {
                     // passa consulta para modelo de tabela
 
                     public void actionPerformed(ActionEvent event) {
+                        
+                        //tratamento campo nome
+                        if(nomeMotorista.getText().length() < 1){
+                            JOptionPane.showMessageDialog(
+                                  null,
+                                  "Campo Nome Obrigatório",
+                                  "Erro",
+                                  JOptionPane.ERROR_MESSAGE
+                            );
+                            return;
+                        }
+
+                        //Tratamento Sexo
+                        if((!masculinoRB.isSelected())&&(!femininoRB.isSelected())){
+                            JOptionPane.showMessageDialog
+                                (null, "Um sexo deve ser escolhido!", "Erro",
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+                        //tratamento data nascimento
+                        Pattern p = Pattern.compile("[0]{1}[1-9]{1}[\\/][0]{1}[1-9]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[0]{1}[1-9]{1}[\\/][1]{1}[0-2]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[1-2]{1}[0-9]{1}[\\/][0]{1}[1-9]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[1-2]{1}[0-9]{1}[\\/][1]{1}[0-2]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[3]{1}[1]{1}[\\/][0]{1}[1-9]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}"+
+                                                    "[3]{1}[1]{1}[\\/][1]{1}[0-2]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}");
+                        Matcher m = p.matcher(data_nascimento.getText());
+                        if(!(m.find())){
+                            JOptionPane.showMessageDialog
+                                (null, "Data Inválida!", "Erro",
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+                        //tratamento campo cpf
+                        if(cpfMotorista.getText().length() != 11){
+                            JOptionPane.showMessageDialog(
+                                  null,
+                                  "CPF Inválido",
+                                  "Erro",
+                                  JOptionPane.ERROR_MESSAGE
+                            );
+                            return;
+                        }
+
+                        //tratamento cnh
+                        if(cnhMotorista.getText().length() != 10){
+                            JOptionPane.showMessageDialog(
+                                  null,
+                                  "CNH Inválido",
+                                  "Erro",
+                                  JOptionPane.ERROR_MESSAGE
+                            );
+                            return;
+                        }
+
+                        //tratamento telefone
+                        if(telefoneMotorista.getText().length() < 1){
+
+                            telefoneMotorista.setText("00000000");
+
+                        }
+
+                        //tratamento endereco
+                        if(enderecoMotorista.getText().length() < 1){
+
+                            enderecoMotorista.setText("não especificado");
+
+                        }
+
                         try {
                             Funcionario fun = setarEmObjetos();
                             dbm.updateMotorista(fun.getIdSeqFuncionario(), fun);

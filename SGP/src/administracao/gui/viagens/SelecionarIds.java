@@ -6,6 +6,7 @@
 || 1 - Tabela motorista                       ||
 || 2 - Tabela rodoviaria  (partida)           ||
 || 3 - Tabela rodoviaria  (chegada)           ||
+|| 4 - Tabela Tipo de Viagem                  ||
 ||                                            ||
 ||||||||||||||||||||||||||||||||||||||||||||||*/
 
@@ -24,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import administracao.rodoviaria.Rodoviaria;
+import administracao.viagens.TipoDeViagem;
 import util.JNumericField;
 import util.TableModel;
 
@@ -34,11 +36,11 @@ public class SelecionarIds extends JFrame {
 
     public final DataBaseManagerImpl dbm;
 
-    private JNumericField jnf;
+    private JNumericField jnf,jnf2;
 
     int operacao;
 
-    public SelecionarIds (final DataBaseManagerImpl dbm, int operacao, JNumericField jnf){
+    public SelecionarIds (final DataBaseManagerImpl dbm, int operacao, JNumericField jnf, JNumericField jnf2){
 
         setBounds(300,200,650,400);
         setResizable(false);
@@ -49,6 +51,7 @@ public class SelecionarIds extends JFrame {
 
         this.dbm = dbm;
         this.jnf = jnf;
+        this.jnf2 = jnf2;
 
         //-----
 
@@ -78,6 +81,17 @@ public class SelecionarIds extends JFrame {
             try {
                 // cria o TableModel
                 tableModel = new TableModel(dbm, "SELECT * FROM rodoviaria ORDER BY cidade");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        else if(operacao == 4){
+            try {
+                // cria o TableModel
+                tableModel = new TableModel(dbm, "SELECT * FROM tipo_de_viagem ORDER BY id_seq_tdv");
             } catch (SQLException ex) {
                 ex.printStackTrace();
             } catch (ClassNotFoundException ex) {
@@ -161,6 +175,17 @@ public class SelecionarIds extends JFrame {
 
                         dispose();
                     }
+
+                    if(this.operacao == 4) {
+                        //quando buscar esse sera preenchido
+                        TipoDeViagem tdv = new TipoDeViagem();
+                        //efetua a busca e preenche
+                        tdv = dbm.selectTipoDeViagem(clicado);
+                        //janela que exibira os dados    mapeamento: objeto -> GUI
+                        preencherIdTipoDeViagem(tdv);
+
+                        dispose();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.exit(1);
@@ -170,11 +195,10 @@ public class SelecionarIds extends JFrame {
         }
 
         public void preencherIdCarroEmInstDeViagem(Carro car) throws ParseException {
-
-           jnf.setText(String.valueOf(car.getId_seq_carro()));
-           //jnf.setEnabled(true);
-           dispose();
-
+           
+               jnf.setText(String.valueOf(car.getId_seq_carro()));
+               jnf2.setText(String.valueOf(car.getCapacidade()));
+               dispose();
         }
 
         public void preencherIdMotoristaEmInstDeViagem(Funcionario fun) throws ParseException {
@@ -201,6 +225,13 @@ public class SelecionarIds extends JFrame {
                 }
 
             
+
+        }
+
+        public void preencherIdTipoDeViagem (TipoDeViagem tdv) throws ParseException {
+
+            jnf.setText(String.valueOf(tdv.getIdSeqTdv()));
+            dispose();
 
         }
 

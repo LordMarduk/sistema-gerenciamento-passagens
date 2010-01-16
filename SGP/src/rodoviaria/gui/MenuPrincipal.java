@@ -137,7 +137,7 @@ public class MenuPrincipal extends JFrame
     public void chamarGerenciaCliente()
     {
         GerenciamentoDeClientes gcframe = new GerenciamentoDeClientes(dbm, qm);
-        gcframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //gcframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public void chamarVendePassagem()

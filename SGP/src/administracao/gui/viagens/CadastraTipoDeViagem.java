@@ -190,7 +190,7 @@ public class CadastraTipoDeViagem extends JFrame {
                 new ActionListener() {
 
                     public void actionPerformed(ActionEvent event) {
-                        new SelecionarIds(dbm,2,idSeqRodovPartida);
+                        new SelecionarIds(dbm,2,idSeqRodovPartida,null);
                     }
                 }
         );
@@ -216,7 +216,7 @@ public class CadastraTipoDeViagem extends JFrame {
                 new ActionListener() {
 
                     public void actionPerformed(ActionEvent event) {
-                        new SelecionarIds(dbm,3,idSeqRodovChegada);
+                        new SelecionarIds(dbm,3,idSeqRodovChegada,null);
                     }
                 }
         );

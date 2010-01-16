@@ -10,7 +10,7 @@ package onibus;
 
 class ValidaPassagem {
 
-    public ValidaPassagem(){
+    public ValidaPassagem(String codigoBarras){
 
 
     }

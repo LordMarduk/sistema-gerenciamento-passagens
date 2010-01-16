@@ -13,14 +13,15 @@ public class Main {
 
        try
        {
-          Runtime.getRuntime().exec("bcWebCam\\bcWebCam - Portable.exe");
+          Object ob = Runtime.getRuntime().exec("bcWebCam\\bcWebCam - Portable.exe");
+          ValidaPassagem vp = new ValidaPassagem(String.valueOf(ob));
        }
        catch(IOException iOException)
        {
           iOException.printStackTrace();
        }
 
-        ValidaPassagem vp = new ValidaPassagem();
+        
         
     }
 }

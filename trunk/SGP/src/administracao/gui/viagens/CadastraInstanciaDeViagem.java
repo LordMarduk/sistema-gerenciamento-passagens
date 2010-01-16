@@ -1,7 +1,6 @@
 package administracao.gui.viagens;
 
 
-import administracao.carro.Carro;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -30,6 +29,7 @@ public class CadastraInstanciaDeViagem extends JFrame {
     public JNumericField idSeqCarroTF;
     public JNumericField idSeqMotoristaTF;
     protected JButton pegarIdCarroButton;
+    protected JButton pegarIdSeqTdv;
     protected JButton pegarIdMotoristaButton;
     protected JButton cadastrarIdvButton;
     protected JButton updateIdvButton;
@@ -66,17 +66,29 @@ public class CadastraInstanciaDeViagem extends JFrame {
         add(idSeqTdvTF);
         //--------------------
 
+        pegarIdSeqTdv = new JButton("...");
+        pegarIdSeqTdv.setBounds(145, 35, 20, 20);
+        pegarIdSeqTdv.addActionListener(
+                new ActionListener() {
+
+                    public void actionPerformed(ActionEvent event) {
+                       new SelecionarIds(dbm,4,idSeqTdvTF,null);
+                    }
+                }
+        );
+        add(pegarIdSeqTdv);
+
         //--Vagas Disponiveis--
         numVagasDisponiveisTF = new JNumericField(2);
         numVagasDisponiveisTF.setFont(padrao);
-        numVagasDisponiveisTF.setBounds(170, 30, 150, 40);
+        numVagasDisponiveisTF.setBounds(190, 30, 150, 40);
         //depois pegar isso de carro no banco de dados(capacidade)
         //numVagasDisponiveisTF.setEditable(false);
         numVagasDisponiveisTF.setBorder(
                 BorderFactory.createTitledBorder(
                 null, "Numero De Vagas Disponiveis", 0, 0, new Font("Tahoma", 0, 10)));
+        numVagasDisponiveisTF.setEditable(false);
         add(numVagasDisponiveisTF);
-
         //---------------------
 
         //--Campo Hora De Saida--
@@ -142,7 +154,7 @@ public class CadastraInstanciaDeViagem extends JFrame {
                 new ActionListener() {
 
                     public void actionPerformed(ActionEvent event) {
-                        new SelecionarIds(dbm,0,idSeqCarroTF);
+                        new SelecionarIds(dbm,0,idSeqCarroTF, numVagasDisponiveisTF);
                     }
                 }
         );
@@ -163,7 +175,7 @@ public class CadastraInstanciaDeViagem extends JFrame {
                 new ActionListener() {
 
                     public void actionPerformed(ActionEvent event) {
-                       new SelecionarIds(dbm,1,idSeqMotoristaTF);
+                       new SelecionarIds(dbm,1,idSeqMotoristaTF,null);
                     }
                 }
         );

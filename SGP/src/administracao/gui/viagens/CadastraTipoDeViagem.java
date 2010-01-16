@@ -10,6 +10,9 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import administracao.database.DataBaseManagerImpl;
 import administracao.viagens.TipoDeViagem;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 import util.Auxiliares;
 import util.JNumericField;
 
@@ -282,7 +285,64 @@ public class CadastraTipoDeViagem extends JFrame {
     private class ButtonHandlerCadastra implements ActionListener {
 
         public void actionPerformed(ActionEvent action) {
+
+            //tratamento campo valor viagem
+                        if(valorViagemTF.getText().length() < 1){
+                            JOptionPane.showMessageDialog(
+                            null,
+                            "Campo Valor Viagem Obrigatório",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                            return;
+                        }
+
+
+            //tratamento horaDeSaidaTF
+                        Pattern p = Pattern.compile("[0-1]{1}[0-9]{1}[\\:][0-5]{1}[0-9]{1}|"+
+                                                    "[2]{1}[0-3]{1}[\\:][0-5]{1}[0-9]{1}|");
+                        Matcher m = p.matcher(horaDeSaidaTF.getText());
+                        if(!(m.find())){
+                            JOptionPane.showMessageDialog
+                                (null, "Hora Inválida!\nFormato> hh:mm", "Erro",
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+            //tratamento horaDeSaidaTF
+                        Pattern p2 = Pattern.compile("[0-1]{1}[0-9]{1}[\\:][0-5]{1}[0-9]{1}|"+
+                                                    "[2]{1}[0-3]{1}[\\:][0-5]{1}[0-9]{1}|");
+                        Matcher m2 = p2.matcher(horaDeChegadaTF.getText());
+                        if(!(m2.find())){
+                            JOptionPane.showMessageDialog
+                                (null, "Hora Inválida!\nFormato> hh:mm", "Erro",
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+            //tratamento campo idSeqRodovPartida
+                        if(idSeqRodovPartida.getText().length() < 1){
+                            JOptionPane.showMessageDialog(
+                            null,
+                            "Campo Id Seq Rodoviaria Partida Obrigatório",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                            return;
+                        }
+
+            //tratamento campo idSeqRodovChegada
+                        if(idSeqRodovChegada.getText().length() < 1){
+                            JOptionPane.showMessageDialog(
+                            null,
+                            "Campo Id Seq Rodoviaria Chegada Obrigatório",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                            return;
+                        }
             try {
+
                 TipoDeViagem tdv = insereGuiEmObjeto();
                 dbm.insertTipoDeViagem(tdv);
 
@@ -295,6 +355,63 @@ public class CadastraTipoDeViagem extends JFrame {
     private class ButtonHandlerAtualiza implements ActionListener {
 
         public void actionPerformed(ActionEvent action) {
+
+            //tratamento campo valor viagem
+                        if(valorViagemTF.getText().length() < 1){
+                            JOptionPane.showMessageDialog(
+                            null,
+                            "Campo Valor Viagem Obrigatório",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                            return;
+                        }
+
+
+            //tratamento horaDeSaidaTF
+                        Pattern p = Pattern.compile("[0-1]{1}[0-9]{1}[\\:][0-5]{1}[0-9]{1}|"+
+                                                    "[2]{1}[0-3]{1}[\\:][0-5]{1}[0-9]{1}|");
+                        Matcher m = p.matcher(horaDeSaidaTF.getText());
+                        if(!(m.find())){
+                            JOptionPane.showMessageDialog
+                                (null, "Hora Inválida!\nFormato> hh:mm", "Erro",
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+            //tratamento horaDeSaidaTF
+                        Pattern p2 = Pattern.compile("[0-1]{1}[0-9]{1}[\\:][0-5]{1}[0-9]{1}|"+
+                                                    "[2]{1}[0-3]{1}[\\:][0-5]{1}[0-9]{1}|");
+                        Matcher m2 = p2.matcher(horaDeChegadaTF.getText());
+                        if(!(m2.find())){
+                            JOptionPane.showMessageDialog
+                                (null, "Hora Inválida!\nFormato> hh:mm", "Erro",
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+            //tratamento campo idSeqRodovPartida
+                        if(idSeqRodovPartida.getText().length() < 1){
+                            JOptionPane.showMessageDialog(
+                            null,
+                            "Campo Id Seq Rodoviaria Partida Obrigatório",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                            return;
+                        }
+
+            //tratamento campo idSeqRodovChegada
+                        if(idSeqRodovChegada.getText().length() < 1){
+                            JOptionPane.showMessageDialog(
+                            null,
+                            "Campo Id Seq Rodoviaria Chegada Obrigatório",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                            return;
+                        }
+                        
             try {
                 TipoDeViagem tdv = insereGuiEmObjeto();
                 dbm.updateTipoDeViagem(tdv.getIdSeqTdv(), tdv);

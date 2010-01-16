@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import administracao.database.DataBaseManagerImpl;
 import administracao.viagens.InstanciaDeViagem;
 import java.text.ParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import util.JNumericField;
@@ -242,6 +244,61 @@ public class CadastraInstanciaDeViagem extends JFrame {
     private class ButtonHandlerCadastra implements ActionListener {
 
         public void actionPerformed(ActionEvent action) {
+
+            //tratamento campo idseqtdv
+                        if(idSeqTdvTF.getText().length() < 1){
+                            JOptionPane.showMessageDialog(
+                            null,
+                            "Campo Id Tipo de Viagem Obrigatório",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                            return;
+                        }
+
+            //tratamento data nascimento
+                        Pattern p = Pattern.compile("[0]{1}[1-9]{1}[\\/][0]{1}[1-9]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[0]{1}[1-9]{1}[\\/][1]{1}[0-2]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[1-2]{1}[0-9]{1}[\\/][0]{1}[1-9]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[1-2]{1}[0-9]{1}[\\/][1]{1}[0-2]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[3]{1}[1]{1}[\\/][0]{1}[1-9]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}"+
+                                                    "[3]{1}[1]{1}[\\/][1]{1}[0-2]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}"+
+                                                    "[0]{1}[1-9]{1}[\\/][0]{1}[1-9]{1}[\\/][2]{1}[0]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[0]{1}[1-9]{1}[\\/][1]{1}[0-2]{1}[\\/][2]{1}[0]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[1-2]{1}[0-9]{1}[\\/][0]{1}[1-9]{1}[\\/][2]{1}[0]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[1-2]{1}[0-9]{1}[\\/][1]{1}[0-2]{1}[\\/][2]{1}[0]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[3]{1}[1]{1}[\\/][0]{1}[1-9]{1}[\\/][2]{1}[0]{1}[0-9]{1}[0-9]{1}"+
+                                                    "[3]{1}[1]{1}[\\/][1]{1}[0-2]{1}[\\/][2]{1}[0]{1}[0-9]{1}[0-9]{1}");
+                        Matcher m = p.matcher(dataViagemFTF.getText());
+                        if(!(m.find())){
+                            JOptionPane.showMessageDialog
+                                (null, "Data Inválida!", "Erro",
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+            //tratamento campo idseqcarro
+                        if(idSeqCarroTF.getText().length() < 1){
+                            JOptionPane.showMessageDialog(
+                            null,
+                            "Campo Id Carro Obrigatório",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                            return;
+                        }
+
+            //tratamento campo idseqmotorista
+                        if(idSeqMotoristaTF.getText().length() < 1){
+                            JOptionPane.showMessageDialog(
+                            null,
+                            "Campo Id Motorista Obrigatório",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                            return;
+                        }
+
             try {
                 InstanciaDeViagem idv = insereGuiEmObjeto();
                 dbm.insertInstanciaDeViagem(idv);
@@ -258,6 +315,61 @@ public class CadastraInstanciaDeViagem extends JFrame {
     private class ButtonHandlerAtualiza implements ActionListener {
 
         public void actionPerformed(ActionEvent action) {
+
+            //tratamento campo idseqtdv
+                        if(idSeqTdvTF.getText().length() < 1){
+                            JOptionPane.showMessageDialog(
+                            null,
+                            "Campo Id Tipo de Viagem Obrigatório",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                            return;
+                        }
+
+            //tratamento data nascimento
+                        Pattern p = Pattern.compile("[0]{1}[1-9]{1}[\\/][0]{1}[1-9]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[0]{1}[1-9]{1}[\\/][1]{1}[0-2]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[1-2]{1}[0-9]{1}[\\/][0]{1}[1-9]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[1-2]{1}[0-9]{1}[\\/][1]{1}[0-2]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[3]{1}[1]{1}[\\/][0]{1}[1-9]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}"+
+                                                    "[3]{1}[1]{1}[\\/][1]{1}[0-2]{1}[\\/][1]{1}[9]{1}[0-9]{1}[0-9]{1}"+
+                                                    "[0]{1}[1-9]{1}[\\/][0]{1}[1-9]{1}[\\/][2]{1}[0]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[0]{1}[1-9]{1}[\\/][1]{1}[0-2]{1}[\\/][2]{1}[0]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[1-2]{1}[0-9]{1}[\\/][0]{1}[1-9]{1}[\\/][2]{1}[0]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[1-2]{1}[0-9]{1}[\\/][1]{1}[0-2]{1}[\\/][2]{1}[0]{1}[0-9]{1}[0-9]{1}|"+
+                                                    "[3]{1}[1]{1}[\\/][0]{1}[1-9]{1}[\\/][2]{1}[0]{1}[0-9]{1}[0-9]{1}"+
+                                                    "[3]{1}[1]{1}[\\/][1]{1}[0-2]{1}[\\/][2]{1}[0]{1}[0-9]{1}[0-9]{1}");
+                        Matcher m = p.matcher(dataViagemFTF.getText());
+                        if(!(m.find())){
+                            JOptionPane.showMessageDialog
+                                (null, "Data Inválida!", "Erro",
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+            //tratamento campo idseqcarro
+                        if(idSeqCarroTF.getText().length() < 1){
+                            JOptionPane.showMessageDialog(
+                            null,
+                            "Campo Id Carro Obrigatório",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                            return;
+                        }
+
+            //tratamento campo idseqmotorista
+                        if(idSeqMotoristaTF.getText().length() < 1){
+                            JOptionPane.showMessageDialog(
+                            null,
+                            "Campo Id Motorista Obrigatório",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                            return;
+                        }
+                        
             try {
                 InstanciaDeViagem idv = insereGuiEmObjeto();
                 dbm.updateInstanciaDeViagem(idv.getIdSeqTdv(),idv.getData(), idv);

@@ -51,6 +51,8 @@ public class GerenciamentoDePassagens extends JFrame{
 
     private int idCliente = 0;
     protected String viagem;
+    protected String data;
+    protected String hora;
 
 
     public GerenciamentoDePassagens(final QueryManager qm, final DataBaseManager dbm){
@@ -112,7 +114,9 @@ public class GerenciamentoDePassagens extends JFrame{
                " - "+
                resultTable.getValueAt( resultTable.getSelectedRow(), 1 ).toString();
     }
-
+    public String getHora(){
+        return resultTable.getValueAt( resultTable.getSelectedRow(), 6 ).toString();
+    }
     public class ItensPopupMenuHandler implements ActionListener{
         public void actionPerformed(ActionEvent e) {
             if(e.getSource().equals(itens[0])){
@@ -121,9 +125,9 @@ public class GerenciamentoDePassagens extends JFrame{
             if(e.getSource().equals(itens[1])){
                 NovaPassagem np = null;
                 if(idCliente != 0)
-                    np = new NovaPassagem(idv, dbm, qm,idCliente, viagem);
+                    np = new NovaPassagem(idv, dbm, qm,idCliente, viagem, data, hora);
                 else
-                    np = new NovaPassagem(idv, dbm, qm, viagem);
+                    np = new NovaPassagem(idv, dbm, qm, viagem, data, hora);
                 dispose();
             }
         }
@@ -134,8 +138,10 @@ public class GerenciamentoDePassagens extends JFrame{
             if( (e.getClickCount() <= 1)||(e.getButton() != MouseEvent.BUTTON1) )
                 return;
             int id = getSelectedID();
-            String data = getSelectedData();
+            data = getSelectedData();
             viagem = getViagem();
+            hora = getHora();
+
             try {
                 idv = dbm.selectInstanciaDeViagem(id, data);
             } catch (RemoteException ex) {

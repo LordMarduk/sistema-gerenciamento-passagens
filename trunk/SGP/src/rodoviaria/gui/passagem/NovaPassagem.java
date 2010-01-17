@@ -46,9 +46,10 @@ public class NovaPassagem extends JFrame{
     private String nomePassageiro;
     private String cpfPassageiro;
     private String estud,seg;
+    private String viagem,data,hora;
     private final JButton pegarIdCliente;
 
-    public NovaPassagem(final InstanciaDeViagem idv,final DataBaseManager dbm,final QueryManager qm,final String viagem){
+    public NovaPassagem(final InstanciaDeViagem idv,final DataBaseManager dbm,final QueryManager qm,final String viagem, final String data, final String hora){
 
         super("Nova Passagem");
         setBounds(500, 300, 280, 250);
@@ -60,6 +61,9 @@ public class NovaPassagem extends JFrame{
         this.dbm = dbm;
         this.qm =qm;
         this.idv = idv;
+        this.viagem = viagem;
+        this.data = data;
+        this.hora = hora;
 
         JLabel l1 = new JLabel("ID - Tipo de Viagem");
         JLabel l2 = new JLabel("Data");
@@ -175,7 +179,7 @@ public class NovaPassagem extends JFrame{
 
 
                     //chama EmitePassagem para gerar passagem e imprimir
-                    new EmitePassagem(nova,idv.getIdSeqTdv(), idv.getData(),codigoPassagem,nova.getValorTotal(),poltronasVagas.getSelectedItem().toString(),nomePassageiro, cpfPassageiro, viagem, estud, seg);
+                    new EmitePassagem(nova,idv.getIdSeqTdv(), idv.getData(),codigoPassagem,nova.getValorTotal(),poltronasVagas.getSelectedItem().toString(),nomePassageiro, cpfPassageiro, viagem, estud, seg, data, hora);
 
                         try {
                             dbm.insertPassagem(nova);
@@ -221,9 +225,9 @@ public class NovaPassagem extends JFrame{
 
     }
 
-    public NovaPassagem(final InstanciaDeViagem idv, final DataBaseManager dbm,final QueryManager qm,int idCliente, final String viagem){
+    public NovaPassagem(final InstanciaDeViagem idv, final DataBaseManager dbm,final QueryManager qm,int idCliente, final String viagem, final String data, final String hora){
 
-        this(idv,dbm,qm,viagem);
+        this(idv,dbm,qm,viagem,data,hora);
 
         this.idClienteField.setText(idCliente + "");
         this.idClienteField.setEditable(false);

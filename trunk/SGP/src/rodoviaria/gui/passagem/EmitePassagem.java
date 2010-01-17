@@ -15,14 +15,14 @@ import util.PrintUtilities;
 
 public class EmitePassagem extends JFrame{
 
-    private JTextArea infoPassageiro = new JTextArea(6,30);
+    private JTextArea infoPassageiro = new JTextArea(7,30);
     private JButton imprimir = new JButton("Emitir Passagem");
     private JPanel codigoBarras = new JPanel();
     private JPanel fundo = new JPanel();
 
     Barcode codigoDeBarras;
 
-    EmitePassagem(Passagem nova, int idSeqTdv, String data, String codigoPassagem, float valorTotal, String acento, String nomePassageiro, String cpfPassageiro, String viagem,String estud, String seg){
+    EmitePassagem(Passagem nova, int idSeqTdv, String data, String codigoPassagem, float valorTotal, String acento, String nomePassageiro, String cpfPassageiro, String viagem,String estud, String seg, String dat, String hora){
         super("Passagem");
 
         setBounds(500, 300, 355, 260);
@@ -31,16 +31,17 @@ public class EmitePassagem extends JFrame{
         setLayout(null);
 
 
-        fundo.setBounds(0, 0, 350, 180);
+        fundo.setBounds(0, 0, 350, 195);
         fundo.setBackground(Color.white);
         add(fundo);
 
         infoPassageiro.setText("   Nome: "+nomePassageiro+
-                               "\n   Estudante: "+estud+" Seguro: "+seg+
                                "\n   CPF: "+cpfPassageiro+
+                               "\n   Estudante: "+estud+" Seguro: "+seg+
+                               "\n   Data: "+dat+" Hora Saida: "+hora+
                                "\n   Viagem: "+viagem+
-                               "\n   Poltrona: "+acento+
-                               "\n   Valor Total: R$" + valorTotal);
+                               "\n    Poltrona: "+acento+
+                               "\n    Valor Total: R$" + valorTotal);
         infoPassageiro.setBounds(0,0,350,100);
         infoPassageiro.setBorder(null);
         infoPassageiro.setEditable(false);
@@ -53,11 +54,11 @@ public class EmitePassagem extends JFrame{
         }
 
         codigoBarras.add(codigoDeBarras);
-        codigoBarras.setBounds(45, 110, 320, 80);
+        codigoBarras.setBounds(45, 120, 320, 80);
         codigoBarras.setBackground(Color.white);
         fundo.add(codigoBarras);
        
-        imprimir.setBounds(100, 190, 150, 40);
+        imprimir.setBounds(100, 195, 150, 40);
         imprimir.addActionListener(
 
             new ActionListener() {

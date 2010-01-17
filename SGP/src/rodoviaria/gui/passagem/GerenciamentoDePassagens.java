@@ -50,6 +50,8 @@ public class GerenciamentoDePassagens extends JFrame{
     private JTable resultTable;
 
     private int idCliente = 0;
+    protected String viagem;
+
 
     public GerenciamentoDePassagens(final QueryManager qm, final DataBaseManager dbm){
 
@@ -105,6 +107,12 @@ public class GerenciamentoDePassagens extends JFrame{
         return resultTable.getValueAt( resultTable.getSelectedRow(), 2 ).toString();
     }
 
+    private String getViagem() {
+        return resultTable.getValueAt( resultTable.getSelectedRow(), 0 ).toString()+
+               " - "+
+               resultTable.getValueAt( resultTable.getSelectedRow(), 1 ).toString();
+    }
+
     public class ItensPopupMenuHandler implements ActionListener{
         public void actionPerformed(ActionEvent e) {
             if(e.getSource().equals(itens[0])){
@@ -113,9 +121,9 @@ public class GerenciamentoDePassagens extends JFrame{
             if(e.getSource().equals(itens[1])){
                 NovaPassagem np = null;
                 if(idCliente != 0)
-                    np = new NovaPassagem(idv, dbm, idCliente);
+                    np = new NovaPassagem(idv, dbm, qm,idCliente, viagem);
                 else
-                    np = new NovaPassagem(idv, dbm);
+                    np = new NovaPassagem(idv, dbm, qm, viagem);
                 dispose();
             }
         }
@@ -127,6 +135,7 @@ public class GerenciamentoDePassagens extends JFrame{
                 return;
             int id = getSelectedID();
             String data = getSelectedData();
+            viagem = getViagem();
             try {
                 idv = dbm.selectInstanciaDeViagem(id, data);
             } catch (RemoteException ex) {
@@ -138,6 +147,7 @@ public class GerenciamentoDePassagens extends JFrame{
         public void mouseReleased(MouseEvent e) {}
         public void mouseEntered(MouseEvent e) {}
         public void mouseExited(MouseEvent e) {}
+
     }
 
 }

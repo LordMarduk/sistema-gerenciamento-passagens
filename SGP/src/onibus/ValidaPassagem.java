@@ -12,6 +12,7 @@ class ValidaPassagem {
 
     public ValidaPassagem(String codigoBarras){
 
+        System.out.println(codigoBarras);
 
     }
 

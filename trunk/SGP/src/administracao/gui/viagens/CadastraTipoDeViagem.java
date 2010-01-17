@@ -300,22 +300,22 @@ public class CadastraTipoDeViagem extends JFrame {
 
             //tratamento horaDeSaidaTF
                         Pattern p = Pattern.compile("[0-1]{1}[0-9]{1}[\\:][0-5]{1}[0-9]{1}|"+
-                                                    "[2]{1}[0-3]{1}[\\:][0-5]{1}[0-9]{1}|");
+                                                    "[2]{1}[0-3]{1}[\\:][0-5]{1}[0-9]{1}");
                         Matcher m = p.matcher(horaDeSaidaTF.getText());
                         if(!(m.find())){
                             JOptionPane.showMessageDialog
-                                (null, "Hora Inválida!\nFormato> hh:mm", "Erro",
+                                (null, "Hora Saída Inválida!\nFormato> hh:mm", "Erro",
                                 JOptionPane.ERROR_MESSAGE);
                             return;
                         }
 
             //tratamento horaDeSaidaTF
                         Pattern p2 = Pattern.compile("[0-1]{1}[0-9]{1}[\\:][0-5]{1}[0-9]{1}|"+
-                                                    "[2]{1}[0-3]{1}[\\:][0-5]{1}[0-9]{1}|");
+                                                    "[2]{1}[0-3]{1}[\\:][0-5]{1}[0-9]{1}");
                         Matcher m2 = p2.matcher(horaDeChegadaTF.getText());
                         if(!(m2.find())){
                             JOptionPane.showMessageDialog
-                                (null, "Hora Inválida!\nFormato> hh:mm", "Erro",
+                                (null, "Hora Chegada Inválida!\nFormato> hh:mm", "Erro",
                                 JOptionPane.ERROR_MESSAGE);
                             return;
                         }

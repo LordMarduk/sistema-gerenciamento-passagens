@@ -12,15 +12,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import rodoviaria.cliente.Cliente;
 import rodoviaria.passagem.Passagem;
 import util.Auxiliares;
 import util.DataBaseManager;
 import util.Date;
 import util.JNumericField;
+import util.QueryManager;
 
 public class NovaPassagem extends JFrame{
 
     private final DataBaseManager dbm;
+    public final QueryManager qm;
 
     private InstanciaDeViagem idv;
 
@@ -40,8 +43,12 @@ public class NovaPassagem extends JFrame{
     private JButton sair = new JButton("Sair");
 
     private String codigoPassagem;
+    private String nomePassageiro;
+    private String cpfPassageiro;
+    private String estud,seg;
+    private final JButton pegarIdCliente;
 
-    public NovaPassagem(final InstanciaDeViagem idv, final DataBaseManager dbm){
+    public NovaPassagem(final InstanciaDeViagem idv,final DataBaseManager dbm,final QueryManager qm,final String viagem){
 
         super("Nova Passagem");
         setBounds(500, 300, 280, 250);
@@ -51,6 +58,7 @@ public class NovaPassagem extends JFrame{
         setLayout(null);
 
         this.dbm = dbm;
+        this.qm =qm;
         this.idv = idv;
 
         JLabel l1 = new JLabel("ID - Tipo de Viagem");
@@ -100,6 +108,18 @@ public class NovaPassagem extends JFrame{
         idClienteField.setBounds(150, 120, 100, 25);
         add(idClienteField);
 
+        pegarIdCliente = new JButton("...");
+        pegarIdCliente.setBounds(250, 125, 20, 20);
+        pegarIdCliente.addActionListener(
+                new ActionListener() {
+
+                    public void actionPerformed(ActionEvent event) {
+                        new SelecionarCliente(qm,idClienteField);
+                    }
+                }
+        );
+        add(pegarIdCliente);
+
         concluir.setBounds(20, 175, 100, 30);
         concluir.addActionListener(
             new ActionListener() {
@@ -127,7 +147,45 @@ public class NovaPassagem extends JFrame{
                     nova = new Passagem(np, se, es, tdv, dt, cl);
 
                     codigoPassagem = Auxiliares.gerarCodigoPassagem(np, idtdv, idv.getData());
+                
+                    //pegar dados
+                        try {
+                            Cliente cli = new Cliente();
+                            cli = dbm.getCliente(cl);
+                            nomePassageiro = cli.getNome();
+                            cpfPassageiro = cli.getCpf();
+                        } catch (RemoteException ex) {
+                            ex.printStackTrace();
+                        }
 
+
+                        if(estudante.isSelected()){
+                            estud = "sim";
+                        }
+                        else{
+                            estud = "nao";
+                        }
+
+                        if(segurado.isSelected()){
+                            seg = "sim";
+                        }
+                        else{
+                            seg = "nao";
+                        }
+
+
+                    //chama EmitePassagem para gerar passagem e imprimir
+                    new EmitePassagem(nova,idv.getIdSeqTdv(), idv.getData(),codigoPassagem,nova.getValorTotal(),poltronasVagas.getSelectedItem().toString(),nomePassageiro, cpfPassageiro, viagem, estud, seg);
+
+                        try {
+                            dbm.insertPassagem(nova);
+                            dbm.decrementarNumeroDeVagasDisponiveis(idv.getIdSeqTdv(), idv.getData());
+                        } catch (RemoteException ex) {
+                            ex.printStackTrace();
+                        }                        
+
+                    dispose();
+                    /*
                     System.out.println(codigoPassagem);
 
                     int i = JOptionPane.showConfirmDialog(null, "Valor Total:\nR$ "
@@ -143,7 +201,7 @@ public class NovaPassagem extends JFrame{
                         dispose();
                         return;
                     }
-
+                    */
                 }
             }
         );
@@ -163,9 +221,9 @@ public class NovaPassagem extends JFrame{
 
     }
 
-    public NovaPassagem(final InstanciaDeViagem idv, final DataBaseManager dbm, int idCliente){
+    public NovaPassagem(final InstanciaDeViagem idv, final DataBaseManager dbm,final QueryManager qm,int idCliente, final String viagem){
 
-        this(idv, dbm);
+        this(idv,dbm,qm,viagem);
 
         this.idClienteField.setText(idCliente + "");
         this.idClienteField.setEditable(false);

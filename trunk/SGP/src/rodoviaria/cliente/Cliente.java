@@ -34,6 +34,10 @@ public class Cliente implements Serializable {
         this.eEstudante = eEstudante;
     }
 
+    public Cliente() {
+        
+    }
+
     public int getId() {
         return codigo_cli;
     }
